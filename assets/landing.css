@@ -56,6 +56,8 @@ a { color: inherit; }
   display: block;
   object-fit: cover;
 }
+/* Icon-only wordmark (used in nav — page title already says "Dance Journal") */
+.dj-wordmark-iconly .dj-mark { width: 48px; height: 48px; border-radius: 12px; }
 .dj-wordmark .dj-word {
   font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
   color: var(--ink); line-height: 1;
