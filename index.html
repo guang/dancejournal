@@ -1,18 +1,357 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Legal Documents - My App</title>
+  <meta charset="utf-8">
+  <title>Dance Journal — A journal for the moves you're learning</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Save the clip. Time-stamp what to fix at the exact second. Drill it until it sticks. A pocket notebook for partner dancers — Bachata, Salsa, Kizomba.">
+  <meta property="og:title" content="Dance Journal">
+  <meta property="og:description" content="A journal for the moves you're learning. Save clips, time-stamp notes, drill until it sticks.">
+  <meta name="theme-color" content="#FAFAFA">
+  <link rel="stylesheet" href="assets/landing.css?v=8">
 </head>
-
 <body>
-    <h1>Legal Documents</h1>
-    <p>
-        <a href="terms.html">Terms of Service</a><br>
-        <a href="privacy.html">Privacy Policy</a><br>
-        <a href="support.html">Support</a><br>
-        <a href="delete-account.html">Delete Account</a>
-    </p>
-</body>
 
+  <!-- ============== Nav ============== -->
+  <nav class="dz-nav">
+    <a class="dj-wordmark dj-wordmark-iconly" href="./" aria-label="Dance Journal home">
+      <span class="dj-mark dj-mark-img">
+        <img src="assets/icons/app-icon.png" alt="Dance Journal" width="48" height="48" loading="eager">
+      </span>
+    </a>
+    <div class="dz-nav-links">
+      <a href="#compare">Features</a>
+      <a href="#feedback">For schools</a>
+      <a href="#download">Download</a>
+    </div>
+  </nav>
+
+  <!-- ============== Hero ============== -->
+  <section class="dz-hero">
+    <div class="dz-hero-inner">
+      <div>
+        <h1>
+          A journal<br>
+          for the moves<br>
+          you're <span class="gold-mark">learning.</span>
+        </h1>
+        <div class="dz-cta-row">
+          <a href="https://apps.apple.com/app/id6751278168" target="_blank" rel="noopener" class="dj-storebadge">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.05 12.04c-.03-2.99 2.45-4.43 2.56-4.5-1.4-2.04-3.57-2.32-4.34-2.36-1.85-.19-3.61 1.09-4.55 1.09-.95 0-2.39-1.06-3.93-1.03-2.02.03-3.88 1.18-4.92 2.98-2.1 3.64-.54 9.02 1.51 11.97 1.01 1.44 2.2 3.06 3.76 3 1.52-.06 2.09-.98 3.93-.98 1.83 0 2.36.98 3.96.95 1.64-.03 2.67-1.46 3.66-2.91 1.16-1.67 1.63-3.3 1.65-3.39-.04-.02-3.17-1.21-3.2-4.82zM14.07 4.27c.83-1 1.39-2.4 1.24-3.79-1.2.05-2.65.8-3.51 1.81-.77.89-1.45 2.31-1.27 3.67 1.33.11 2.7-.68 3.54-1.69z"/>
+            </svg>
+            <span class="dj-sb-text">
+              <span class="dj-sb-small">Download on the</span>
+              <span class="dj-sb-big">App Store</span>
+            </span>
+          </a>
+          <a href="https://play.google.com/apps/testing/app.dancejournal.dancenotes" target="_blank" rel="noopener" class="dj-storebadge">
+            <svg viewBox="0 0 24 24">
+              <defs>
+                <linearGradient id="ps-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00D4FF"/><stop offset="1" stop-color="#0080FF"/></linearGradient>
+                <linearGradient id="ps-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD200"/><stop offset="1" stop-color="#FFA000"/></linearGradient>
+                <linearGradient id="ps-c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5252"/><stop offset="1" stop-color="#D50000"/></linearGradient>
+                <linearGradient id="ps-d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00C853"/><stop offset="1" stop-color="#00A040"/></linearGradient>
+              </defs>
+              <path fill="url(#ps-a)" d="M3.6 1.7c-.4.3-.6.8-.6 1.4v17.8c0 .6.2 1.1.6 1.4l9.6-9.6z"/>
+              <path fill="url(#ps-b)" d="M16.8 15.4l-3.6-3.6 3.6-3.6 4.4 2.5c1.1.6 1.1 2.2 0 2.8z"/>
+              <path fill="url(#ps-c)" d="M13.2 11.8L3.6 1.7c.5-.4 1.2-.4 1.9 0l11.3 6.5z"/>
+              <path fill="url(#ps-d)" d="M13.2 11.8l3.6 3.6L5.5 21.9c-.7.4-1.4.4-1.9 0z"/>
+            </svg>
+            <span class="dj-sb-text">
+              <span class="dj-sb-small">Get it on</span>
+              <span class="dj-sb-big">Google Play</span>
+            </span>
+          </a>
+        </div>
+        <div class="dz-cta-meta">
+          Free<span class="dot"></span>No account to start<span class="dot"></span>Your clips stay on your phone
+        </div>
+      </div>
+
+      <!-- Interactive in-phone player — the magic moment, lifted from §01 -->
+      <div class="dz-hero-stage">
+        <div class="dz-phone-wrap">
+        <div class="dj-phone dz-app-phone" data-notebook>
+          <div class="dj-phone-notch"></div>
+          <div class="dj-phone-screen dz-app-screen">
+            <header class="dz-app-bar">
+              <span class="dz-app-bar-icon" aria-hidden="true">‹</span>
+              <span class="dz-app-bar-title">Bachata · Thu class</span>
+              <span class="dz-app-bar-icon" aria-hidden="true">⋯</span>
+            </header>
+            <div class="dz-app-video">
+              <video data-notebook-video
+                     src="assets/video/notebook-demo.mp4"
+                     poster="assets/video/notebook-demo-poster.jpg"
+                     muted playsinline loop preload="metadata"
+                     aria-label="Dance clip demo"></video>
+              <div class="dz-app-caption" data-notebook-caption hidden>
+                <span class="dj-ts dz-app-caption-ts">00:00</span>
+                <span class="dz-app-caption-text"></span>
+              </div>
+            </div>
+            <div class="dz-app-scrubber">
+              <div class="dz-scrub-bar" data-notebook-bar>
+                <div class="dz-scrub-fill"></div>
+                <div class="dz-scrub-knob"></div>
+                <!-- ticks injected by landing.js -->
+              </div>
+              <div class="dz-app-times">
+                <span data-notebook-cur>00:00</span>
+                <span data-notebook-total>00:20</span>
+              </div>
+            </div>
+            <div class="dz-app-controls">
+              <button class="dz-app-ctrl back" data-notebook-back aria-label="back 5 seconds">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/>
+                </svg>
+              </button>
+              <button class="dz-app-ctrl play" data-notebook-play aria-label="play / pause"></button>
+              <button class="dz-app-ctrl fwd" data-notebook-fwd aria-label="forward 5 seconds">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13 7l5 5-5 5"/><path d="M6 7l5 5-5 5"/>
+                </svg>
+              </button>
+            </div>
+            <div class="dz-app-notes" data-notebook-notes><!-- notes injected by landing.js --></div>
+          </div>
+        </div>
+
+          <!-- Affordance pinned to the phone itself -->
+          <div class="dz-float dz-try-stamp">
+            <span class="dj-ts gold lg">Try it →</span>
+          </div>
+        </div>
+
+        <div class="dz-hero-hint">
+          <span class="arr">↑</span> Drag the playhead · Tap a note to jump
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== §02 Compare ============== -->
+  <section class="dz-section dark" id="compare">
+    <div class="dz-section-inner">
+      <div class="dz-section-head">
+        <div class="dz-chapter dark"><span class="num">01</span><span class="label">Compare</span></div>
+        <h2>See exactly<br>what to fix.</h2>
+        <p class="dz-sub">Your run, next to the reference. Spot what's off in the first play.</p>
+      </div>
+
+      <div class="dz-feature-grid">
+        <div class="dz-phone-stage">
+          <div class="dj-phone" style="width:300px;height:580px;">
+            <div class="dj-phone-notch"></div>
+            <div class="dj-phone-screen">
+              <img src="assets/shots/compare-screen.png" alt="Dance Journal compare screen">
+            </div>
+          </div>
+          <div class="dz-float" style="top:60px;left:-20px;transform:rotate(-4deg);">
+            <span class="dz-chip"><span class="dot"></span>Synced at 0:12</span>
+          </div>
+          <div class="dz-float" style="bottom:60px;right:-36px;transform:rotate(3deg);">
+            <span class="dz-chip gold">0.5× · loop</span>
+          </div>
+        </div>
+        <div>
+          <div class="dz-list-item">
+            <span class="dz-list-num">1</span>
+            <div class="dz-list-text"><strong>Side-by-side</strong><span>beat-locked.</span></div>
+          </div>
+          <div class="dz-list-item">
+            <span class="dz-list-num">2</span>
+            <div class="dz-list-text"><strong>0.25× → 2×</strong><span>see the foot land.</span></div>
+          </div>
+          <div class="dz-list-item">
+            <span class="dz-list-num">3</span>
+            <div class="dz-list-text"><strong>Mirror flip</strong><span>match your role.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== §03 Practice ============== -->
+  <section class="dz-section" id="practice">
+    <div class="dz-section-inner">
+      <div class="dz-section-head centered">
+        <div class="dz-chapter"><span class="num">02</span><span class="label">Practice</span></div>
+        <h2>Track your progress.</h2>
+        <p class="dz-sub">Every move climbs from New → Mastered as you drill it.</p>
+      </div>
+
+      <div class="dz-stages">
+        <div class="dz-stage step-1">
+          <div class="stage-top">
+            <span class="stage-dot" style="background:#9E9E9E;"></span>
+            <span class="stage-tag" style="color:#9E9E9E;">NEW</span>
+          </div>
+          <div class="stage-bottom">
+            <span class="stage-count">24</span>
+            <span class="stage-label">just filed</span>
+          </div>
+        </div>
+        <div class="dz-stage step-2">
+          <div class="stage-top">
+            <span class="stage-dot" style="background:#2196F3;"></span>
+            <span class="stage-tag" style="color:#2196F3;">TRAINING</span>
+          </div>
+          <div class="stage-bottom">
+            <span class="stage-count">12</span>
+            <span class="stage-label">in rotation</span>
+          </div>
+        </div>
+        <div class="dz-stage step-3">
+          <div class="stage-top">
+            <span class="stage-dot" style="background:#F59E0B;"></span>
+            <span class="stage-tag" style="color:#F59E0B;">TESTING</span>
+          </div>
+          <div class="stage-bottom">
+            <span class="stage-count">5</span>
+            <span class="stage-label">try at social</span>
+          </div>
+        </div>
+        <div class="dz-stage step-4">
+          <div class="stage-top">
+            <span class="stage-dot" style="background:#10B981;"></span>
+            <span class="stage-tag" style="color:#10B981;">MASTERED</span>
+          </div>
+          <div class="stage-bottom">
+            <span class="stage-count">8</span>
+            <span class="stage-label">locked in</span>
+          </div>
+        </div>
+      </div>
+      <div class="dz-stages-axis">──────────&nbsp;more drills · more time&nbsp;─────────→</div>
+
+      <div class="dz-practice-sessions">
+        Group moves into focused sessions —
+        <span class="dj-pill solo">Solo</span>
+        <span class="dj-pill group">Group</span>
+        <span class="dj-pill social">Social</span>
+        <span class="dj-pill class">Class</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== §04 Feedback ============== -->
+  <section class="dz-section" id="feedback" style="background:var(--gold-light);">
+    <div class="dz-section-inner">
+      <div class="dz-section-head centered">
+        <div class="dz-chapter dark"><span class="num">03</span><span class="label">Feedback</span></div>
+        <h2 class="dz-h2-feedback">Better than a group chat.</h2>
+        <p class="dz-sub dz-sub-feedback">
+          Submit privately. Notes at
+          <span class="dj-ts">0:12</span>
+          <span class="dj-ts gold">0:34</span>
+          <span class="dj-ts">0:51</span>
+          — not at the end.
+        </p>
+      </div>
+
+      <div class="dz-feedback-grid">
+        <div class="dz-stamped-card dz-feedback-card bad">
+          <div class="head">The group-chat way</div>
+          <div class="body">
+            <div class="line">"Hey class, drop your videos here 👇"</div>
+            <div class="line">"looking great everyone!! 🔥"</div>
+            <div class="line">"@maria nice 🙌"</div>
+            <div class="meta-line">— 47 unread, nothing actionable</div>
+          </div>
+        </div>
+
+        <div class="dz-stamped-card dz-feedback-card good">
+          <div class="head">The dancejournal way</div>
+          <div class="body">
+            <div class="stamp-line">FROM ALEX (TEACHER) · TUE</div>
+            <div class="note-line"><span class="dj-ts">00:12</span><span>start the prep earlier — you're rushing the cross</span></div>
+            <div class="note-line"><span class="dj-ts gold">00:34</span><span>this is the one ✓ keep this exact frame</span></div>
+            <div class="note-line"><span class="dj-ts">00:51</span><span>chest stays over the right foot, not centered</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dz-schools-nod">
+        Run a school? <a href="support.html">Talk to us →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Final CTA ============== -->
+  <section class="dz-final" id="download">
+    <span class="dj-eyebrow">Bachata · Salsa · Kizomba · WCS</span>
+    <h2>Build your<br><span class="gold-underline">dance notebook.</span></h2>
+    <p class="sub">Free. No account needed to start. Works offline.</p>
+    <div class="ctas">
+      <a href="https://apps.apple.com/app/id6751278168" target="_blank" rel="noopener" class="dj-storebadge">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.05 12.04c-.03-2.99 2.45-4.43 2.56-4.5-1.4-2.04-3.57-2.32-4.34-2.36-1.85-.19-3.61 1.09-4.55 1.09-.95 0-2.39-1.06-3.93-1.03-2.02.03-3.88 1.18-4.92 2.98-2.1 3.64-.54 9.02 1.51 11.97 1.01 1.44 2.2 3.06 3.76 3 1.52-.06 2.09-.98 3.93-.98 1.83 0 2.36.98 3.96.95 1.64-.03 2.67-1.46 3.66-2.91 1.16-1.67 1.63-3.3 1.65-3.39-.04-.02-3.17-1.21-3.2-4.82zM14.07 4.27c.83-1 1.39-2.4 1.24-3.79-1.2.05-2.65.8-3.51 1.81-.77.89-1.45 2.31-1.27 3.67 1.33.11 2.7-.68 3.54-1.69z"/>
+        </svg>
+        <span class="dj-sb-text">
+          <span class="dj-sb-small">Download on the</span>
+          <span class="dj-sb-big">App Store</span>
+        </span>
+      </a>
+      <a href="https://play.google.com/apps/testing/app.dancejournal.dancenotes" target="_blank" rel="noopener" class="dj-storebadge">
+        <svg viewBox="0 0 24 24">
+          <defs>
+            <linearGradient id="ps-a2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00D4FF"/><stop offset="1" stop-color="#0080FF"/></linearGradient>
+            <linearGradient id="ps-b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD200"/><stop offset="1" stop-color="#FFA000"/></linearGradient>
+            <linearGradient id="ps-c2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5252"/><stop offset="1" stop-color="#D50000"/></linearGradient>
+            <linearGradient id="ps-d2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00C853"/><stop offset="1" stop-color="#00A040"/></linearGradient>
+          </defs>
+          <path fill="url(#ps-a2)" d="M3.6 1.7c-.4.3-.6.8-.6 1.4v17.8c0 .6.2 1.1.6 1.4l9.6-9.6z"/>
+          <path fill="url(#ps-b2)" d="M16.8 15.4l-3.6-3.6 3.6-3.6 4.4 2.5c1.1.6 1.1 2.2 0 2.8z"/>
+          <path fill="url(#ps-c2)" d="M13.2 11.8L3.6 1.7c.5-.4 1.2-.4 1.9 0l11.3 6.5z"/>
+          <path fill="url(#ps-d2)" d="M13.2 11.8l3.6 3.6L5.5 21.9c-.7.4-1.4.4-1.9 0z"/>
+        </svg>
+        <span class="dj-sb-text">
+          <span class="dj-sb-small">Get it on</span>
+          <span class="dj-sb-big">Google Play</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============== Footer ============== -->
+  <footer class="dz-footer">
+    <div>
+      <a class="dj-wordmark" href="./">
+        <span class="dj-mark dj-mark-img">
+          <img src="assets/icons/app-icon.png" alt="" width="36" height="36" loading="lazy">
+        </span>
+        <span class="dj-word">dancejournal</span>
+      </a>
+      <div class="blurb">A notebook for partner dancers. Made by a dancer, in their kitchen.</div>
+    </div>
+    <div class="columns">
+      <div class="col">
+        <div class="col-title">Product</div>
+        <a href="#download">iOS</a>
+        <a href="#download">Android</a>
+        <a href="#compare">Features</a>
+      </div>
+      <div class="col">
+        <div class="col-title">Schools</div>
+        <a href="support.html">Get in touch</a>
+      </div>
+      <div class="col">
+        <div class="col-title">Legal</div>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="support.html">Support</a>
+        <a href="delete-account.html">Delete account</a>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© 2026 dancejournal.app</span>
+      <span>Bachata · Salsa · Kizomba · WCS</span>
+    </div>
+  </footer>
+
+  <script src="assets/landing.js?v=8" defer></script>
+</body>
 </html>
