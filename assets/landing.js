@@ -126,12 +126,6 @@
         totalEl.textContent = fmt(duration);
       }
     });
-    // Manual loop within the capped window.
-    video.addEventListener('timeupdate', function () {
-      if (!dragging && video.currentTime >= duration - 0.05) {
-        try { video.currentTime = 0; } catch (_) {}
-      }
-    });
     video.addEventListener('play',  function () { setPlayIcon(true); });
     video.addEventListener('pause', function () { setPlayIcon(false); });
 
@@ -143,22 +137,17 @@
     fwdBtn .addEventListener('click', function () { seek(video.currentTime + 5); });
 
     // Scrub bar drag — track cursor visually every move, throttle the actual
-    // seek so iOS Safari doesn't choke on rapid currentTime writes.
+    // seek so iOS Safari doesn't choke on rapid currentTime writes. Window
+    // move/end listeners attach ONLY while dragging so a global non-passive
+    // touchmove doesn't interfere with taps on buttons elsewhere in the player.
     var pendingSeekRaf = 0;
     function commitSeek() {
       pendingSeekRaf = 0;
       if (dragTime != null) seek(dragTime);
     }
     function onMove(e) {
-      if (!dragging) return;
       dragTime = timeFromEvent(e);
       if (!pendingSeekRaf) pendingSeekRaf = requestAnimationFrame(commitSeek);
-      if (e.cancelable) e.preventDefault();
-    }
-    function onDown(e) {
-      dragging = true;
-      dragTime = timeFromEvent(e);
-      seek(dragTime);
       if (e.cancelable) e.preventDefault();
     }
     function onUp() {
@@ -166,13 +155,25 @@
       dragging = false;
       if (dragTime != null) seek(dragTime);
       dragTime = null;
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup',   onUp);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend',  onUp);
+      window.removeEventListener('touchcancel', onUp);
+    }
+    function onDown(e) {
+      dragging = true;
+      dragTime = timeFromEvent(e);
+      seek(dragTime);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup',   onUp);
+      window.addEventListener('touchmove', onMove, { passive: false });
+      window.addEventListener('touchend',  onUp);
+      window.addEventListener('touchcancel', onUp);
+      if (e.cancelable) e.preventDefault();
     }
     bar.addEventListener('mousedown',  onDown);
     bar.addEventListener('touchstart', onDown, { passive: false });
-    window.addEventListener('mouseup',   onUp);
-    window.addEventListener('touchend',  onUp);
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('touchmove', onMove, { passive: false });
 
     // Continuous render loop — keeps the playhead smooth between the sparse
     // timeupdate events the browser fires.
