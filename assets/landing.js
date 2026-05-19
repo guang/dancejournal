@@ -6,7 +6,6 @@
   var NOTES = [
     { t: 3,  text: 'small step back on the 1, not the 5',          gold: false },
     { t: 8,  text: 'commit the body roll BEFORE the hand turn',    gold: true  },
-    { t: 13, text: 'lower the frame — shoulders are creeping up',  gold: false },
     { t: 17, text: 'chest stays over the right foot',              gold: false },
   ];
 
