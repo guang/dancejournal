@@ -8,7 +8,7 @@
   <meta property="og:title" content="Dance Journal">
   <meta property="og:description" content="A journal for the moves you're learning. Save clips, time-stamp notes, drill until it sticks.">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=16">
+  <link rel="stylesheet" href="assets/landing.css?v=20">
 </head>
 <body>
 
@@ -123,11 +123,17 @@
     </div>
   </section>
 
-  <!-- ============== Feedback (phone-left, text-right) ============== -->
-  <section class="dz-section" id="feedback" style="background:var(--gold-light);">
-    <div class="dz-section-inner">
-      <div class="dz-split text-right">
-        <div class="dz-split-visual">
+  <!-- ============== Features (staggered grid: Feedback / Compare / Practice) ============== -->
+  <section class="dz-features">
+    <div class="dz-features-inner">
+
+      <!-- Feedback -->
+      <article class="dz-feature" id="feedback">
+        <header class="dz-feature-head">
+          <h2>Real notes.<br>Pinned to the second.</h2>
+          <p class="dz-sub">Submit a clip privately. Your teacher's notes come back pinned to the exact moments that matter — not "looking great 🔥" at the end of class.</p>
+        </header>
+        <div class="dz-feature-card gold">
           <div class="dz-phone-wrap">
             <div class="dj-phone" style="width:300px;height:580px;">
               <div class="dj-phone-notch"></div>
@@ -146,23 +152,15 @@
             </div>
           </div>
         </div>
-        <div class="dz-split-text">
-          <h2>Real notes.<br>Pinned to the second.</h2>
-          <p class="dz-sub">Submit a clip privately. Your teacher's notes come back pinned to the exact moments that matter — not "looking great 🔥" at the end of class.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+      </article>
 
-  <!-- ============== Compare (text-left, phone-right, dark) ============== -->
-  <section class="dz-section dark" id="compare">
-    <div class="dz-section-inner">
-      <div class="dz-split">
-        <div class="dz-split-text">
+      <!-- Compare -->
+      <article class="dz-feature" id="compare">
+        <header class="dz-feature-head">
           <h2>See exactly<br>what to fix.</h2>
           <p class="dz-sub">Your run, next to the reference. Spot what's off in the first play.</p>
-        </div>
-        <div class="dz-split-visual">
+        </header>
+        <div class="dz-feature-card dark">
           <div class="dz-phone-wrap dz-compare-wrap">
             <div class="dj-phone" style="width:300px;height:580px;">
               <div class="dj-phone-notch"></div>
@@ -178,15 +176,15 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
+      </article>
 
-  <!-- ============== Progress (phone-left, text-right + supporting detail) ============== -->
-  <section class="dz-section" id="practice">
-    <div class="dz-section-inner">
-      <div class="dz-split text-right">
-        <div class="dz-split-visual">
+      <!-- Practice -->
+      <article class="dz-feature" id="practice">
+        <header class="dz-feature-head">
+          <h2>Every move<br>knows where it sits.</h2>
+          <p class="dz-sub">Your library, grouped by progress. From the moves you just filed to the ones you've locked in.</p>
+        </header>
+        <div class="dz-feature-card light">
           <div class="dz-phone-wrap">
             <div class="dj-phone" style="width:300px;height:580px;">
               <div class="dj-phone-notch"></div>
@@ -198,58 +196,52 @@
               <span class="dz-chip gold">49 moves · 8 mastered</span>
             </div>
           </div>
+          <div class="dz-stages">
+            <div class="dz-stage">
+              <div class="stage-top">
+                <span class="stage-dot" style="background:#9E9E9E;"></span>
+                <span class="stage-tag" style="color:#9E9E9E;">NEW</span>
+              </div>
+              <div class="stage-bottom">
+                <span class="stage-count">24</span>
+                <span class="stage-label">just filed</span>
+              </div>
+            </div>
+            <div class="dz-stage">
+              <div class="stage-top">
+                <span class="stage-dot" style="background:#2196F3;"></span>
+                <span class="stage-tag" style="color:#2196F3;">TRAINING</span>
+              </div>
+              <div class="stage-bottom">
+                <span class="stage-count">12</span>
+                <span class="stage-label">in rotation</span>
+              </div>
+            </div>
+            <div class="dz-stage">
+              <div class="stage-top">
+                <span class="stage-dot" style="background:#F59E0B;"></span>
+                <span class="stage-tag" style="color:#F59E0B;">TESTING</span>
+              </div>
+              <div class="stage-bottom">
+                <span class="stage-count">5</span>
+                <span class="stage-label">try at social</span>
+              </div>
+            </div>
+            <div class="dz-stage">
+              <div class="stage-top">
+                <span class="stage-dot" style="background:#10B981;"></span>
+                <span class="stage-tag" style="color:#10B981;">MASTERED</span>
+              </div>
+              <div class="stage-bottom">
+                <span class="stage-count">8</span>
+                <span class="stage-label">locked in</span>
+              </div>
+            </div>
+          </div>
+          <div class="dz-stages-axis">──────────&nbsp;more drills · more time&nbsp;─────────→</div>
         </div>
-        <div class="dz-split-text">
-          <h2>Every move<br>knows where it sits.</h2>
-          <p class="dz-sub">Your library, grouped by progress. From the moves you just filed to the ones you've locked in.</p>
-        </div>
-      </div>
+      </article>
 
-      <div class="dz-section-detail">
-        <div class="dz-stages">
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#9E9E9E;"></span>
-              <span class="stage-tag" style="color:#9E9E9E;">NEW</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">24</span>
-              <span class="stage-label">just filed</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#2196F3;"></span>
-              <span class="stage-tag" style="color:#2196F3;">TRAINING</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">12</span>
-              <span class="stage-label">in rotation</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#F59E0B;"></span>
-              <span class="stage-tag" style="color:#F59E0B;">TESTING</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">5</span>
-              <span class="stage-label">try at social</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#10B981;"></span>
-              <span class="stage-tag" style="color:#10B981;">MASTERED</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">8</span>
-              <span class="stage-label">locked in</span>
-            </div>
-          </div>
-        </div>
-        <div class="dz-stages-axis">──────────&nbsp;more drills · more time&nbsp;─────────→</div>
-      </div>
     </div>
   </section>
 

@@ -262,38 +262,56 @@ a { color: inherit; }
 }
 .dz-hero-hint .arr { animation: dz-bob 1.6s ease-in-out infinite; }
 
-/* Section */
-.dz-section {
-  padding: 96px 64px;
+/* Features — staggered 2-col grid on desktop, stacks on narrow */
+.dz-features {
+  background: var(--paper);
+  padding: 120px 64px;
   border-bottom: 2px solid var(--ink);
   position: relative;
 }
-.dz-section.cream { background: var(--gold-light); }
-.dz-section.dark { background: var(--ink); color: #fff; }
-.dz-section.dark h2 { color: #fff; }
-.dz-section.dark .dz-sub { color: rgba(255,255,255,.7); }
-.dz-section-inner { max-width: 1280px; margin: 0 auto; }
-.dz-section h2 {
-  font-size: 56px; line-height: 1.02; font-weight: 800;
-  letter-spacing: -1.2px; margin: 0;
+.dz-features-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  column-gap: 64px; row-gap: 96px;
+  align-items: start;
 }
+/* Wisprflow-style stagger: cards 1 & 3 stack in the left column;
+   card 2 sits in the right column, centered vertically between them */
+.dz-features-inner > .dz-feature:nth-child(1) { grid-column: 1; grid-row: 1; }
+.dz-features-inner > .dz-feature:nth-child(3) { grid-column: 1; grid-row: 2; }
+.dz-features-inner > .dz-feature:nth-child(2) {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.dz-feature       { display: flex; flex-direction: column; gap: 32px; }
+.dz-feature-head  { text-align: center; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+.dz-feature-head h2 {
+  font-size: 44px; line-height: 1.05; font-weight: 800;
+  letter-spacing: -1px; margin: 0;
+}
+.dz-feature-head .dz-sub { margin: 0 auto; }
+
+.dz-feature-card {
+  border: 2px solid var(--ink);
+  border-radius: 24px;
+  box-shadow: 6px 6px 0 var(--ink);
+  padding: 56px 32px;
+  display: flex; flex-direction: column; align-items: center; gap: 40px;
+}
+.dz-feature-card.dark  { background: var(--ink);        color: #fff; }
+.dz-feature-card.light { background: var(--paper);      color: var(--ink); }
+.dz-feature-card.gold  { background: var(--gold-light); color: var(--ink); }
+
+/* Inside a half-width feature card, lay stages out 2x2 instead of 4-across */
+.dz-feature-card .dz-stages { gap: 14px; max-width: 100%; }
+.dz-feature-card .dz-stage  { width: calc(50% - 7px); }
+
 .dz-sub {
   font-size: 18px; font-weight: 500; color: var(--secondary);
   line-height: 1.5; max-width: 540px; margin: 0;
 }
-/* Two-column section split (Feedback / Compare / Progress) */
-.dz-split {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 64px; align-items: center;
-  max-width: 1200px; margin: 0 auto;
-}
-.dz-split-text   { display: flex; flex-direction: column; gap: 22px; }
-.dz-split-visual { display: flex; align-items: center; justify-content: center; }
-.dz-split.text-right .dz-split-text   { order: 2; }
-.dz-split.text-right .dz-split-visual { order: 1; }
-
-/* Supporting-detail row below a .dz-split (e.g. stage staircase under Progress hero) */
-.dz-section-detail { margin-top: 80px; }
 
 /* Stamped card */
 .dz-stamped-card {
@@ -612,8 +630,14 @@ a { color: inherit; }
   .dz-hero h1 { font-size: 64px; letter-spacing: -1.2px; }
   .dz-hero { padding: 56px 40px 64px; }
   .dz-nav { padding: 20px 40px; }
-  .dz-section { padding: 80px 40px; }
-  .dz-section h2 { font-size: 44px; }
+  .dz-features { padding: 96px 40px; }
+  .dz-features-inner { grid-template-columns: 1fr; column-gap: 0; row-gap: 64px; }
+  .dz-features-inner > .dz-feature:nth-child(1),
+  .dz-features-inner > .dz-feature:nth-child(2),
+  .dz-features-inner > .dz-feature:nth-child(3) {
+    grid-column: 1; grid-row: auto; align-self: auto;
+  }
+  .dz-feature-head h2 { font-size: 40px; }
   .dz-final { padding: 96px 40px; }
   .dz-final h2 { font-size: 52px; }
   .dz-footer { padding: 28px 40px; }
@@ -621,10 +645,6 @@ a { color: inherit; }
   .dz-stages { gap: 12px; }
   .dz-stage { width: 150px; padding: 16px; }
   .dz-stage .stage-count { font-size: 40px; }
-
-  .dz-split { grid-template-columns: 1fr; gap: 48px; }
-  .dz-split.text-right .dz-split-text,
-  .dz-split.text-right .dz-split-visual { order: 0; }
 }
 
 /* Stack the hero earlier than the mobile breakpoint so it doesn't squash */
@@ -648,8 +668,9 @@ a { color: inherit; }
   .dz-compare-chip-tl { top: 20px; left: -8px; }
   .dz-compare-chip-br { bottom: 40px; right: -16px; }
 
-  .dz-section { padding: 64px 20px; }
-  .dz-section h2 { font-size: 36px; letter-spacing: -.8px; }
+  .dz-features { padding: 64px 20px; }
+  .dz-feature-head h2 { font-size: 36px; letter-spacing: -.8px; }
+  .dz-feature-card { padding: 40px 20px; gap: 32px; }
 
   .dz-phone-stage { padding: 20px 0; }
 
@@ -658,7 +679,6 @@ a { color: inherit; }
 
   .dz-stage { width: 140px; padding: 16px; }
   .dz-stage .stage-count { font-size: 36px; }
-  .dz-section-detail { margin-top: 56px; }
 
   .dz-final { padding: 80px 20px; }
   .dz-final h2 { font-size: 36px; letter-spacing: -.8px; }
