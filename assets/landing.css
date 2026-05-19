@@ -11,10 +11,6 @@
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #F87171;
-  --practice-group: #1E88E5;
-  --practice-social: #8E24AA;
-  --practice-solo: #43A047;
-  --practice-class: #FB8C00;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -165,23 +161,6 @@ a { color: inherit; }
   border-radius: 12px;
   z-index: 2;
 }
-
-/* Practice-type pills */
-.dj-pill {
-  display: inline-block;
-  padding: 5px 10px;
-  border: 2px solid var(--ink);
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  color: #fff;
-}
-.dj-pill.solo   { background: var(--practice-solo); }
-.dj-pill.group  { background: var(--practice-group); }
-.dj-pill.social { background: var(--practice-social); }
-.dj-pill.class  { background: var(--practice-class); }
 
 /* Eyebrow */
 .dj-eyebrow {
@@ -578,33 +557,6 @@ a { color: inherit; }
   font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
   color: var(--muted);
 }
-.dz-practice-sessions {
-  text-align: center; margin-top: 36px;
-  font-size: 14px; font-weight: 500; color: var(--secondary);
-}
-.dz-practice-sessions .dj-pill { vertical-align: middle; margin-right: 4px; }
-
-/* Compare: numbered bullets next to the phone (works on dark background) */
-.dz-compare-bullets { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
-.dz-list-item {
-  display: flex; gap: 14px; align-items: flex-start;
-  padding: 14px 0;
-  border-bottom: 1.5px solid rgba(255,255,255,.15);
-}
-.dz-list-item:last-child { border-bottom: none; }
-.dz-list-num {
-  width: 32px; height: 32px;
-  border: 2px solid var(--ink);
-  border-radius: 10px;
-  background: var(--gold);
-  display: inline-flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 14px;
-  flex-shrink: 0;
-}
-.dz-list-text { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.dz-list-text > strong { font-size: 18px; font-weight: 700; line-height: 1.2; color: #fff; }
-.dz-list-text > span   { font-size: 14px; font-weight: 500; line-height: 1.45; color: rgba(255,255,255,.7); }
-
 /* Feedback: floating timestamped note overlaid on the phone */
 .dz-feedback-note {
   background: var(--paper);
