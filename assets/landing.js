@@ -51,6 +51,7 @@
       var row = document.createElement('button');
       row.type = 'button';
       row.className = 'dz-app-note';
+      row.setAttribute('aria-label', 'Jump to ' + fmt(n.t) + ' — ' + n.text);
       var ts = document.createElement('span');
       ts.className = 'dj-ts' + (n.gold ? ' gold' : '');
       ts.textContent = fmt(n.t);
@@ -185,6 +186,14 @@
     // Initial state.
     setPlayIcon(false);
     totalEl.textContent = fmt(duration);
+
+    // One-time teach pulse on the notes to hint they're tappable. CSS animates
+    // the ring; we just toggle the class on, then off after ~6s so the page
+    // doesn't keep flashing.
+    noteEls.forEach(function (el) { el.classList.add('dz-teach'); });
+    setTimeout(function () {
+      noteEls.forEach(function (el) { el.classList.remove('dz-teach'); });
+    }, 6000);
 
     // Try muted autoplay; fall back silently if the browser blocks it.
     var p = video.play();
