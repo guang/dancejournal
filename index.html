@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <title>Dance Journal — Make every clip you save actually stick</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="The bottleneck isn't class. It's the motivation to practice, and feedback from people you trust. Dance Journal is the app we built to fix that — for partner dancers (Bachata, Salsa, Kizomba).">
-  <meta property="og:title" content="Dance Journal — The bottleneck isn't class.">
+  <meta name="description" content="The bottleneck to your dance progress isn't classes. It's the motivation to practice, and feedback from people you trust. Dance Journal is the app we built to fix that — for partner dancers (Bachata, Salsa, Kizomba).">
+  <meta property="og:title" content="Dance Journal — The bottleneck to your dance progress isn't classes.">
   <meta property="og:description" content="It's the motivation to practice, and feedback from people you trust. We built an app to fix this.">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=28">
+  <link rel="stylesheet" href="assets/landing.css?v=35">
 </head>
 <body>
 
@@ -20,14 +20,14 @@
       </span>
       <span class="dj-word">Dance Journal</span>
     </a>
-    <a href="#download" class="dj-btn dz-nav-cta">Get it now</a>
+    <a href="#download" class="dj-btn dz-nav-cta">Try the app now</a>
   </nav>
 
   <!-- ============== Hero ============== -->
   <section class="dz-hero">
     <div class="dz-hero-inner">
-      <h1>The bottleneck isn't class.</h1>
-      <p class="dz-hero-sub">It's the motivation to practice, and feedback from people you trust.</p>
+      <h1>The bottleneck to your dance progress isn't classes.</h1>
+      <p class="dz-hero-sub">It's the clips you saved Thursday and forgot by Friday, and teacher feedback that's mostly fire emojis.</p>
     </div>
   </section>
 
@@ -49,6 +49,19 @@
     </div>
   </section>
 
+  <!-- ============== Tie-together — frames the three features as one cohesive answer ============== -->
+  <section class="dz-tie">
+    <div class="dz-tie-inner">
+      <h2>The three things that turn watching into practice.</h2>
+      <ul class="dz-tie-chips">
+        <li>① Feedback with timestamp</li>
+        <li>② Compare side by side</li>
+        <li>③ Grouped by mastery</li>
+      </ul>
+      <div class="dz-tie-chevron" aria-hidden="true">↓</div>
+    </div>
+  </section>
+
   <!-- ============== Feedback (phone-left, text-right) ============== -->
   <section class="dz-section" id="feedback" style="background:var(--gold-light);">
     <div class="dz-section-inner">
@@ -65,8 +78,8 @@
                 </header>
                 <div class="dz-app-video">
                   <video data-notebook-video
-                         src="assets/video/notebook-demo.mp4"
-                         poster="assets/video/notebook-demo-poster.jpg"
+                         src="assets/video/notebook-demo.mp4?v=2"
+                         poster="assets/video/notebook-demo-poster.jpg?v=2"
                          muted playsinline loop preload="metadata"
                          aria-label="Dance clip demo"></video>
                   <div class="dz-app-caption" data-notebook-caption hidden>
@@ -82,7 +95,7 @@
                   </div>
                   <div class="dz-app-times">
                     <span data-notebook-cur>00:00</span>
-                    <span data-notebook-total>00:20</span>
+                    <span data-notebook-total>00:12</span>
                   </div>
                 </div>
                 <div class="dz-app-controls">
@@ -107,6 +120,7 @@
           </div>
         </div>
         <div class="dz-split-text">
+          <span class="dz-eyebrow">① Feedback with timestamp</span>
           <h2><span class="nowrap">Get feedback at <span class="dj-ts gold">0:34</span>,</span><br><span class="nowrap">not "somewhere in there."</span></h2>
           <p class="dz-sub">Privately share a practice clip with your teacher. Notes come back pinned to the frame — the kind nobody types in a group chat.</p>
         </div>
@@ -119,12 +133,13 @@
     <div class="dz-section-inner">
       <div class="dz-split">
         <div class="dz-split-text">
-          <h2>Compare. The fix shows itself.</h2>
-          <p class="dz-sub">Lock your clip to the tutorial, beat for beat. The fix is obvious in one play.</p>
+          <span class="dz-eyebrow">② Compare side by side</span>
+          <h2>See the gap, not "something feels off."</h2>
+          <p class="dz-sub">Lock your clip to the tutorial — they play in sync, beat for beat.</p>
         </div>
         <div class="dz-split-visual">
           <div class="dz-phone-wrap dz-compare-wrap">
-            <div class="dj-phone" style="width:300px;height:580px;">
+            <div class="dj-phone" style="width:300px;height:640px;">
               <div class="dj-phone-notch"></div>
               <div class="dj-phone-screen">
                 <img src="assets/shots/compare-screen.png" alt="Dance Journal compare screen">
@@ -148,7 +163,7 @@
       <div class="dz-split text-right">
         <div class="dz-split-visual">
           <div class="dz-phone-wrap">
-            <div class="dj-phone" style="width:300px;height:580px;">
+            <div class="dj-phone" style="width:300px;height:640px;">
               <div class="dj-phone-notch"></div>
               <div class="dj-phone-screen">
                 <img src="assets/shots/progress-screen.png" alt="Dance Journal library grouped by progress">
@@ -160,8 +175,9 @@
           </div>
         </div>
         <div class="dz-split-text">
-          <h2>Practice the 5 you're working on, not the 200 you've saved.</h2>
-          <p class="dz-sub">Every clip you save gets a stage — new, training, testing, mastered. Your practice list for tonight is one tap away.</p>
+          <span class="dz-eyebrow">③ Grouped by mastery</span>
+          <h2>Practice starts in one tap, not ten minutes of scrolling.</h2>
+          <p class="dz-sub">Clips are grouped by your progress — new → training → testing → mastered.</p>
         </div>
       </div>
 
@@ -208,7 +224,6 @@
             </div>
           </div>
         </div>
-        <div class="dz-stages-axis">──────────&nbsp;more drills · more time&nbsp;─────────→</div>
       </div>
     </div>
   </section>
@@ -216,7 +231,6 @@
   <!-- ============== Final CTA ============== -->
   <section class="dz-final" id="download">
     <h2><span class="gold-underline">Start your dance journal.</span></h2>
-    <p class="dz-final-sub">Make the next video stick.</p>
     <div class="ctas">
       <a href="https://apps.apple.com/app/id6751278168" target="_blank" rel="noopener" class="dj-storebadge">
         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -259,6 +273,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=10" defer></script>
+  <script src="assets/landing.js?v=14" defer></script>
 </body>
 </html>

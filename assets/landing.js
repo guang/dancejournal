@@ -1,16 +1,15 @@
 (function () {
   'use strict';
 
-  // Placeholder notes — swap with real ones once we have them.
   // { t: seconds, text, gold? }
   var NOTES = [
-    { t: 3,  text: 'small step back on the 1, not the 5',          gold: false },
-    { t: 8,  text: 'commit the body roll BEFORE the hand turn',    gold: true  },
-    { t: 17, text: 'chest stays over the right foot',              gold: false },
+    { t: 6,  text: 'hands should be higher — block shoulderblades, not ribcage', gold: false },
+    { t: 8,  text: 'missing the twisting motion',                                gold: false },
+    { t: 10, text: 'keep legs straight, only arms go down',                      gold: false },
   ];
 
   // Loop window (seconds). The source video may be longer; we cap the demo.
-  var LOOP_END = 20;
+  var LOOP_END = 12;
 
   // How long a note's caption + active highlight sticks after its timestamp.
   var ACTIVE_WINDOW = 4;
@@ -44,6 +43,10 @@
     // While dragging, render this position instead of video.currentTime so
     // the playhead tracks the cursor even if the video can't seek that fast.
     var dragTime = null;
+    // While the browser is processing a seek, video.currentTime can briefly
+    // report 0/NaN and flash the playhead to the start. Track the target
+    // until the 'seeked' event confirms the browser landed there.
+    var seekingTo = null;
 
     // Build note rows + scrub-bar ticks.
     NOTES.forEach(function (n) {
@@ -86,7 +89,8 @@
     }
 
     function render() {
-      var t = (dragTime != null) ? dragTime : Math.min(video.currentTime || 0, duration);
+      var rawT = (seekingTo != null) ? seekingTo : (video.currentTime || 0);
+      var t = (dragTime != null) ? dragTime : Math.min(rawT, duration);
       var pct = Math.min(100, Math.max(0, (t / duration) * 100));
       fill.style.width = pct + '%';
       knob.style.left  = pct + '%';
@@ -109,8 +113,10 @@
 
     function seek(t) {
       t = Math.max(0, Math.min(duration - 0.05, t));
+      seekingTo = t;
       try { video.currentTime = t; } catch (_) {}
     }
+    video.addEventListener('seeked', function () { seekingTo = null; });
 
     function timeFromEvent(e) {
       var rect = bar.getBoundingClientRect();
