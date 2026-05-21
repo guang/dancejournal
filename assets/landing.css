@@ -1,0 +1,808 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #FAFAFA;
+  --paper: #FFFFFF;
+  --ink: #000000;
+  --secondary: #4A4A4A;
+  --muted: #B1A7A6;
+  --gold: #E3A018;
+  --gold-light: #FCEDC4;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #F87171;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; }
+
+/* ============== Shared primitives ============== */
+
+.dj-wordmark {
+  display: inline-flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.dj-wordmark .dj-mark {
+  width: 36px; height: 36px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.dj-wordmark .dj-mark svg { width: 22px; height: 22px; }
+.dj-wordmark .dj-mark.dj-mark-img {
+  background: var(--paper);
+  padding: 0;
+  overflow: hidden;
+}
+.dj-wordmark .dj-mark-img img {
+  width: 100%; height: 100%;
+  display: block;
+  object-fit: cover;
+}
+/* Icon-only wordmark (used in nav — page title already says "Dance Journal") */
+.dj-wordmark-iconly .dj-mark { width: 48px; height: 48px; border-radius: 12px; }
+.dj-wordmark .dj-word {
+  font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+  color: var(--ink); line-height: 1;
+}
+/* Nav-specific wordmark sizing */
+.dz-nav-wm .dj-mark { width: 40px; height: 40px; border-radius: 11px; }
+.dz-nav-wm .dj-word { font-size: 19px; }
+.dj-wordmark.on-dark .dj-word { color: #fff; }
+.dj-wordmark.on-dark .dj-mark { background: #fff; color: var(--gold); }
+
+/* Stamped button */
+.dj-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 22px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; user-select: none;
+  background: var(--gold); color: #fff;
+  transition: transform 120ms ease, background 120ms ease;
+  text-decoration: none;
+}
+.dj-btn:hover  { background: #C98A12; }
+.dj-btn:active { transform: translateY(1px); }
+
+/* Store badges */
+.dj-storebadge {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 18px 10px 14px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: #000; color: #fff;
+  text-decoration: none;
+  transition: transform 120ms ease;
+  min-width: 168px;
+}
+.dj-storebadge.has-beta { padding-right: 22px; }
+.dj-sb-beta {
+  position: absolute;
+  top: -8px; right: -8px;
+  padding: 2px 7px;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .4px; text-transform: uppercase;
+  color: var(--ink);
+  background: var(--gold);
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  line-height: 1.3;
+  pointer-events: none;
+}
+.dj-storebadge:hover  { transform: translateY(-1px); }
+.dj-storebadge:active { transform: translateY(1px); }
+.dj-storebadge:focus-visible,
+.dj-btn:focus-visible,
+.dz-app-ctrl:focus-visible,
+.dz-chat-msg:focus-visible,
+.dz-chat-send:focus-visible,
+.dz-chat-input:focus-visible,
+.dz-nav-links a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.dj-storebadge svg { width: 26px; height: 26px; flex-shrink: 0; }
+.dj-storebadge .dj-sb-text { display: flex; flex-direction: column; line-height: 1.1; }
+.dj-storebadge .dj-sb-small { font-size: 10px; font-weight: 500; opacity: .85; letter-spacing: .3px; text-transform: uppercase; }
+.dj-storebadge .dj-sb-big { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+
+/* Timestamp chip — the signature element */
+.dj-ts {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: #000; color: #fff;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .2px; line-height: 1;
+}
+.dj-ts.gold { background: var(--gold); color: #fff; }
+.dj-ts.lg { font-size: 16px; padding: 6px 12px; border-radius: 8px; }
+
+/* Phone frame */
+.dj-phone {
+  position: relative;
+  background: #000;
+  border-radius: 36px;
+  padding: 10px;
+  border: 2px solid var(--ink);
+}
+/* On dark sections, the black bezel + black border vanish against the bg —
+   lighten the bezel and add a contrasting edge so the device silhouette reads. */
+.dz-section.dark .dj-phone {
+  background: #1c1c1c;
+  border-color: rgba(255, 255, 255, .3);
+}
+.dj-phone-screen {
+  border-radius: 28px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+  width: 100%; height: 100%;
+}
+.dj-phone-screen img {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+.dj-phone-notch {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 70px; height: 18px;
+  background: #000;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+/* ============== Layout ============== */
+
+.dz-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 64px;
+  border-bottom: 2px solid var(--ink);
+  background: var(--bg);
+}
+.dz-nav-links { display: flex; gap: 28px; font-size: 14px; font-weight: 700; }
+.dz-nav-links a { color: var(--ink); text-decoration: none; }
+.dz-nav-links a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.dz-nav .dj-btn { padding: 10px 18px; font-size: 14px; }
+
+/* Hero */
+.dz-hero {
+  position: relative;
+  padding: 96px 64px 104px;
+  border-bottom: 2px solid var(--ink);
+  background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  background-position: 0 0;
+  background-color: var(--bg);
+}
+.dz-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(250,250,250,.95) 0%, rgba(250,250,250,.75) 40%, rgba(250,250,250,.7) 100%);
+  pointer-events: none;
+}
+.dz-hero-inner {
+  position: relative;
+  text-align: center;
+  max-width: 1040px; margin: 0 auto;
+}
+.dz-hero h1 {
+  font-size: 64px; line-height: 1.05; font-weight: 800;
+  letter-spacing: -1.6px; margin: 0;
+  text-wrap: balance;
+}
+.dz-hero-sub {
+  font-family: 'Caveat', 'Inter', cursive;
+  font-size: 42px; font-weight: 500; color: var(--ink);
+  line-height: 1.15; margin: 36px auto 0; max-width: 820px;
+  text-wrap: pretty;
+}
+
+/* Bridge section — "We built an app to fix this." + product video */
+.dz-bridge { text-align: center; }
+.dz-section.dz-bridge h2 {
+  margin: 0 auto; max-width: 880px; text-align: center;
+  font-size: 44px; letter-spacing: -.8px;
+}
+.dz-bridge-video {
+  margin: 56px auto 0;
+  display: flex; justify-content: center;
+}
+.dz-bridge-phone {
+  width: 320px;
+}
+.dz-bridge-phone .dj-phone-screen {
+  aspect-ratio: 9 / 19.5;
+}
+.dz-bridge-phone video {
+  display: block; width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+
+/* Tie-together — thin framing section between bridge and the feature trio */
+.dz-tie {
+  background: var(--bg);
+  border-bottom: 2px solid var(--ink);
+  padding: 88px 64px 96px;
+  text-align: center;
+}
+.dz-tie-inner { max-width: 820px; margin: 0 auto; }
+.dz-tie h2 {
+  font-size: 44px; font-weight: 800; line-height: 1.08;
+  letter-spacing: -1.2px; margin: 0; color: var(--ink);
+  text-wrap: balance;
+}
+.dz-tie-chips {
+  list-style: none; padding: 0;
+  margin: 32px 0 0;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 14px 28px;
+}
+.dz-tie-chips li {
+  font-size: 14px; font-weight: 800;
+  letter-spacing: 1.4px; text-transform: uppercase;
+  color: var(--gold);
+}
+.dz-tie-chevron {
+  margin-top: 28px;
+  font-size: 26px; line-height: 1;
+  color: var(--ink); opacity: .55;
+  animation: dz-bob 1.8s ease-in-out infinite;
+}
+
+/* Eyebrow label above each feature h2 — ties section back to "the three things" */
+.dz-eyebrow {
+  align-self: flex-start;
+  margin-bottom: -14px;
+  font-size: 13px; font-weight: 800;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.dz-phone-wrap { position: relative; display: inline-block; }
+.dz-float { position: absolute; }
+.dz-try-stamp {
+  top: -14px; right: -14px;
+  transform: rotate(8deg);
+  z-index: 3;
+  animation: dz-wobble 3.2s ease-in-out infinite;
+}
+@keyframes dz-wobble {
+  0%, 100% { transform: rotate(8deg) translateY(0); }
+  50%      { transform: rotate(6deg) translateY(-4px); }
+}
+
+/* Section */
+.dz-section {
+  padding: 96px 64px;
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+}
+.dz-section.cream { background: var(--gold-light); }
+.dz-section.dark { background: var(--ink); color: #fff; }
+.dz-section.dark h2 { color: #fff; }
+.dz-section.dark .dz-sub { color: rgba(255,255,255,.7); }
+.dz-section-inner { max-width: 1280px; margin: 0 auto; }
+.dz-section h2 {
+  font-size: 56px; line-height: 1.02; font-weight: 800;
+  letter-spacing: -1.2px; margin: 0;
+}
+.dz-section h2 .nowrap { white-space: nowrap; }
+/* Feedback h2 has two locked lines; trim a touch so the longer line fits the column. */
+#feedback h2 { font-size: 48px; letter-spacing: -.8px; }
+.dz-sub {
+  font-size: 18px; font-weight: 500; color: var(--secondary);
+  line-height: 1.5; max-width: 540px; margin: 0;
+}
+/* Inline timestamp chip used inside a heading — scales with the h2 */
+.dz-section h2 .dj-ts {
+  font-size: .62em;
+  padding: .12em .32em;
+  border-radius: .18em;
+  letter-spacing: 0;
+  vertical-align: .1em;
+  line-height: 1;
+}
+/* Two-column section split (Feedback / Compare / Progress) */
+.dz-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 64px; align-items: center;
+  max-width: 1200px; margin: 0 auto;
+}
+.dz-split-text   { display: flex; flex-direction: column; gap: 22px; }
+.dz-split-visual { display: flex; align-items: center; justify-content: center; }
+.dz-split.text-right .dz-split-text   { order: 2; }
+.dz-split.text-right .dz-split-visual { order: 1; }
+
+/* Supporting-detail row below a .dz-split (e.g. stage staircase under Progress hero) */
+.dz-section-detail { margin-top: 80px; }
+
+/* Stamped card */
+.dz-stamped-card {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.dz-phone-stage { position: relative; display: flex; align-items: center; justify-content: center; }
+
+/* ============== §01 In-phone video player ============== */
+.dz-notebook-stage {
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: 0;
+}
+.dz-app-phone {
+  width: min(308px, calc(100vw - 32px));
+  height: min(740px, calc(100vh - 80px));
+}
+.dz-app-phone .dj-phone-screen {
+  display: flex; flex-direction: column;
+  min-height: 0;
+}
+.dz-app-bar {
+  flex: 0 0 auto;
+  padding: 12px 14px;
+  border-bottom: 2px solid var(--ink);
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; font-weight: 800;
+  letter-spacing: -.2px;
+}
+.dz-app-bar-title { flex: 1; text-align: center; font-weight: 800; }
+.dz-app-bar-icon  { width: 22px; font-size: 18px; font-weight: 700; color: var(--secondary); }
+.dz-app-bar-icon:last-child { text-align: right; }
+.dz-app-bar-icon:first-child { text-align: left; }
+
+.dz-app-video {
+  flex: 0 0 auto;
+  position: relative;
+  background: #111;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+.dz-app-video video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #111;
+}
+.dz-app-caption {
+  position: absolute;
+  left: 10px; right: 10px; top: 10px;
+  display: flex; gap: 10px; align-items: flex-start;
+  background: rgba(255, 255, 255, .96);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 8px 10px;
+  box-shadow: 3px 3px 0 var(--ink);
+  font-size: 13px; font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3;
+  animation: dz-caption-pop .18s ease-out;
+  z-index: 2;
+}
+.dz-app-caption[hidden] { display: none; }
+.dz-app-caption .dj-ts { flex-shrink: 0; margin-top: 1px; }
+@keyframes dz-caption-pop {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.dz-app-scrubber {
+  flex: 0 0 auto;
+  padding: 12px 16px 4px;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.dz-app-scrubber .dz-scrub-bar { margin: 4px 2px 8px; }
+.dz-app-times {
+  display: flex; justify-content: space-between;
+  font-size: 10px; font-weight: 700; color: var(--secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.dz-app-controls {
+  position: absolute;
+  left: 0; right: 0; bottom: 8px;
+  display: flex; gap: 14px; justify-content: center;
+  padding: 0;
+  background: transparent;
+  z-index: 2;
+  pointer-events: none;
+}
+.dz-app-ctrl {
+  pointer-events: auto;
+  width: 32px; height: 32px;
+  border: 2px solid var(--ink);
+  background: rgba(255, 255, 255, .92);
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  padding: 0;
+  font-family: inherit;
+  transition: transform .12s ease, background .15s ease;
+}
+.dz-app-ctrl:hover  { background: var(--gold-light); }
+.dz-app-ctrl:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+.dz-app-ctrl.play   { background: var(--gold); color: #fff; width: 40px; height: 40px; }
+.dz-app-ctrl.play:hover { background: #C98A12; color: #fff; }
+
+/* Chat panel — student/teacher thread + composer */
+.dz-app-chat {
+  flex: 1 1 auto;
+  display: flex; flex-direction: column;
+  background: var(--paper);
+  min-height: 0; /* allow inner scroll area to shrink */
+}
+.dz-chat-head {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  font-size: 12px; font-weight: 700;
+  color: var(--secondary);
+  text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  letter-spacing: .2px;
+}
+.dz-chat-thread {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex; flex-direction: column; gap: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.dz-chat-msg {
+  max-width: 78%;
+  padding: 7px 10px;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--ink);
+  font-family: inherit;
+  text-align: left;
+  transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+.dz-chat-msg.from-teacher {
+  align-self: flex-start;
+  background: var(--paper);
+  display: flex; gap: 8px; align-items: flex-start;
+  cursor: pointer;
+  border-bottom-left-radius: 4px;
+}
+.dz-chat-msg.from-teacher .dj-ts { flex-shrink: 0; margin-top: 1px; }
+.dz-chat-msg.from-teacher:hover { background: var(--gold-light); }
+.dz-chat-msg.from-teacher.active {
+  background: var(--gold-light);
+  transform: translateX(4px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.dz-chat-msg.from-student {
+  align-self: flex-end;
+  background: var(--gold-light);
+  border-bottom-right-radius: 4px;
+}
+
+/* One-time teach pulse to suggest tappability */
+@keyframes dz-teach-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(227,160,24,.55); }
+  60%  { box-shadow: 0 0 0 10px rgba(227,160,24,0); }
+  100% { box-shadow: 0 0 0 0 rgba(227,160,24,0); }
+}
+.dz-chat-msg.from-teacher.dz-teach:not(.active) {
+  animation: dz-teach-pulse 1.6s ease-out 3;
+}
+
+/* Composer (bottom of chat panel) */
+.dz-chat-composer {
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px;
+  border-top: 2px solid var(--ink);
+  background: var(--bg);
+}
+.dz-chat-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 2px solid var(--ink);
+  border-radius: 100px;
+  padding: 6px 12px;
+  background: var(--paper);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  outline: none;
+  transition: box-shadow .12s ease, border-color .12s ease;
+}
+.dz-chat-input::placeholder { color: var(--secondary); }
+.dz-chat-input:focus {
+  border-color: var(--gold);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.dz-chat-send {
+  flex: 0 0 auto;
+  width: 30px; height: 30px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: #d8d8d8;
+  color: #6a6a6a;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, box-shadow .15s ease, transform .12s ease;
+  font-family: inherit;
+}
+.dz-chat-send svg { display: block; }
+.dz-chat-send[disabled] { cursor: not-allowed; }
+.dz-chat-composer.is-armed .dz-chat-send {
+  background: var(--gold);
+  color: #fff;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.dz-chat-composer.is-armed .dz-chat-send:hover { background: #C98A12; }
+.dz-chat-composer.is-armed .dz-chat-send:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* Scrub bar (also used inside the app player) */
+.dz-scrub-bar {
+  position: relative;
+  height: 8px;
+  background: var(--ink);
+  border-radius: 100px;
+  cursor: pointer;
+  margin: 14px 6px;
+}
+.dz-scrub-fill {
+  position: absolute; left: 0; top: 0; height: 100%;
+  background: var(--gold);
+  border-radius: 100px;
+}
+.dz-scrub-knob {
+  position: absolute; top: 50%; transform: translate(-50%, -50%);
+  width: 24px; height: 24px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  cursor: grab;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.dz-scrub-knob:active { cursor: grabbing; }
+.dz-scrub-tick {
+  position: absolute; top: -8px; height: 24px; width: 2.5px;
+  background: var(--ink);
+  transform: translateX(-50%);
+  border-radius: 2px;
+  opacity: .35;
+  pointer-events: none;
+}
+.dz-scrub-tick.active { background: var(--gold); opacity: 1; height: 28px; top: -10px; }
+
+.dz-scrub-hint {
+  display: flex; align-items: center; gap: 8px;
+  justify-content: center;
+  font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--secondary);
+  margin-top: 28px;
+}
+.dz-scrub-hint .arr { animation: dz-bob 1.6s ease-in-out infinite; }
+@keyframes dz-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* §01 mini callouts */
+.dz-mini-callouts { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
+.dz-mini-callouts .dz-stamped-card {
+  padding: 12px 20px; display: flex; gap: 12px; align-items: center;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.dz-mini-callouts .num {
+  width: 32px; height: 32px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: var(--gold);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 14px;
+  flex-shrink: 0;
+}
+.dz-mini-callouts strong { font-size: 16px; font-weight: 700; }
+
+/* §02 compare floating chips */
+.dz-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  background: #fff; color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 12px;
+  font-size: 13px; font-weight: 700;
+  box-shadow: 3px 3px 0 #000;
+}
+.dz-chip .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
+.dz-chip.gold { background: var(--gold); color: #fff; font-weight: 800; }
+
+/* Compare phone wrap — anchors floating chips to the phone itself (not to the column) */
+.dz-compare-wrap { position: relative; display: inline-block; }
+.dz-compare-chip-tl { top: 40px; left: -24px; transform: rotate(-4deg); }
+.dz-compare-chip-br { bottom: 60px; right: -36px; transform: rotate(3deg); }
+
+/* Progress: supporting-detail staircase (smaller now that the hero visual is the screen above) */
+.dz-stages {
+  display: flex; align-items: stretch; gap: 14px;
+  justify-content: center; flex-wrap: wrap;
+  max-width: 900px; margin: 0 auto;
+}
+.dz-stage {
+  width: 170px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 18px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative;
+}
+.dz-stage .stage-top { display: flex; align-items: center; gap: 10px; }
+.dz-stage .stage-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--ink);
+  flex-shrink: 0;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.dz-stage .stage-tag {
+  font-size: 11px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase;
+}
+.dz-stage .stage-bottom { display: flex; align-items: baseline; gap: 8px; margin-top: 18px; }
+.dz-stage .stage-count {
+  font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+}
+.dz-stage .stage-label { font-size: 12px; font-weight: 600; color: var(--secondary); }
+/* Feedback: floating timestamped note overlaid on the phone */
+.dz-feedback-note {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 10px 14px;
+  display: flex; gap: 10px; align-items: flex-start;
+  max-width: 240px;
+  font-size: 13px; font-weight: 600; line-height: 1.35;
+  color: var(--ink);
+}
+.dz-feedback-note .dj-ts { flex-shrink: 0; }
+.dz-feedback-chip-tl { top: 56px; left: -36px; transform: rotate(-3deg); z-index: 2; }
+.dz-feedback-chip-br { bottom: 80px; right: -32px; transform: rotate(2deg); z-index: 2; }
+
+/* Progress: corner chip on the library phone */
+.dz-progress-chip-tr { top: 32px; right: -28px; transform: rotate(4deg); z-index: 2; }
+/* Final CTA */
+.dz-final {
+  padding: 120px 64px;
+  text-align: center;
+  background: var(--ink); color: #fff;
+  border-bottom: 2px solid var(--ink);
+}
+.dz-final h2 { font-size: 64px; line-height: 1.05; font-weight: 800; letter-spacing: -1.5px; margin: 0 0 44px; color: #fff; }
+.dz-final .gold-underline { position: relative; display: inline-block; isolation: isolate; }
+.dz-final .gold-underline::after {
+  content: ''; position: absolute; left: -4px; right: -4px; bottom: 4px; height: 12px;
+  background: var(--gold); z-index: -1; transform: skewX(-8deg);
+}
+.dz-final .ctas { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
+.dz-final .dj-storebadge {
+  padding: 14px 26px 14px 20px; gap: 14px; min-width: 200px;
+  background: #fff; color: var(--ink);
+  border-color: #fff;
+}
+.dz-final .dj-storebadge:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
+.dz-final .dj-storebadge:active { transform: translateY(1px); }
+.dz-final .dj-storebadge svg { width: 32px; height: 32px; }
+.dz-final .dj-storebadge .dj-sb-small { font-size: 12px; opacity: .65; }
+.dz-final .dj-storebadge .dj-sb-big   { font-size: 21px; }
+
+/* Footer */
+.dz-footer {
+  background: var(--gold-light); color: var(--ink);
+  padding: 32px 64px;
+  border-top: 2px solid var(--ink);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.dz-footer .links { display: flex; gap: 28px; font-size: 14px; font-weight: 600; flex-wrap: wrap; }
+.dz-footer a { color: var(--ink); text-decoration: none; }
+.dz-footer a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.dz-footer .copyright { font-size: 13px; font-weight: 500; opacity: .6; }
+
+/* ============== Responsive ============== */
+@media (max-width: 1024px) {
+  .dz-hero { padding: 80px 40px 88px; }
+  .dz-hero h1 { font-size: 52px; letter-spacing: -1.2px; }
+  .dz-hero-sub { font-size: 36px; }
+  .dz-section.dz-bridge h2 { font-size: 38px; }
+  .dz-bridge-phone { width: 280px; }
+  .dz-bridge-video { margin-top: 44px; }
+  .dz-tie { padding: 72px 40px 80px; }
+  .dz-tie h2 { font-size: 38px; }
+  .dz-eyebrow { align-self: center; }
+  .dz-nav { padding: 20px 40px; }
+  .dz-section { padding: 80px 40px; }
+  .dz-section h2 { font-size: 44px; }
+  .dz-final { padding: 96px 40px; }
+  .dz-final h2 { font-size: 52px; margin-bottom: 36px; }
+  .dz-footer { padding: 28px 40px; }
+
+  .dz-stages { gap: 12px; }
+  .dz-stage { width: 150px; padding: 16px; }
+  .dz-stage .stage-count { font-size: 40px; }
+
+  /* Stacked split: text always comes before image, centered to feel composed. */
+  .dz-split { grid-template-columns: 1fr; gap: 40px; }
+  .dz-split-text { text-align: center; align-items: center; }
+  .dz-split-text .dz-sub { margin-left: auto; margin-right: auto; }
+  .dz-split.text-right .dz-split-text   { order: 1; }
+  .dz-split.text-right .dz-split-visual { order: 2; }
+}
+
+@media (max-width: 768px) {
+  .dz-nav { padding: 14px 20px; }
+  .dz-nav-wm .dj-word { display: none; }
+  .dz-nav-wm .dj-mark { width: 44px; height: 44px; }
+  .dz-nav-cta { padding: 9px 14px; font-size: 13px; }
+  .dz-hero { padding: 56px 20px 64px; }
+  .dz-hero h1 { font-size: 36px; letter-spacing: -.8px; }
+  .dz-hero-sub { font-size: 28px; margin-top: 24px; }
+  .dz-section.dz-bridge h2 { font-size: 30px; }
+  .dz-bridge-phone { width: 240px; }
+  .dz-bridge-video { margin-top: 36px; }
+  .dz-tie { padding: 56px 20px 64px; }
+  .dz-tie h2 { font-size: 28px; letter-spacing: -.6px; }
+  .dz-tie-chips { gap: 10px 18px; margin-top: 24px; }
+  .dz-tie-chips li { font-size: 11px; letter-spacing: 1.2px; }
+  .dz-tie-chevron { margin-top: 22px; font-size: 22px; }
+  .dz-eyebrow { font-size: 11px; letter-spacing: 1.6px; }
+  .dz-try-stamp { top: -8px; right: -4px; }
+  .dz-compare-chip-tl { top: 20px; left: -8px; }
+  .dz-compare-chip-br { bottom: 40px; right: -16px; }
+
+  .dz-section { padding: 64px 20px; }
+  .dz-section h2 { font-size: 36px; letter-spacing: -.8px; }
+
+  .dz-phone-stage { padding: 20px 0; }
+
+  .dz-stage { width: 140px; padding: 16px; }
+  .dz-stage .stage-count { font-size: 36px; }
+  .dz-section-detail { margin-top: 56px; }
+
+  .dz-final { padding: 80px 20px; }
+  .dz-final h2 { font-size: 36px; letter-spacing: -.8px; margin-bottom: 30px; }
+  .dz-final .dj-storebadge .dj-sb-big { font-size: 18px; }
+  .dz-final .dj-storebadge svg { width: 28px; height: 28px; }
+
+  .dz-footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .dz-stages { gap: 12px; }
+  .dz-stage { width: calc(50% - 6px); }
+
+  .dj-storebadge { min-width: 0; flex: 1 1 160px; }
+}
