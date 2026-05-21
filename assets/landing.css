@@ -110,7 +110,9 @@ a { color: inherit; }
 .dj-storebadge:focus-visible,
 .dj-btn:focus-visible,
 .dz-app-ctrl:focus-visible,
-.dz-app-note:focus-visible,
+.dz-chat-msg:focus-visible,
+.dz-chat-send:focus-visible,
+.dz-chat-input:focus-visible,
 .dz-nav-links a:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
@@ -363,11 +365,11 @@ a { color: inherit; }
 }
 .dz-app-phone {
   width: min(308px, calc(100vw - 32px));
-  height: auto;
+  height: min(740px, calc(100vh - 80px));
 }
 .dz-app-phone .dj-phone-screen {
-  height: auto;
   display: flex; flex-direction: column;
+  min-height: 0;
 }
 .dz-app-bar {
   flex: 0 0 auto;
@@ -399,7 +401,7 @@ a { color: inherit; }
 }
 .dz-app-caption {
   position: absolute;
-  left: 10px; right: 10px; bottom: 10px;
+  left: 10px; right: 10px; top: 10px;
   display: flex; gap: 10px; align-items: flex-start;
   background: rgba(255, 255, 255, .96);
   border: 2px solid var(--ink);
@@ -410,6 +412,7 @@ a { color: inherit; }
   color: var(--ink);
   line-height: 1.3;
   animation: dz-caption-pop .18s ease-out;
+  z-index: 2;
 }
 .dz-app-caption[hidden] { display: none; }
 .dz-app-caption .dj-ts { flex-shrink: 0; margin-top: 1px; }
@@ -432,16 +435,19 @@ a { color: inherit; }
 }
 
 .dz-app-controls {
-  flex: 0 0 auto;
+  position: absolute;
+  left: 0; right: 0; bottom: 8px;
   display: flex; gap: 14px; justify-content: center;
-  padding: 10px 16px 14px;
-  background: var(--bg);
-  border-bottom: 2px solid var(--ink);
+  padding: 0;
+  background: transparent;
+  z-index: 2;
+  pointer-events: none;
 }
 .dz-app-ctrl {
-  width: 36px; height: 36px;
+  pointer-events: auto;
+  width: 32px; height: 32px;
   border: 2px solid var(--ink);
-  background: var(--paper);
+  background: rgba(255, 255, 255, .92);
   border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer;
@@ -453,44 +459,125 @@ a { color: inherit; }
 }
 .dz-app-ctrl:hover  { background: var(--gold-light); }
 .dz-app-ctrl:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
-.dz-app-ctrl.play   { background: var(--gold); color: #fff; width: 44px; height: 44px; }
+.dz-app-ctrl.play   { background: var(--gold); color: #fff; width: 40px; height: 40px; }
 .dz-app-ctrl.play:hover { background: #C98A12; color: #fff; }
 
-.dz-app-notes {
+/* Chat panel — student/teacher thread + composer */
+.dz-app-chat {
   flex: 1 1 auto;
-  padding: 10px;
+  display: flex; flex-direction: column;
   background: var(--paper);
-  display: flex; flex-direction: column; gap: 6px;
+  min-height: 0; /* allow inner scroll area to shrink */
 }
-.dz-app-note {
-  display: flex; gap: 9px; align-items: flex-start;
+.dz-chat-head {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  font-size: 12px; font-weight: 700;
+  color: var(--secondary);
+  text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  letter-spacing: .2px;
+}
+.dz-chat-thread {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex; flex-direction: column; gap: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.dz-chat-msg {
+  max-width: 78%;
   padding: 7px 10px;
   border: 2px solid var(--ink);
-  border-radius: 10px;
-  background: var(--paper);
-  cursor: pointer;
-  text-align: left;
-  font-family: inherit;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.3;
   color: var(--ink);
+  font-family: inherit;
+  text-align: left;
   transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
 }
-.dz-app-note .text { font-size: 12.5px; font-weight: 500; line-height: 1.3; }
-.dz-app-note .dj-ts { flex-shrink: 0; margin-top: 1px; }
-.dz-app-note:hover  { background: var(--gold-light); }
-.dz-app-note.active {
+.dz-chat-msg.from-teacher {
+  align-self: flex-start;
+  background: var(--paper);
+  display: flex; gap: 8px; align-items: flex-start;
+  cursor: pointer;
+  border-bottom-left-radius: 4px;
+}
+.dz-chat-msg.from-teacher .dj-ts { flex-shrink: 0; margin-top: 1px; }
+.dz-chat-msg.from-teacher:hover { background: var(--gold-light); }
+.dz-chat-msg.from-teacher.active {
   background: var(--gold-light);
   transform: translateX(4px);
   box-shadow: 3px 3px 0 var(--ink);
 }
+.dz-chat-msg.from-student {
+  align-self: flex-end;
+  background: var(--gold-light);
+  border-bottom-right-radius: 4px;
+}
+
 /* One-time teach pulse to suggest tappability */
 @keyframes dz-teach-pulse {
   0%   { box-shadow: 0 0 0 0 rgba(227,160,24,.55); }
   60%  { box-shadow: 0 0 0 10px rgba(227,160,24,0); }
   100% { box-shadow: 0 0 0 0 rgba(227,160,24,0); }
 }
-.dz-app-note.dz-teach:not(.active) {
+.dz-chat-msg.from-teacher.dz-teach:not(.active) {
   animation: dz-teach-pulse 1.6s ease-out 3;
 }
+
+/* Composer (bottom of chat panel) */
+.dz-chat-composer {
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px;
+  border-top: 2px solid var(--ink);
+  background: var(--bg);
+}
+.dz-chat-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 2px solid var(--ink);
+  border-radius: 100px;
+  padding: 6px 12px;
+  background: var(--paper);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  outline: none;
+  transition: box-shadow .12s ease, border-color .12s ease;
+}
+.dz-chat-input::placeholder { color: var(--secondary); }
+.dz-chat-input:focus {
+  border-color: var(--gold);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.dz-chat-send {
+  flex: 0 0 auto;
+  width: 30px; height: 30px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: #d8d8d8;
+  color: #6a6a6a;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, box-shadow .15s ease, transform .12s ease;
+  font-family: inherit;
+}
+.dz-chat-send svg { display: block; }
+.dz-chat-send[disabled] { cursor: not-allowed; }
+.dz-chat-composer.is-armed .dz-chat-send {
+  background: var(--gold);
+  color: #fff;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.dz-chat-composer.is-armed .dz-chat-send:hover { background: #C98A12; }
+.dz-chat-composer.is-armed .dz-chat-send:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
 
 /* Scrub bar (also used inside the app player) */
 .dz-scrub-bar {

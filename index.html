@@ -8,7 +8,7 @@
   <meta property="og:title" content="Dance Journal — The bottleneck to your dance progress isn't classes.">
   <meta property="og:description" content="It's the motivation to practice, and feedback from people you trust. We built an app to fix this.">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=35">
+  <link rel="stylesheet" href="assets/landing.css?v=37">
 </head>
 <body>
 
@@ -86,6 +86,19 @@
                     <span class="dj-ts dz-app-caption-ts">00:00</span>
                     <span class="dz-app-caption-text"></span>
                   </div>
+                  <div class="dz-app-controls">
+                    <button class="dz-app-ctrl back" data-notebook-back aria-label="back 5 seconds">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/>
+                      </svg>
+                    </button>
+                    <button class="dz-app-ctrl play" data-notebook-play aria-label="play / pause"></button>
+                    <button class="dz-app-ctrl fwd" data-notebook-fwd aria-label="forward 5 seconds">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 7l5 5-5 5"/><path d="M6 7l5 5-5 5"/>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
                 <div class="dz-app-scrubber">
                   <div class="dz-scrub-bar" data-notebook-bar>
@@ -98,20 +111,18 @@
                     <span data-notebook-total>00:12</span>
                   </div>
                 </div>
-                <div class="dz-app-controls">
-                  <button class="dz-app-ctrl back" data-notebook-back aria-label="back 5 seconds">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/>
-                    </svg>
-                  </button>
-                  <button class="dz-app-ctrl play" data-notebook-play aria-label="play / pause"></button>
-                  <button class="dz-app-ctrl fwd" data-notebook-fwd aria-label="forward 5 seconds">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M13 7l5 5-5 5"/><path d="M6 7l5 5-5 5"/>
-                    </svg>
-                  </button>
+                <div class="dz-app-chat">
+                  <header class="dz-chat-head">Feedback from Teacher</header>
+                  <div class="dz-chat-thread" data-notebook-thread><!-- messages injected by landing.js --></div>
+                  <form class="dz-chat-composer" data-notebook-composer>
+                    <input type="text" class="dz-chat-input" data-notebook-input placeholder="Reply…" aria-label="Reply" autocomplete="off">
+                    <button type="submit" class="dz-chat-send" data-notebook-send aria-label="Send" disabled>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 19V5"/><path d="M5 12l7-7 7 7"/>
+                      </svg>
+                    </button>
+                  </form>
                 </div>
-                <div class="dz-app-notes" data-notebook-notes><!-- notes injected by landing.js --></div>
               </div>
             </div>
             <div class="dz-float dz-try-stamp">
@@ -273,6 +284,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=14" defer></script>
+  <script src="assets/landing.js?v=15" defer></script>
 </body>
 </html>
