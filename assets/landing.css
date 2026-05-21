@@ -168,19 +168,6 @@ a { color: inherit; }
   z-index: 2;
 }
 
-/* Eyebrow */
-.dj-eyebrow {
-  display: inline-block;
-  font-size: 11px; font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  background: var(--gold);
-  color: var(--ink);
-  padding: 5px 10px;
-  border: 2px solid var(--ink);
-  border-radius: 6px;
-}
-
 /* ============== Layout ============== */
 
 .dz-nav {
@@ -715,7 +702,7 @@ a { color: inherit; }
   border-bottom: 2px solid var(--ink);
 }
 .dz-final h2 { font-size: 64px; line-height: 1.05; font-weight: 800; letter-spacing: -1.5px; margin: 0 0 44px; color: #fff; }
-.dz-final .gold-underline { position: relative; display: inline-block; }
+.dz-final .gold-underline { position: relative; display: inline-block; isolation: isolate; }
 .dz-final .gold-underline::after {
   content: ''; position: absolute; left: -4px; right: -4px; bottom: 4px; height: 12px;
   background: var(--gold); z-index: -1; transform: skewX(-8deg);
