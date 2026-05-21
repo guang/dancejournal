@@ -785,6 +785,9 @@ a { color: inherit; }
 
   .dz-section { padding: 64px 20px; }
   .dz-section h2 { font-size: 36px; letter-spacing: -.8px; }
+  /* Nowrap halves of the feedback h2 are wider than a phone column — they push the
+     grid track wider than the viewport and cause horizontal overflow. */
+  .dz-section h2 .nowrap { white-space: normal; }
 
   .dz-phone-stage { padding: 20px 0; }
 
