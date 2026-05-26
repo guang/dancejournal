@@ -32,7 +32,7 @@
     var totalEl     = root.querySelector('[data-notebook-total]');
     var playBtn     = root.querySelector('[data-notebook-play]');
     var backBtn     = root.querySelector('[data-notebook-back]');
-    var fwdBtn      = root.querySelector('[data-notebook-fwd]');
+    var speedBtn    = root.querySelector('[data-notebook-speed]');
     var capEl       = root.querySelector('[data-notebook-caption]');
     var capTs       = capEl.querySelector('.dz-app-caption-ts');
     var capText     = capEl.querySelector('.dz-app-caption-text');
@@ -180,8 +180,13 @@
     playBtn.addEventListener('click', function () {
       if (video.paused) video.play(); else video.pause();
     });
-    backBtn.addEventListener('click', function () { seek(video.currentTime - 5); });
-    fwdBtn .addEventListener('click', function () { seek(video.currentTime + 5); });
+    backBtn.addEventListener('click', function () { seek(video.currentTime - 3); });
+    speedBtn.addEventListener('click', function () {
+      var next = video.playbackRate === 1 ? 0.5 : 1;
+      video.playbackRate = next;
+      speedBtn.textContent = next + '×';
+      speedBtn.setAttribute('aria-label', 'playback speed, currently ' + next + '×');
+    });
 
     // Scrub bar drag — track cursor visually every move, throttle the actual
     // seek so iOS Safari doesn't choke on rapid currentTime writes. Window

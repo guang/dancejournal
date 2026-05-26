@@ -445,6 +445,11 @@ a { color: inherit; }
 .dz-app-ctrl:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
 .dz-app-ctrl.play   { background: var(--gold); color: #fff; width: 40px; height: 40px; }
 .dz-app-ctrl.play:hover { background: #C98A12; color: #fff; }
+.dz-app-ctrl.speed  {
+  font-size: 11px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
 
 /* Chat panel — student/teacher thread + composer */
 .dz-app-chat {
@@ -689,10 +694,10 @@ a { color: inherit; }
   background: var(--ink); color: #fff;
   border-bottom: 2px solid var(--ink);
 }
-.dz-final h2 { font-size: 48px; line-height: 1.05; font-weight: 800; letter-spacing: -1px; margin: 0 0 16px; color: #fff; }
+.dz-final h2 { font-size: 48px; line-height: 1.05; font-weight: 800; letter-spacing: -1px; margin: 0 0 36px; color: #fff; }
 .dz-final-sub {
   font-size: 16px; font-weight: 500; opacity: .72;
-  margin: 0 auto 32px; max-width: 480px;
+  margin: 32px auto 0; max-width: 480px;
 }
 .dz-final-cta {
   display: inline-flex; align-items: center; gap: 10px;
@@ -784,7 +789,7 @@ a { color: inherit; }
 
   .dz-final { padding: 80px 20px; }
   .dz-final h2 { font-size: 32px; letter-spacing: -.6px; }
-  .dz-final-sub { font-size: 15px; margin-bottom: 26px; }
+  .dz-final-sub { font-size: 15px; margin-top: 24px; }
   .dz-final-cta { padding: 12px 22px; font-size: 15px; }
 
   .dz-footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
