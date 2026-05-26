@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Dance Journal — Make every clip you save actually stick</title>
+  <title>Dance Journal — The practice notebook for partner dancers</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="The bottleneck to your dance progress isn't classes. It's the motivation to practice, and feedback from people you trust. Dance Journal is the app we built to fix that — for partner dancers (Bachata, Salsa, Kizomba).">
-  <meta property="og:title" content="Dance Journal — The bottleneck to your dance progress isn't classes.">
-  <meta property="og:description" content="It's the motivation to practice, and feedback from people you trust. We built an app to fix this.">
+  <meta name="description" content="Sometimes the smallest detail changes everything. Dance Journal helps Bachata, Salsa & Kizomba dancers capture their practice, get meaningful feedback, and refine every movement.">
+  <meta property="og:title" content="Dance Journal — Sometimes the smallest detail changes everything.">
+  <meta property="og:description" content="A practice notebook for partner dancers. Capture your practice, get meaningful feedback, and refine every movement.">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=39">
+  <link rel="stylesheet" href="assets/landing.css?v=46">
 </head>
 <body>
 
@@ -26,39 +26,13 @@
   <!-- ============== Hero ============== -->
   <section class="dz-hero">
     <div class="dz-hero-inner">
-      <h1>The bottleneck to your dance progress isn't classes.</h1>
-      <p class="dz-hero-sub">It's the clips you saved Thursday and forgot by Friday, and teacher feedback that's mostly fire emojis.</p>
-    </div>
-  </section>
-
-  <!-- ============== Bridge — "we built an app to fix this" + product video ============== -->
-  <section class="dz-section dz-bridge" id="why" style="background:var(--gold-light);">
-    <div class="dz-section-inner">
-      <h2>We built an app to fix this.</h2>
-      <div class="dz-bridge-video">
-        <div class="dj-phone dz-bridge-phone">
-          <div class="dj-phone-notch"></div>
-          <div class="dj-phone-screen">
-            <video src="assets/video/library-overview.mp4"
-                   poster="assets/video/library-overview-poster.jpg"
-                   muted playsinline loop autoplay preload="metadata"
-                   aria-label="Dance Journal app overview — browsing tutorials and practice sessions"></video>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== Tie-together — frames the three features as one cohesive answer ============== -->
-  <section class="dz-tie">
-    <div class="dz-tie-inner">
-      <h2>The three things that turn watching into practice.</h2>
-      <ul class="dz-tie-chips">
-        <li>① Feedback with timestamp</li>
-        <li>② Compare side by side</li>
-        <li>③ Grouped by mastery</li>
+      <h1>Stuck at the same level?</h1>
+      <p class="dz-hero-sub">Dance Journal gives you the tools to turn your clips into real progress.</p>
+      <ul class="dz-hero-chips">
+        <li><a href="#feedback">Feedback</a></li>
+        <li><a href="#compare">Compare</a></li>
+        <li><a href="#practice">Track</a></li>
       </ul>
-      <div class="dz-tie-chevron" aria-hidden="true">↓</div>
     </div>
   </section>
 
@@ -131,9 +105,9 @@
           </div>
         </div>
         <div class="dz-split-text">
-          <span class="dz-eyebrow">① Feedback with timestamp</span>
-          <h2><span class="nowrap">Get feedback at <span class="dj-ts gold">0:34</span>,</span><br><span class="nowrap">not "somewhere in there."</span></h2>
-          <p class="dz-sub">Privately share a practice clip with your teacher. Notes come back pinned to the frame — the kind nobody types in a group chat.</p>
+          <span class="dz-eyebrow">Feedback</span>
+          <h2>Stop losing the feedback that matters.</h2>
+          <p class="dz-sub">Save timestamped notes right on your videos, and revisit every detail when you practice.</p>
         </div>
       </div>
     </div>
@@ -144,9 +118,9 @@
     <div class="dz-section-inner">
       <div class="dz-split">
         <div class="dz-split-text">
-          <span class="dz-eyebrow">② Compare side by side</span>
-          <h2>See the gap, not "something feels off."</h2>
-          <p class="dz-sub">Lock your clip to the tutorial — they play in sync, beat for beat.</p>
+          <span class="dz-eyebrow">Compare</span>
+          <h2>See the gap between you and the version you want to be.</h2>
+          <p class="dz-sub">Play your clip in sync with a tutorial — or a past recording of yourself — and spot the differences.</p>
         </div>
         <div class="dz-split-visual">
           <div class="dz-phone-wrap dz-compare-wrap">
@@ -168,72 +142,32 @@
     </div>
   </section>
 
-  <!-- ============== Progress (phone-left, text-right + supporting detail) ============== -->
+  <!-- ============== Progress (phone-left, text-right) ============== -->
   <section class="dz-section" id="practice">
     <div class="dz-section-inner">
       <div class="dz-split text-right">
         <div class="dz-split-visual">
-          <div class="dz-phone-wrap">
-            <div class="dj-phone" style="width:300px;height:640px;">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen">
-                <img src="assets/shots/progress-screen.png" alt="Dance Journal library grouped by progress">
-              </div>
+          <div class="dz-progress-stage" data-progress-tabs>
+            <div class="dz-progress-tabs" role="tablist" aria-label="Progress stages">
+              <button class="dz-progress-tab" type="button" role="tab" data-stage="new" aria-selected="true" aria-controls="dz-progress-screen">NEW</button>
+              <button class="dz-progress-tab" type="button" role="tab" data-stage="training" aria-selected="false" aria-controls="dz-progress-screen">TRAINING</button>
+              <button class="dz-progress-tab" type="button" role="tab" data-stage="testing" aria-selected="false" aria-controls="dz-progress-screen">TESTING</button>
+              <button class="dz-progress-tab" type="button" role="tab" data-stage="mastered" aria-selected="false" aria-controls="dz-progress-screen">MASTERED</button>
             </div>
-            <div class="dz-float dz-progress-chip-tr">
-              <span class="dz-chip gold">49 moves · 8 mastered</span>
+            <div class="dz-phone-wrap">
+              <div class="dj-phone" style="width:300px;height:640px;">
+                <div class="dj-phone-notch"></div>
+                <div class="dj-phone-screen">
+                  <img id="dz-progress-screen" data-progress-screen src="assets/shots/progress-new.png" alt="Dance Journal library — new clips">
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="dz-split-text">
-          <span class="dz-eyebrow">③ Grouped by mastery</span>
+          <span class="dz-eyebrow">Track</span>
           <h2>Practice starts in one tap, not ten minutes of scrolling.</h2>
           <p class="dz-sub">Clips are grouped by your progress — new → training → testing → mastered.</p>
-        </div>
-      </div>
-
-      <div class="dz-section-detail">
-        <div class="dz-stages">
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#9E9E9E;"></span>
-              <span class="stage-tag" style="color:#9E9E9E;">NEW</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">24</span>
-              <span class="stage-label">just filed</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#2196F3;"></span>
-              <span class="stage-tag" style="color:#2196F3;">TRAINING</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">12</span>
-              <span class="stage-label">in rotation</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#F59E0B;"></span>
-              <span class="stage-tag" style="color:#F59E0B;">TESTING</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">5</span>
-              <span class="stage-label">try at social</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#10B981;"></span>
-              <span class="stage-tag" style="color:#10B981;">MASTERED</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">8</span>
-              <span class="stage-label">locked in</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -284,6 +218,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=15" defer></script>
+  <script src="assets/landing.js?v=16" defer></script>
 </body>
 </html>

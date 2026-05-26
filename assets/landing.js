@@ -274,9 +274,43 @@
     if (p && p.catch) p.catch(function () {});
   }
 
+  // Progress section: tab click swaps the screenshot to a stage-filtered library shot.
+  var PROGRESS_ALT = {
+    'new':      'Dance Journal library — new clips',
+    'training': 'Dance Journal library — clips in training',
+    'testing':  'Dance Journal library — clips you are testing',
+    'mastered': 'Dance Journal library — mastered clips'
+  };
+
+  function initProgressTabs(root) {
+    var tabs   = root.querySelectorAll('.dz-progress-tab');
+    var screen = root.querySelector('[data-progress-screen]');
+    if (!tabs.length || !screen) return;
+
+    function activate(stage) {
+      for (var i = 0; i < tabs.length; i++) {
+        var isMatch = tabs[i].getAttribute('data-stage') === stage;
+        tabs[i].setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      }
+      screen.setAttribute('src', 'assets/shots/progress-' + stage + '.png');
+      if (PROGRESS_ALT[stage]) screen.setAttribute('alt', PROGRESS_ALT[stage]);
+    }
+
+    for (var i = 0; i < tabs.length; i++) {
+      (function (tab) {
+        tab.addEventListener('click', function () {
+          activate(tab.getAttribute('data-stage'));
+        });
+      })(tabs[i]);
+    }
+  }
+
   function boot() {
     var els = document.querySelectorAll('[data-notebook]');
     for (var i = 0; i < els.length; i++) init(els[i]);
+
+    var progressEls = document.querySelectorAll('[data-progress-tabs]');
+    for (var j = 0; j < progressEls.length; j++) initProgressTabs(progressEls[j]);
   }
 
   if (document.readyState === 'loading') {
