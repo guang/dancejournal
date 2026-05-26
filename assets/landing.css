@@ -81,35 +81,8 @@ a { color: inherit; }
 .dj-btn:hover  { background: #C98A12; }
 .dj-btn:active { transform: translateY(1px); }
 
-/* Store badges */
-.dj-storebadge {
-  position: relative;
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 10px 18px 10px 14px;
-  border: 2px solid var(--ink);
-  border-radius: 12px;
-  background: #000; color: #fff;
-  text-decoration: none;
-  transition: transform 120ms ease;
-  min-width: 168px;
-}
-.dj-storebadge.has-beta { padding-right: 22px; }
-.dj-sb-beta {
-  position: absolute;
-  top: -8px; right: -8px;
-  padding: 2px 7px;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .4px; text-transform: uppercase;
-  color: var(--ink);
-  background: var(--gold);
-  border: 1.5px solid var(--ink);
-  border-radius: 999px;
-  line-height: 1.3;
-  pointer-events: none;
-}
-.dj-storebadge:hover  { transform: translateY(-1px); }
-.dj-storebadge:active { transform: translateY(1px); }
-.dj-storebadge:focus-visible,
+/* Shared focus ring for interactive primitives — kept after store-badge removal
+   so app controls / chat / nav links retain a consistent focus treatment. */
 .dj-btn:focus-visible,
 .dz-app-ctrl:focus-visible,
 .dz-chat-msg:focus-visible,
@@ -119,10 +92,7 @@ a { color: inherit; }
   outline: 3px solid var(--gold);
   outline-offset: 3px;
 }
-.dj-storebadge svg { width: 26px; height: 26px; flex-shrink: 0; }
-.dj-storebadge .dj-sb-text { display: flex; flex-direction: column; line-height: 1.1; }
-.dj-storebadge .dj-sb-small { font-size: 10px; font-weight: 500; opacity: .85; letter-spacing: .3px; text-transform: uppercase; }
-.dj-storebadge .dj-sb-big { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+
 
 /* Timestamp chip — the signature element */
 .dj-ts {
@@ -173,15 +143,51 @@ a { color: inherit; }
 /* ============== Layout ============== */
 
 .dz-nav {
+  position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 24px 64px;
+  padding: 18px 64px;
   border-bottom: 2px solid var(--ink);
   background: var(--bg);
+  transition: padding 180ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+.dz-nav.scrolled {
+  padding-top: 12px; padding-bottom: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
 }
 .dz-nav-links { display: flex; gap: 28px; font-size: 14px; font-weight: 700; }
 .dz-nav-links a { color: var(--ink); text-decoration: none; }
 .dz-nav-links a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .dz-nav .dj-btn { padding: 10px 18px; font-size: 14px; }
+
+/* Nav wordmark — collapses to icon-only when the nav is scrolled. The width/margin
+   transition keeps the icon's position fixed on the left as the word fades out. */
+.dz-nav-wm .dj-word {
+  display: inline-block;
+  white-space: nowrap; overflow: hidden;
+  max-width: 200px; opacity: 1;
+  transition: max-width 240ms ease, opacity 180ms ease, margin-left 240ms ease;
+}
+.dz-nav.scrolled .dz-nav-wm .dj-word {
+  max-width: 0; opacity: 0; margin-left: -10px;
+}
+
+/* Nav CTA — outline at top, fills gold when scrolled to grab attention. */
+.dz-nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px;
+  border: 2px solid var(--ink); border-radius: 10px;
+  background: transparent; color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px; font-weight: 700;
+  text-decoration: none; cursor: pointer; user-select: none;
+  transition: background 200ms ease, color 200ms ease, transform 120ms ease;
+}
+.dz-nav-cta svg { width: 15px; height: 15px; flex-shrink: 0; }
+.dz-nav-cta:hover  { background: var(--gold-light); }
+.dz-nav-cta:active { transform: translateY(1px); }
+.dz-nav.scrolled .dz-nav-cta { background: var(--gold); color: #fff; }
+.dz-nav.scrolled .dz-nav-cta:hover { background: #C98A12; }
+.dz-nav-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
 /* Hero */
 .dz-hero {
@@ -276,6 +282,8 @@ a { color: inherit; }
   z-index: 3;
   animation: dz-wobble 3.2s ease-in-out infinite;
 }
+/* User has touched the demo — drop the wobble so the badge stops competing. */
+.dz-try-stamp.dz-quiet { animation: none; }
 @keyframes dz-wobble {
   0%, 100% { transform: rotate(8deg) translateY(0); }
   50%      { transform: rotate(6deg) translateY(-4px); }
@@ -628,59 +636,36 @@ a { color: inherit; }
 .dz-chip .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
 .dz-chip.gold { background: var(--gold); color: #fff; font-weight: 800; }
 
-/* Compare phone wrap — anchors floating chips to the phone itself (not to the column) */
+/* Compare phone wrap — anchors floating callouts to the phone itself. */
 .dz-compare-wrap { position: relative; display: inline-block; }
-.dz-compare-chip-tl { top: 40px; left: -24px; transform: rotate(-4deg); }
-.dz-compare-chip-br { bottom: 60px; right: -36px; transform: rotate(3deg); }
 
-/* Progress: tabbed phone — segmented control above the screenshot drives the swap.
-   Active tab's underline uses its stage color (gray/blue/amber/green). */
-.dz-progress-stage {
-  display: flex; flex-direction: column; align-items: center; gap: 24px;
+/* Hand-position callouts — labels sit outside the phone, vertically centered
+   on each of the two stacked videos (top ~60% of phone, bottom ~40%). */
+.dz-compare-callout {
+  z-index: 3;
+  pointer-events: none;
 }
-.dz-progress-tabs {
-  display: inline-flex;
-  background: var(--paper);
-  border: 2px solid var(--ink);
-  border-radius: 14px;
-  padding: 4px;
-  box-shadow: 4px 4px 0 var(--ink);
-  max-width: 100%;
+.dz-callout-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  background: #fff; color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 12px;
+  font-size: 13px; font-weight: 700; line-height: 1.2;
+  box-shadow: 3px 3px 0 var(--ink);
+  white-space: nowrap;
 }
-.dz-progress-tab {
-  position: relative;
-  flex: 0 0 auto;
-  appearance: none;
-  -webkit-appearance: none;
-  background: transparent;
-  border: none;
-  border-radius: 10px;
-  padding: 11px 18px 13px;
-  font-family: inherit;
-  font-size: 12px; font-weight: 800; letter-spacing: .9px;
-  color: var(--secondary);
-  cursor: pointer;
-  transition: color .15s ease, background .15s ease;
+.dz-callout-icon { font-size: 14px; line-height: 1; }
+/* Top callout — vertically centered on the top video (~30% of phone height). */
+.dz-compare-callout-top {
+  top: 192px; right: 100%;
+  transform: translate(-12px, -50%);
 }
-.dz-progress-tab:hover { color: var(--ink); background: var(--gold-light); }
-.dz-progress-tab[aria-selected="true"] { color: var(--ink); }
-.dz-progress-tab[aria-selected="true"]::after {
-  content: '';
-  position: absolute;
-  left: 14px; right: 14px;
-  bottom: 5px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--stage-color, var(--ink));
+/* Bottom callout — vertically centered on the bottom video (~80% of phone height). */
+.dz-compare-callout-bot {
+  top: 512px; left: 100%;
+  transform: translate(12px, -50%);
 }
-.dz-progress-tab:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 2px;
-}
-.dz-progress-tab[data-stage="new"]      { --stage-color: #9E9E9E; }
-.dz-progress-tab[data-stage="training"] { --stage-color: #2196F3; }
-.dz-progress-tab[data-stage="testing"]  { --stage-color: #F59E0B; }
-.dz-progress-tab[data-stage="mastered"] { --stage-color: #10B981; }
+
 /* Feedback: floating timestamped note overlaid on the phone */
 .dz-feedback-note {
   background: var(--paper);
@@ -704,23 +689,25 @@ a { color: inherit; }
   background: var(--ink); color: #fff;
   border-bottom: 2px solid var(--ink);
 }
-.dz-final h2 { font-size: 48px; line-height: 1.05; font-weight: 800; letter-spacing: -1px; margin: 0 0 44px; color: #fff; }
-.dz-final .gold-underline { position: relative; display: inline-block; isolation: isolate; }
-.dz-final .gold-underline::after {
-  content: ''; position: absolute; left: -4px; right: -4px; bottom: 4px; height: 12px;
-  background: var(--gold); z-index: -1; transform: skewX(-8deg);
+.dz-final h2 { font-size: 48px; line-height: 1.05; font-weight: 800; letter-spacing: -1px; margin: 0 0 16px; color: #fff; }
+.dz-final-sub {
+  font-size: 16px; font-weight: 500; opacity: .72;
+  margin: 0 auto 32px; max-width: 480px;
 }
-.dz-final .ctas { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; }
-.dz-final .dj-storebadge {
-  padding: 14px 26px 14px 20px; gap: 14px; min-width: 200px;
+.dz-final-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 26px;
   background: #fff; color: var(--ink);
-  border-color: #fff;
+  border: 2px solid #fff; border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 16px; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  transition: transform 120ms ease, background 180ms ease, border-color 180ms ease;
 }
-.dz-final .dj-storebadge:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
-.dz-final .dj-storebadge:active { transform: translateY(1px); }
-.dz-final .dj-storebadge svg { width: 32px; height: 32px; }
-.dz-final .dj-storebadge .dj-sb-small { font-size: 12px; opacity: .65; }
-.dz-final .dj-storebadge .dj-sb-big   { font-size: 21px; }
+.dz-final-cta svg { width: 18px; height: 18px; flex-shrink: 0; }
+.dz-final-cta:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
+.dz-final-cta:active { transform: translateY(1px); }
+.dz-final-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
 /* Footer */
 .dz-footer {
@@ -745,7 +732,7 @@ a { color: inherit; }
   .dz-section { padding: 80px 40px; }
   .dz-section h2 { font-size: 36px; letter-spacing: -.8px; }
   .dz-final { padding: 96px 40px; }
-  .dz-final h2 { font-size: 40px; margin-bottom: 36px; }
+  .dz-final h2 { font-size: 40px; }
   .dz-footer { padding: 28px 40px; }
 
   /* Stacked split: text always comes before image, centered to feel composed. */
@@ -757,19 +744,34 @@ a { color: inherit; }
 }
 
 @media (max-width: 768px) {
-  .dz-nav { padding: 14px 20px; }
-  .dz-nav-wm .dj-word { display: none; }
-  .dz-nav-wm .dj-mark { width: 44px; height: 44px; }
-  .dz-nav-cta { padding: 9px 14px; font-size: 13px; }
+  .dz-nav { padding: 12px 20px; }
+  /* On mobile we show the wordmark at the top of the page so the brand reads, then
+     collapse it to icon-only via .dz-nav.scrolled (rule lives outside this block). */
+  .dz-nav-wm .dj-word { font-size: 16px; }
+  .dz-nav-wm .dj-mark { width: 34px; height: 34px; border-radius: 9px; }
+  .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
+  .dz-nav-cta svg { width: 13px; height: 13px; }
   .dz-hero { padding: 56px 20px 64px; }
   .dz-hero h1 { font-size: 40px; letter-spacing: -1px; }
   .dz-hero-sub { font-size: 17px; margin-top: 18px; }
   .dz-hero-chips { gap: 8px; margin-top: 24px; }
   .dz-hero-chips a { font-size: 12px; padding: 7px 14px; }
+
   .dz-eyebrow { font-size: 11px; padding: 5px 12px; }
   .dz-try-stamp { top: -8px; right: -4px; }
-  .dz-compare-chip-tl { top: 20px; left: -8px; }
-  .dz-compare-chip-br { bottom: 40px; right: -16px; }
+  /* Mobile: the phone column has no room to the sides for outside-the-phone
+     badges, so overlay them in opposite corners — away from the hand areas
+     they're calling out, preserving the diagonal comparison. */
+  .dz-callout-label { font-size: 11px; padding: 6px 10px; box-shadow: 2px 2px 0 var(--ink); gap: 4px; }
+  .dz-callout-icon { font-size: 12px; }
+  .dz-compare-callout-top {
+    top: 18px; left: 14px; right: auto;
+    transform: none;
+  }
+  .dz-compare-callout-bot {
+    top: auto; right: 14px; bottom: 18px; left: auto;
+    transform: none;
+  }
 
   .dz-section { padding: 44px 20px 64px; }
   .dz-section h2 { font-size: 28px; letter-spacing: -.6px; }
@@ -780,18 +782,10 @@ a { color: inherit; }
 
   .dz-phone-stage { padding: 20px 0; }
 
-  .dz-progress-tab { padding: 9px 13px 11px; font-size: 11px; letter-spacing: .6px; }
-  .dz-progress-tab[aria-selected="true"]::after { left: 10px; right: 10px; bottom: 4px; }
-  .dz-progress-stage { gap: 20px; }
-
   .dz-final { padding: 80px 20px; }
-  .dz-final h2 { font-size: 32px; letter-spacing: -.6px; margin-bottom: 30px; }
-  .dz-final .dj-storebadge .dj-sb-big { font-size: 18px; }
-  .dz-final .dj-storebadge svg { width: 28px; height: 28px; }
+  .dz-final h2 { font-size: 32px; letter-spacing: -.6px; }
+  .dz-final-sub { font-size: 15px; margin-bottom: 26px; }
+  .dz-final-cta { padding: 12px 22px; font-size: 15px; }
 
   .dz-footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
-}
-
-@media (max-width: 480px) {
-  .dj-storebadge { min-width: 0; flex: 1 1 160px; }
 }

@@ -272,45 +272,51 @@
     // Try muted autoplay; fall back silently if the browser blocks it.
     var p = video.play();
     if (p && p.catch) p.catch(function () {});
+
+    // Once the user has poked at the demo, kill the wobble on the "Live demo →"
+    // stamp — its attention-grabbing job is done.
+    var wrap = root.parentElement;
+    var stamp = wrap && wrap.querySelector('.dz-try-stamp');
+    if (stamp) {
+      root.addEventListener('pointerdown', function () {
+        stamp.classList.add('dz-quiet');
+      }, { once: true });
+    }
   }
 
-  // Progress section: tab click swaps the screenshot to a stage-filtered library shot.
-  var PROGRESS_ALT = {
-    'new':      'Dance Journal library — new clips',
-    'training': 'Dance Journal library — clips in training',
-    'testing':  'Dance Journal library — clips you are testing',
-    'mastered': 'Dance Journal library — mastered clips'
-  };
+  // Point every [data-install-link] at the right store based on the platform class
+  // applied by the inline script in <head>. Apple ecosystem → App Store; everything
+  // else → Play Store.
+  function initInstallLinks() {
+    var APP_STORE_URL = 'https://apps.apple.com/app/id6751278168';
+    var PLAY_STORE_URL = 'https://play.google.com/apps/testing/app.dancejournal.dancenotes';
+    var html = document.documentElement;
+    var useAppStore = html.classList.contains('platform-ios') ||
+                      html.classList.contains('platform-macos');
+    var url = useAppStore ? APP_STORE_URL : PLAY_STORE_URL;
+    var links = document.querySelectorAll('[data-install-link]');
+    for (var i = 0; i < links.length; i++) links[i].setAttribute('href', url);
+  }
 
-  function initProgressTabs(root) {
-    var tabs   = root.querySelectorAll('.dz-progress-tab');
-    var screen = root.querySelector('[data-progress-screen]');
-    if (!tabs.length || !screen) return;
-
-    function activate(stage) {
-      for (var i = 0; i < tabs.length; i++) {
-        var isMatch = tabs[i].getAttribute('data-stage') === stage;
-        tabs[i].setAttribute('aria-selected', isMatch ? 'true' : 'false');
-      }
-      screen.setAttribute('src', 'assets/shots/progress-' + stage + '.png');
-      if (PROGRESS_ALT[stage]) screen.setAttribute('alt', PROGRESS_ALT[stage]);
+  // Toggle .scrolled on the nav so the wordmark collapses and the CTA fills.
+  // Plain scroll listener (passive) is lighter than an IntersectionObserver sentinel
+  // for this single boolean — no element to insert, no observer to manage.
+  function initNavScroll() {
+    var nav = document.querySelector('.dz-nav');
+    if (!nav) return;
+    function onScroll() {
+      nav.classList.toggle('scrolled', window.scrollY > 8);
     }
-
-    for (var i = 0; i < tabs.length; i++) {
-      (function (tab) {
-        tab.addEventListener('click', function () {
-          activate(tab.getAttribute('data-stage'));
-        });
-      })(tabs[i]);
-    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 
   function boot() {
     var els = document.querySelectorAll('[data-notebook]');
     for (var i = 0; i < els.length; i++) init(els[i]);
 
-    var progressEls = document.querySelectorAll('[data-progress-tabs]');
-    for (var j = 0; j < progressEls.length; j++) initProgressTabs(progressEls[j]);
+    initInstallLinks();
+    initNavScroll();
   }
 
   if (document.readyState === 'loading') {
