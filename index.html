@@ -2,13 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Dance Journal — Make every clip you save actually stick</title>
+  <title>Dance Journal — The practice notebook for partner dancers</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="The bottleneck to your dance progress isn't classes. It's the motivation to practice, and feedback from people you trust. Dance Journal is the app we built to fix that — for partner dancers (Bachata, Salsa, Kizomba).">
-  <meta property="og:title" content="Dance Journal — The bottleneck to your dance progress isn't classes.">
-  <meta property="og:description" content="It's the motivation to practice, and feedback from people you trust. We built an app to fix this.">
+  <meta name="description" content="Sometimes the smallest detail changes everything. Dance Journal helps Bachata, Salsa & Kizomba dancers capture their practice, get meaningful feedback, and refine every movement.">
+  <meta property="og:title" content="Dance Journal — Sometimes the smallest detail changes everything.">
+  <meta property="og:description" content="A practice notebook for partner dancers. Capture your practice, get meaningful feedback, and refine every movement.">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=39">
+  <link rel="stylesheet" href="assets/landing.css?v=57">
+  <script>
+    // Runs before body paints so the install-link href can be set before the user clicks.
+    // Apple ecosystem (iOS/iPadOS/macOS) → App Store; everything else → Play Store.
+    (function () {
+      var ua = navigator.userAgent;
+      var platform = navigator.platform || '';
+      var isIOS = /iPhone|iPad|iPod/.test(ua) ||
+                  (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var isAndroid = /Android/.test(ua);
+      var isMac = !isIOS && /Mac/.test(platform);
+      var cls = isIOS ? 'platform-ios'
+              : isAndroid ? 'platform-android'
+              : isMac ? 'platform-macos'
+              : 'platform-other';
+      document.documentElement.classList.add(cls);
+    })();
+  </script>
 </head>
 <body>
 
@@ -20,45 +37,25 @@
       </span>
       <span class="dj-word">Dance Journal</span>
     </a>
-    <a href="#download" class="dj-btn dz-nav-cta">Try the app now</a>
+    <a href="#" target="_blank" rel="noopener" class="dz-nav-cta" data-install-link>
+      <span>Get the app</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="7" y="2" width="10" height="20" rx="2.2"/>
+        <line x1="11" y1="18.5" x2="13" y2="18.5"/>
+      </svg>
+    </a>
   </nav>
 
   <!-- ============== Hero ============== -->
   <section class="dz-hero">
     <div class="dz-hero-inner">
-      <h1>The bottleneck to your dance progress isn't classes.</h1>
-      <p class="dz-hero-sub">It's the clips you saved Thursday and forgot by Friday, and teacher feedback that's mostly fire emojis.</p>
-    </div>
-  </section>
-
-  <!-- ============== Bridge — "we built an app to fix this" + product video ============== -->
-  <section class="dz-section dz-bridge" id="why" style="background:var(--gold-light);">
-    <div class="dz-section-inner">
-      <h2>We built an app to fix this.</h2>
-      <div class="dz-bridge-video">
-        <div class="dj-phone dz-bridge-phone">
-          <div class="dj-phone-notch"></div>
-          <div class="dj-phone-screen">
-            <video src="assets/video/library-overview.mp4"
-                   poster="assets/video/library-overview-poster.jpg"
-                   muted playsinline loop autoplay preload="metadata"
-                   aria-label="Dance Journal app overview — browsing tutorials and practice sessions"></video>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============== Tie-together — frames the three features as one cohesive answer ============== -->
-  <section class="dz-tie">
-    <div class="dz-tie-inner">
-      <h2>The three things that turn watching into practice.</h2>
-      <ul class="dz-tie-chips">
-        <li>① Feedback with timestamp</li>
-        <li>② Compare side by side</li>
-        <li>③ Grouped by mastery</li>
+      <h1>Stuck at the same level?</h1>
+      <p class="dz-hero-sub">Dance Journal gives you the tools to turn your clips into real progress.</p>
+      <ul class="dz-hero-chips">
+        <li><a href="#feedback">Feedback</a></li>
+        <li><a href="#compare">Compare</a></li>
+        <li><a href="#practice">Track</a></li>
       </ul>
-      <div class="dz-tie-chevron" aria-hidden="true">↓</div>
     </div>
   </section>
 
@@ -73,7 +70,7 @@
               <div class="dj-phone-screen dz-app-screen">
                 <header class="dz-app-bar">
                   <span class="dz-app-bar-icon" aria-hidden="true">‹</span>
-                  <span class="dz-app-bar-title">Thu class</span>
+                  <span class="dz-app-bar-title"></span>
                   <span class="dz-app-bar-icon" aria-hidden="true">⋯</span>
                 </header>
                 <div class="dz-app-video">
@@ -126,14 +123,14 @@
               </div>
             </div>
             <div class="dz-float dz-try-stamp">
-              <span class="dj-ts gold lg">Try it →</span>
+              <span class="dj-ts gold lg">Live demo ↓</span>
             </div>
           </div>
         </div>
         <div class="dz-split-text">
-          <span class="dz-eyebrow">① Feedback with timestamp</span>
-          <h2><span class="nowrap">Get feedback at <span class="dj-ts gold">0:34</span>,</span><br><span class="nowrap">not "somewhere in there."</span></h2>
-          <p class="dz-sub">Privately share a practice clip with your teacher. Notes come back pinned to the frame — the kind nobody types in a group chat.</p>
+          <span class="dz-eyebrow">Feedback</span>
+          <h2>Stop losing the feedback that matters.</h2>
+          <p class="dz-sub">Save timestamped notes right on your videos, and revisit every detail when you practice.</p>
         </div>
       </div>
     </div>
@@ -144,9 +141,9 @@
     <div class="dz-section-inner">
       <div class="dz-split">
         <div class="dz-split-text">
-          <span class="dz-eyebrow">② Compare side by side</span>
-          <h2>See the gap, not "something feels off."</h2>
-          <p class="dz-sub">Lock your clip to the tutorial — they play in sync, beat for beat.</p>
+          <span class="dz-eyebrow">Compare</span>
+          <h2>See the gap between you and the version you want to be.</h2>
+          <p class="dz-sub">Play your clip in sync with a tutorial — or a past recording of yourself — and spot the differences.</p>
         </div>
         <div class="dz-split-visual">
           <div class="dz-phone-wrap dz-compare-wrap">
@@ -156,11 +153,11 @@
                 <img src="assets/shots/compare-screen.png" alt="Dance Journal compare screen">
               </div>
             </div>
-            <div class="dz-float dz-compare-chip-tl">
-              <span class="dz-chip"><span class="dot"></span>Synced at 0:12</span>
+            <div class="dz-float dz-compare-callout dz-compare-callout-top">
+              <div class="dz-callout-label"><span class="dz-callout-icon" aria-hidden="true">✅</span>Hands on shoulders</div>
             </div>
-            <div class="dz-float dz-compare-chip-br">
-              <span class="dz-chip gold">0.5× · loop</span>
+            <div class="dz-float dz-compare-callout dz-compare-callout-bot">
+              <div class="dz-callout-label"><span class="dz-callout-icon" aria-hidden="true">❌</span>Hands on rib cage</div>
             </div>
           </div>
         </div>
@@ -168,7 +165,7 @@
     </div>
   </section>
 
-  <!-- ============== Progress (phone-left, text-right + supporting detail) ============== -->
+  <!-- ============== Progress (phone-left, text-right) ============== -->
   <section class="dz-section" id="practice">
     <div class="dz-section-inner">
       <div class="dz-split text-right">
@@ -177,63 +174,15 @@
             <div class="dj-phone" style="width:300px;height:640px;">
               <div class="dj-phone-notch"></div>
               <div class="dj-phone-screen">
-                <img src="assets/shots/progress-screen.png" alt="Dance Journal library grouped by progress">
+                <img src="assets/shots/progress-screen.png" alt="Dance Journal library — clips grouped by stage (new, training, testing, mastered)">
               </div>
-            </div>
-            <div class="dz-float dz-progress-chip-tr">
-              <span class="dz-chip gold">49 moves · 8 mastered</span>
             </div>
           </div>
         </div>
         <div class="dz-split-text">
-          <span class="dz-eyebrow">③ Grouped by mastery</span>
-          <h2>Practice starts in one tap, not ten minutes of scrolling.</h2>
-          <p class="dz-sub">Clips are grouped by your progress — new → training → testing → mastered.</p>
-        </div>
-      </div>
-
-      <div class="dz-section-detail">
-        <div class="dz-stages">
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#9E9E9E;"></span>
-              <span class="stage-tag" style="color:#9E9E9E;">NEW</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">24</span>
-              <span class="stage-label">just filed</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#2196F3;"></span>
-              <span class="stage-tag" style="color:#2196F3;">TRAINING</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">12</span>
-              <span class="stage-label">in rotation</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#F59E0B;"></span>
-              <span class="stage-tag" style="color:#F59E0B;">TESTING</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">5</span>
-              <span class="stage-label">try at social</span>
-            </div>
-          </div>
-          <div class="dz-stage">
-            <div class="stage-top">
-              <span class="stage-dot" style="background:#10B981;"></span>
-              <span class="stage-tag" style="color:#10B981;">MASTERED</span>
-            </div>
-            <div class="stage-bottom">
-              <span class="stage-count">8</span>
-              <span class="stage-label">locked in</span>
-            </div>
-          </div>
+          <span class="dz-eyebrow">Progress</span>
+          <h2>Know where every move stands.</h2>
+          <p class="dz-sub">Each clip lives in a stage - new, training, testing, mastered - and moves forward as you do.</p>
         </div>
       </div>
     </div>
@@ -241,37 +190,15 @@
 
   <!-- ============== Final CTA ============== -->
   <section class="dz-final" id="download">
-    <h2><span class="gold-underline">Start your dance journal.</span></h2>
-    <div class="ctas">
-      <a href="https://apps.apple.com/app/id6751278168" target="_blank" rel="noopener" class="dj-storebadge">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M17.05 12.04c-.03-2.99 2.45-4.43 2.56-4.5-1.4-2.04-3.57-2.32-4.34-2.36-1.85-.19-3.61 1.09-4.55 1.09-.95 0-2.39-1.06-3.93-1.03-2.02.03-3.88 1.18-4.92 2.98-2.1 3.64-.54 9.02 1.51 11.97 1.01 1.44 2.2 3.06 3.76 3 1.52-.06 2.09-.98 3.93-.98 1.83 0 2.36.98 3.96.95 1.64-.03 2.67-1.46 3.66-2.91 1.16-1.67 1.63-3.3 1.65-3.39-.04-.02-3.17-1.21-3.2-4.82zM14.07 4.27c.83-1 1.39-2.4 1.24-3.79-1.2.05-2.65.8-3.51 1.81-.77.89-1.45 2.31-1.27 3.67 1.33.11 2.7-.68 3.54-1.69z"/>
-        </svg>
-        <span class="dj-sb-text">
-          <span class="dj-sb-small">Download</span>
-          <span class="dj-sb-big">App Store</span>
-        </span>
-      </a>
-      <a href="https://play.google.com/apps/testing/app.dancejournal.dancenotes" target="_blank" rel="noopener" class="dj-storebadge has-beta">
-        <svg viewBox="0 0 24 24">
-          <defs>
-            <linearGradient id="ps-a2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00D4FF"/><stop offset="1" stop-color="#0080FF"/></linearGradient>
-            <linearGradient id="ps-b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD200"/><stop offset="1" stop-color="#FFA000"/></linearGradient>
-            <linearGradient id="ps-c2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF5252"/><stop offset="1" stop-color="#D50000"/></linearGradient>
-            <linearGradient id="ps-d2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00C853"/><stop offset="1" stop-color="#00A040"/></linearGradient>
-          </defs>
-          <path fill="url(#ps-a2)" d="M3.6 1.7c-.4.3-.6.8-.6 1.4v17.8c0 .6.2 1.1.6 1.4l9.6-9.6z"/>
-          <path fill="url(#ps-b2)" d="M16.8 15.4l-3.6-3.6 3.6-3.6 4.4 2.5c1.1.6 1.1 2.2 0 2.8z"/>
-          <path fill="url(#ps-c2)" d="M13.2 11.8L3.6 1.7c.5-.4 1.2-.4 1.9 0l11.3 6.5z"/>
-          <path fill="url(#ps-d2)" d="M13.2 11.8l3.6 3.6L5.5 21.9c-.7.4-1.4.4-1.9 0z"/>
-        </svg>
-        <span class="dj-sb-text">
-          <span class="dj-sb-small">Download</span>
-          <span class="dj-sb-big">Google Play</span>
-        </span>
-        <span class="dj-sb-beta" aria-label="Android app in beta testing">Beta</span>
-      </a>
-    </div>
+    <h2>Start your dance journal.</h2>
+    <p class="dz-final-sub">Free to start. Available on iPhone and Android.</p>
+    <a href="#" target="_blank" rel="noopener" class="dz-final-cta" data-install-link>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="7" y="2" width="10" height="20" rx="2.2"/>
+        <line x1="11" y1="18.5" x2="13" y2="18.5"/>
+      </svg>
+      <span>Give Dance Journal a try</span>
+    </a>
   </section>
 
   <!-- ============== Footer ============== -->
@@ -284,6 +211,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=15" defer></script>
+  <script src="assets/landing.js?v=19" defer></script>
 </body>
 </html>

@@ -272,11 +272,51 @@
     // Try muted autoplay; fall back silently if the browser blocks it.
     var p = video.play();
     if (p && p.catch) p.catch(function () {});
+
+    // Once the user has poked at the demo, kill the wobble on the "Live demo →"
+    // stamp — its attention-grabbing job is done.
+    var wrap = root.parentElement;
+    var stamp = wrap && wrap.querySelector('.dz-try-stamp');
+    if (stamp) {
+      root.addEventListener('pointerdown', function () {
+        stamp.classList.add('dz-quiet');
+      }, { once: true });
+    }
+  }
+
+  // Point every [data-install-link] at the right store based on the platform class
+  // applied by the inline script in <head>. Apple ecosystem → App Store; everything
+  // else → Play Store.
+  function initInstallLinks() {
+    var APP_STORE_URL = 'https://apps.apple.com/app/id6751278168';
+    var PLAY_STORE_URL = 'https://play.google.com/apps/testing/app.dancejournal.dancenotes';
+    var html = document.documentElement;
+    var useAppStore = html.classList.contains('platform-ios') ||
+                      html.classList.contains('platform-macos');
+    var url = useAppStore ? APP_STORE_URL : PLAY_STORE_URL;
+    var links = document.querySelectorAll('[data-install-link]');
+    for (var i = 0; i < links.length; i++) links[i].setAttribute('href', url);
+  }
+
+  // Toggle .scrolled on the nav so the wordmark collapses and the CTA fills.
+  // Plain scroll listener (passive) is lighter than an IntersectionObserver sentinel
+  // for this single boolean — no element to insert, no observer to manage.
+  function initNavScroll() {
+    var nav = document.querySelector('.dz-nav');
+    if (!nav) return;
+    function onScroll() {
+      nav.classList.toggle('scrolled', window.scrollY > 8);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 
   function boot() {
     var els = document.querySelectorAll('[data-notebook]');
     for (var i = 0; i < els.length; i++) init(els[i]);
+
+    initInstallLinks();
+    initNavScroll();
   }
 
   if (document.readyState === 'loading') {
