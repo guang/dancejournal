@@ -301,7 +301,7 @@ a { color: inherit; }
 .dz-section.dark .dz-sub { color: rgba(255,255,255,.7); }
 .dz-section-inner { max-width: 1280px; margin: 0 auto; }
 .dz-section h2 {
-  font-size: 44px; line-height: 1.05; font-weight: 800;
+  font-size: 44px; line-height: 1.2; font-weight: 800;
   letter-spacing: -1px; margin: 0;
 }
 .dz-section h2 .nowrap { white-space: nowrap; }
@@ -311,6 +311,39 @@ a { color: inherit; }
   font-size: 18px; font-weight: 500; color: var(--secondary);
   line-height: 1.5; max-width: 540px; margin: 0;
 }
+/* Keyword highlight — inline SVG arc underline */
+.dz-highlight {
+  position: relative;
+  display: inline-block;
+}
+.dz-highlight-svg {
+  position: absolute;
+  left: 0;
+  bottom: 0.04em;
+  width: 100%;
+  height: 0.3em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Progress stage flowchart */
+.dz-progress-flow {
+  display: flex; align-items: center; gap: 5px;
+  flex-wrap: wrap;
+}
+.dz-flow-stage {
+  font-size: 13px; font-weight: 700; letter-spacing: .2px;
+  padding: 5px 9px; border-radius: 20px;
+  border: 1.5px solid currentColor; white-space: nowrap;
+}
+.dz-flow-new      { color: #6B7280; background: #F3F4F6; }
+.dz-flow-training { color: #2563EB; background: #EFF6FF; }
+.dz-flow-testing  { color: #D97706; background: #FFFBEB; }
+.dz-flow-mastered { color: #059669; background: #ECFDF5; }
+.dz-flow-arrow {
+  font-size: 14px; color: var(--muted); line-height: 1;
+}
+
 /* Inline timestamp chip used inside a heading — scales with the h2 */
 .dz-section h2 .dj-ts {
   font-size: .62em;
@@ -740,12 +773,12 @@ a { color: inherit; }
   .dz-final h2 { font-size: 40px; }
   .dz-footer { padding: 28px 40px; }
 
-  /* Stacked split: text always comes before image, centered to feel composed. */
+  /* Stacked split: text always comes before image, left-aligned. */
   .dz-split { grid-template-columns: 1fr; gap: 40px; }
-  .dz-split-text { text-align: center; align-items: center; }
-  .dz-split-text .dz-sub { margin-left: auto; margin-right: auto; }
+  .dz-split-text { text-align: left; align-items: flex-start; }
   .dz-split.text-right .dz-split-text   { order: 1; }
   .dz-split.text-right .dz-split-visual { order: 2; }
+  .dz-eyebrow { align-self: flex-start; }
 }
 
 @media (max-width: 768px) {
