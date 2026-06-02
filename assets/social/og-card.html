@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>OG card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --paper: #FFFFFF;
+      --ink: #000000;
+      --secondary: #4A4A4A;
+      --gold: #E3A018;
+      --gold-light: #FCEDC4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 1200px; height: 630px;
+      background: var(--bg); color: var(--ink);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 500; -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    .card {
+      width: 1200px; height: 630px;
+      padding: 64px 72px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      column-gap: 56px;
+      align-items: center;
+      position: relative;
+    }
+
+    /* subtle gold ambience top-right */
+    .card::before {
+      content: "";
+      position: absolute; top: -180px; right: -180px;
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .text { position: relative; z-index: 1; }
+
+    /* wordmark */
+    .wordmark {
+      display: inline-flex; align-items: center; gap: 14px;
+      margin-bottom: 56px;
+    }
+    .wordmark .mark {
+      width: 56px; height: 56px;
+      border: 2.5px solid var(--ink);
+      border-radius: 14px;
+      background: var(--paper);
+      overflow: hidden;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .wordmark .mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .wordmark .word {
+      font-size: 30px; font-weight: 800; letter-spacing: -0.6px;
+      color: var(--ink); line-height: 1;
+    }
+
+    /* headline */
+    h1 {
+      font-size: 88px; font-weight: 800;
+      letter-spacing: -2.4px; line-height: 1.04;
+      color: var(--ink);
+      margin-bottom: 44px;
+    }
+    h1 .accent {
+      text-decoration: underline;
+      text-decoration-thickness: 5px;
+      text-underline-offset: 8px;
+    }
+
+    /* chips */
+    .chips { display: flex; gap: 12px; flex-wrap: wrap; }
+    .chip {
+      font-size: 18px; font-weight: 600;
+      color: var(--ink);
+      background: #F2EFE7;
+      border: 2px solid var(--ink);
+      padding: 10px 22px;
+      border-radius: 999px;
+      line-height: 1;
+    }
+
+    /* phone */
+    .phone-wrap {
+      position: relative;
+      width: 360px; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .phone {
+      position: relative;
+      width: 300px; height: 540px;
+      background: #000;
+      border-radius: 42px;
+      padding: 10px;
+      border: 2.5px solid var(--ink);
+      box-shadow: 8px 8px 0 var(--ink);
+      transform: rotate(2deg);
+    }
+    .phone-notch {
+      position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      width: 80px; height: 18px; background: #000;
+      border-radius: 0 0 12px 12px; z-index: 2;
+    }
+    .phone-screen {
+      width: 100%; height: 100%;
+      background: var(--paper);
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+    .phone-screen img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      display: block;
+    }
+
+    /* domain */
+    .domain {
+      position: absolute;
+      bottom: 36px; left: 72px;
+      font-size: 17px; font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 0.2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="text">
+      <div class="wordmark">
+        <span class="mark"><img src="../icons/app-icon.png" alt=""></span>
+        <span class="word">Dance Journal</span>
+      </div>
+      <h1>Practice with<br><span class="accent">intention.</span></h1>
+      <div class="chips">
+        <span class="chip">Feedback</span>
+        <span class="chip">Compare</span>
+        <span class="chip">Progress</span>
+      </div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <img src="../shots/feedback-screen.png" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="domain">dancejournal.app</div>
+  </div>
+</body>
+</html>
