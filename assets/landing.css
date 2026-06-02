@@ -8,6 +8,8 @@
   --muted: #B1A7A6;
   --gold: #E3A018;
   --gold-light: #FCEDC4;
+  /* Canonical roundness for buttons + badges — matches the nav "Get the app" pill. */
+  --btn-radius: 10px;
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #F87171;
@@ -70,7 +72,7 @@ a { color: inherit; }
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   padding: 14px 22px;
   border: 2px solid var(--ink);
-  border-radius: 12px;
+  border-radius: var(--btn-radius);
   font-family: var(--font-sans);
   font-size: 16px; font-weight: 700;
   cursor: pointer; user-select: none;
@@ -175,14 +177,14 @@ a { color: inherit; }
 .dz-nav-cta {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 9px 16px;
-  border: 2px solid var(--ink); border-radius: 10px;
+  border: 2px solid var(--ink); border-radius: var(--btn-radius);
   background: transparent; color: var(--ink);
   font-family: var(--font-sans);
   font-size: 14px; font-weight: 700;
   text-decoration: none; cursor: pointer; user-select: none;
   transition: background 200ms ease, color 200ms ease, transform 120ms ease;
 }
-.dz-nav-cta svg { width: 15px; height: 15px; flex-shrink: 0; }
+.dz-nav-cta .dz-store-glyph svg { height: 15px; }
 .dz-nav-cta:hover  { background: var(--gold-light); }
 .dz-nav-cta:active { transform: translateY(1px); }
 .dz-nav.scrolled .dz-nav-cta { background: var(--gold); color: #fff; }
@@ -236,7 +238,7 @@ a { color: inherit; }
   background: #F2EFE7;
   border: 2px solid var(--ink);
   padding: 8px 18px;
-  border-radius: 999px;
+  border-radius: var(--btn-radius);
   line-height: 1;
   text-decoration: none;
   cursor: pointer;
@@ -251,27 +253,6 @@ a { color: inherit; }
 .dz-hero-chips a:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
-}
-
-/* Eyebrow pill above each feature h2 — single-word badge, neutral */
-.dz-eyebrow {
-  align-self: flex-start;
-  margin-bottom: 14px;
-  font-size: 13px; font-weight: 600;
-  color: var(--ink);
-  background: #F2EFE7;
-  border: 2px solid var(--ink);
-  padding: 6px 14px;
-  border-radius: 999px;
-  line-height: 1;
-  display: inline-block;
-}
-
-/* On dark sections, flip to outline-pill style */
-.dz-section.dark .dz-eyebrow {
-  color: #fff;
-  background: transparent;
-  border-color: #fff;
 }
 
 .dz-phone-wrap { position: relative; display: inline-block; }
@@ -333,7 +314,7 @@ a { color: inherit; }
 }
 .dz-flow-stage {
   font-size: 13px; font-weight: 700; letter-spacing: .2px;
-  padding: 5px 9px; border-radius: 20px;
+  padding: 5px 9px; border-radius: var(--btn-radius);
   border: 1.5px solid currentColor; white-space: nowrap;
 }
 .dz-flow-new      { color: #6B7280; background: #F3F4F6; }
@@ -667,7 +648,7 @@ a { color: inherit; }
   display: inline-flex; align-items: center; gap: 8px;
   padding: 8px 14px;
   background: #fff; color: var(--ink);
-  border: 2px solid var(--ink); border-radius: 12px;
+  border: 2px solid var(--ink); border-radius: var(--btn-radius);
   font-size: 13px; font-weight: 700;
   box-shadow: 3px 3px 0 #000;
 }
@@ -687,7 +668,7 @@ a { color: inherit; }
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 14px;
   background: #fff; color: var(--ink);
-  border: 2px solid var(--ink); border-radius: 12px;
+  border: 2px solid var(--ink); border-radius: var(--btn-radius);
   font-size: 13px; font-weight: 700; line-height: 1.2;
   box-shadow: 3px 3px 0 var(--ink);
   white-space: nowrap;
@@ -736,13 +717,25 @@ a { color: inherit; }
   display: inline-flex; align-items: center; gap: 10px;
   padding: 14px 26px;
   background: #fff; color: var(--ink);
-  border: 2px solid #fff; border-radius: 999px;
+  border: 2px solid #fff; border-radius: var(--btn-radius);
   font-family: var(--font-sans);
   font-size: 16px; font-weight: 700;
   text-decoration: none; cursor: pointer;
   transition: transform 120ms ease, background 180ms ease, border-color 180ms ease;
 }
-.dz-final-cta svg { width: 18px; height: 18px; flex-shrink: 0; }
+.dz-final-cta .dz-store-glyph svg { height: 19px; }
+
+/* Store glyph slot (platform-aware install buttons). Sized by height with auto
+   width so the Apple mark keeps its taller-than-wide aspect; inherits currentColor
+   to sit cleanly on the button's shifting backgrounds (nav transparent→gold,
+   final white→gold). */
+.dz-store-glyph { display: inline-flex; align-items: center; }
+.dz-store-glyph svg { display: block; width: auto; flex-shrink: 0; }
+/* Dual install (desktop / unknown platform): two separate store buttons. */
+.dz-install-dual { display: inline-flex; align-items: center; gap: 12px; }
+.dz-install-lead { font-size: 14px; font-weight: 700; color: var(--ink); }
+/* Final CTA sits on a dark section — lead text needs to read light. */
+.dz-final .dz-install-lead { font-size: 16px; color: #fff; }
 .dz-final-cta:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
 .dz-final-cta:active { transform: translateY(1px); }
 .dz-final-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
@@ -765,7 +758,6 @@ a { color: inherit; }
   .dz-hero { padding: 80px 40px 88px; }
   .dz-hero h1 { font-size: 56px; letter-spacing: -1.4px; }
   .dz-hero-sub { font-size: 20px; }
-  .dz-eyebrow { align-self: center; }
   .dz-nav { padding: 20px 40px; }
   .dz-section { padding: 80px 40px; }
   .dz-section h2 { font-size: 36px; letter-spacing: -.8px; }
@@ -778,7 +770,6 @@ a { color: inherit; }
   .dz-split-text { text-align: left; align-items: flex-start; }
   .dz-split.text-right .dz-split-text   { order: 1; }
   .dz-split.text-right .dz-split-visual { order: 2; }
-  .dz-eyebrow { align-self: flex-start; }
 }
 
 @media (max-width: 768px) {
@@ -795,7 +786,6 @@ a { color: inherit; }
   .dz-hero-chips { gap: 8px; margin-top: 24px; }
   .dz-hero-chips a { font-size: 12px; padding: 7px 14px; }
 
-  .dz-eyebrow { font-size: 11px; padding: 5px 12px; }
   .dz-try-stamp { top: -8px; right: -4px; }
   /* Mobile: the phone column has no room to the sides for outside-the-phone
      badges, so overlay them in opposite corners — away from the hand areas
