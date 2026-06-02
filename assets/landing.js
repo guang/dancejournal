@@ -306,7 +306,12 @@
     var GESTURES = ['pointerdown', 'touchstart', 'scroll', 'keydown'];
     function onFirstGesture() {
       tryAutoplay();
-      if (autoplayStarted) {
+      // Mirror tryAutoplay()'s guard: video.paused flips to false synchronously
+      // the moment play() is called (and is already false if the HTML autoplay
+      // attribute started playback before the JS ran). Checking autoplayStarted
+      // alone would miss the HTML-autoplay case (it's never set) and would lag a
+      // gesture behind in the async-promise case (it's set in a microtask).
+      if (autoplayStarted || !video.paused) {
         GESTURES.forEach(function (ev) {
           window.removeEventListener(ev, onFirstGesture);
         });
