@@ -274,9 +274,47 @@
       }, 6000);
     }
 
-    // Try muted autoplay; fall back silently if the browser blocks it.
-    var p = video.play();
-    if (p && p.catch) p.catch(function () {});
+    // Muted autoplay, made self-healing for in-app browsers (Instagram /
+    // Facebook WebView, etc.). A single early play() is fragile there: the
+    // page may still be backgrounded/prerendered when boot runs, no frames are
+    // buffered yet on a cold load, or the WebView gates even muted autoplay
+    // behind a gesture. So instead of one fire-once attempt, retry on every
+    // signal that playback might now be allowed, until it actually starts.
+    var autoplayStarted = false;
+    function tryAutoplay() {
+      if (autoplayStarted || !video.paused) return;
+      var p = video.play();
+      if (p && p.then) {
+        p.then(function () { autoplayStarted = true; })
+         .catch(function () { /* stay armed; another trigger will retry */ });
+      } else {
+        autoplayStarted = true;
+      }
+    }
+
+    // 1) Now (covers the normal foreground case).
+    tryAutoplay();
+    // 2) When media data is actually ready (covers cold-cache / preload races).
+    video.addEventListener('loadeddata', tryAutoplay);
+    video.addEventListener('canplay', tryAutoplay);
+    // 3) When the tab becomes visible (covers prerender / backgrounded loads).
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) tryAutoplay();
+    });
+    // 4) First user interaction anywhere — the bulletproof gesture fallback.
+    //    Listeners remove themselves once playback is confirmed running.
+    var GESTURES = ['pointerdown', 'touchstart', 'scroll', 'keydown'];
+    function onFirstGesture() {
+      tryAutoplay();
+      if (autoplayStarted) {
+        GESTURES.forEach(function (ev) {
+          window.removeEventListener(ev, onFirstGesture);
+        });
+      }
+    }
+    GESTURES.forEach(function (ev) {
+      window.addEventListener(ev, onFirstGesture, { passive: true });
+    });
 
     // Once the user has poked at the demo, kill the wobble on the "Live demo →"
     // stamp — its attention-grabbing job is done.
