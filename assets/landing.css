@@ -246,10 +246,19 @@ a { color: inherit; }
 .dz-download-btn:active { transform: translateY(1px); box-shadow: 1px 1px 0 var(--gold); }
 .dz-download-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
+/* Muted lead that frames the chips below as the "how it works" preview, kept
+   subordinate to the download CTA above it (small, secondary color, tracked-out). */
+.dz-hero-chips-lead {
+  font-family: var(--font-sans);
+  font-size: 14px; font-weight: 600;
+  color: var(--muted);
+  margin: 30px 0 0;
+}
+
 /* Hero chips — pill-anchors below the hero sub that preview the three feature sections. */
 .dz-hero-chips {
   list-style: none; padding: 0;
-  margin: 32px 0 0;
+  margin: 12px 0 0;
   display: flex; flex-wrap: wrap; justify-content: center;
   gap: 10px;
 }
@@ -812,7 +821,8 @@ a { color: inherit; }
   .dz-hero-sub { font-size: 17px; margin-top: 18px; }
   .dz-hero-cta { gap: 10px; margin-top: 22px; }
   .dz-download-btn { font-size: 14px; padding: 11px 18px; }
-  .dz-hero-chips { gap: 8px; margin-top: 24px; }
+  .dz-hero-chips-lead { font-size: 12px; margin-top: 24px; }
+  .dz-hero-chips { gap: 8px; margin-top: 10px; }
   .dz-hero-chips a { font-size: 12px; padding: 7px 14px; }
 
   .dz-try-stamp { top: -8px; right: -4px; }
