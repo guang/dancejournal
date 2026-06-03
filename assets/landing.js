@@ -421,8 +421,23 @@
   function initNavScroll() {
     var nav = document.querySelector('.dz-nav');
     if (!nav) return;
+    // Hysteresis: separate on/off thresholds leave a dead zone between them so the
+    // class can't rapidly flip when the scroll position parks near the trigger.
+    // .scrolled shrinks the sticky nav's padding (~12px of height), and that layout
+    // shift makes the browser's scroll anchoring nudge scrollY by a few px — enough
+    // to recross a single threshold and cause a visible white↔gold flicker. The gap
+    // (24px) comfortably exceeds that nudge.
+    var ON = 32, OFF = 8;
+    var scrolled = false;
     function onScroll() {
-      nav.classList.toggle('scrolled', window.scrollY > 8);
+      var y = window.scrollY;
+      if (!scrolled && y > ON) {
+        scrolled = true;
+        nav.classList.add('scrolled');
+      } else if (scrolled && y < OFF) {
+        scrolled = false;
+        nav.classList.remove('scrolled');
+      }
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
