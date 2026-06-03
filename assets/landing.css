@@ -224,10 +224,41 @@ a { color: inherit; }
   text-wrap: pretty;
 }
 
+/* Hero download buttons — the primary call to action under the sub. Solid ink with a
+   gold hard-shadow to match the neo-brutalist badges; one or two buttons per platform. */
+.dz-hero-cta {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 12px; margin: 28px 0 0;
+}
+.dz-download-btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 12px 22px;
+  background: var(--ink); color: #fff;
+  border: 2px solid var(--ink); border-radius: var(--btn-radius);
+  font-family: var(--font-sans);
+  font-size: 15px; font-weight: 700;
+  text-decoration: none; cursor: pointer; user-select: none;
+  box-shadow: 3px 3px 0 var(--gold);
+  transition: transform .12s ease, box-shadow .15s ease;
+}
+.dz-download-btn .dz-store-glyph svg { height: 17px; }
+.dz-download-btn:hover  { transform: translateY(-1px); box-shadow: 4px 4px 0 var(--gold); }
+.dz-download-btn:active { transform: translateY(1px); box-shadow: 1px 1px 0 var(--gold); }
+.dz-download-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* Muted lead that frames the chips below as the "how it works" preview, kept
+   subordinate to the download CTA above it (small, secondary color, tracked-out). */
+.dz-hero-chips-lead {
+  font-family: var(--font-sans);
+  font-size: 14px; font-weight: 600;
+  color: var(--muted);
+  margin: 30px 0 0;
+}
+
 /* Hero chips — pill-anchors below the hero sub that preview the three feature sections. */
 .dz-hero-chips {
   list-style: none; padding: 0;
-  margin: 32px 0 0;
+  margin: 12px 0 0;
   display: flex; flex-wrap: wrap; justify-content: center;
   gap: 10px;
 }
@@ -724,6 +755,11 @@ a { color: inherit; }
   transition: transform 120ms ease, background 180ms ease, border-color 180ms ease;
 }
 .dz-final-cta .dz-store-glyph svg { height: 19px; }
+/* Holds the one-or-two platform-aware download buttons, centered in the dark CTA. */
+.dz-final-ctas {
+  display: inline-flex; flex-wrap: wrap;
+  align-items: center; justify-content: center; gap: 14px;
+}
 
 /* Store glyph slot (platform-aware install buttons). Sized by height with auto
    width so the Apple mark keeps its taller-than-wide aspect; inherits currentColor
@@ -783,7 +819,10 @@ a { color: inherit; }
   .dz-hero { padding: 56px 20px 64px; }
   .dz-hero h1 { font-size: 40px; letter-spacing: -1px; }
   .dz-hero-sub { font-size: 17px; margin-top: 18px; }
-  .dz-hero-chips { gap: 8px; margin-top: 24px; }
+  .dz-hero-cta { gap: 10px; margin-top: 22px; }
+  .dz-download-btn { font-size: 14px; padding: 11px 18px; }
+  .dz-hero-chips-lead { font-size: 12px; margin-top: 24px; }
+  .dz-hero-chips { gap: 8px; margin-top: 10px; }
   .dz-hero-chips a { font-size: 12px; padding: 7px 14px; }
 
   .dz-try-stamp { top: -8px; right: -4px; }
@@ -813,6 +852,7 @@ a { color: inherit; }
   .dz-final { padding: 80px 20px; }
   .dz-final h2 { font-size: 32px; letter-spacing: -.6px; }
   .dz-final-sub { font-size: 15px; margin-top: 24px; }
+  .dz-final-ctas { gap: 10px; }
   .dz-final-cta { padding: 12px 22px; font-size: 15px; }
 
   .dz-footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
