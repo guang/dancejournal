@@ -17,7 +17,7 @@
   <meta name="twitter:description" content="Turn practice clips into real progress. Save timestamped feedback, compare videos side-by-side, and track every move from new to mastered.">
   <meta name="twitter:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=67">
+  <link rel="stylesheet" href="assets/landing.css?v=68">
   <script>
     // Runs before body paints so the install-link href can be set before the user clicks.
     // Apple ecosystem (iOS/iPadOS/macOS) → App Store; everything else → Play Store.
@@ -56,7 +56,10 @@
   <section class="dz-hero">
     <div class="dz-hero-inner">
       <h1>Stuck at the same level?</h1>
-      <p class="dz-hero-sub">Dance Journal helps turn your clips into real progress.</p>
+      <p class="dz-hero-sub">Dance Journal turns your videos into real progress.</p>
+      <!-- Platform-aware download buttons (built by landing.js): one store on a known
+           phone, both on desktop / ambiguous platforms. -->
+      <div class="dz-hero-cta" data-download-cta data-btn-class="dz-download-btn"></div>
       <ul class="dz-hero-chips">
         <li><a href="#feedback">Feedback</a></li>
         <li><a href="#compare">Compare</a></li>
@@ -198,10 +201,8 @@
   <!-- ============== Final CTA ============== -->
   <section class="dz-final" id="download">
     <h2>Practice with intention.</h2>
-    <a href="#" target="_blank" rel="noopener" class="dz-final-cta" data-install-link>
-      <span class="dz-store-glyph" data-store-glyph aria-hidden="true"></span>
-      <span>Give Dance Journal a try</span>
-    </a>
+    <!-- Same platform-aware download buttons as the hero, styled for the dark CTA. -->
+    <div class="dz-final-ctas" data-download-cta data-btn-class="dz-final-cta"></div>
     <p class="dz-final-sub">Available on iPhone and Android (beta).</p>
   </section>
 
@@ -215,6 +216,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=24" defer></script>
+  <script src="assets/landing.js?v=25" defer></script>
 </body>
 </html>

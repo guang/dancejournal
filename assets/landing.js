@@ -387,6 +387,34 @@
     }
   }
 
+  // Build the explicit "Download for iPhone / Android" buttons into any
+  // [data-download-cta] container (hero + final CTA). Mirrors initInstallLinks'
+  // platform detection: a known phone shows only its own store; desktop / unknown
+  // platforms are ambiguous, so we show both. Each button's styling comes from the
+  // container's data-btn-class (dz-download-btn in the hero, dz-final-cta below).
+  function initDownloadCtas() {
+    var html = document.documentElement;
+    var mobileApple   = html.classList.contains('platform-ios');
+    var mobileAndroid = html.classList.contains('platform-android');
+    var groups = document.querySelectorAll('[data-download-cta]');
+
+    for (var i = 0; i < groups.length; i++) {
+      var box = groups[i];
+      var btnClass = box.getAttribute('data-btn-class') || 'dz-download-btn';
+      var iphone  = makeStoreButton(btnClass, APP_STORE_URL,  APPLE_SVG,   'Download for iPhone');
+      var android = makeStoreButton(btnClass, PLAY_STORE_URL, ANDROID_SVG, 'Download for Android');
+
+      if (mobileApple) {
+        box.appendChild(iphone);
+      } else if (mobileAndroid) {
+        box.appendChild(android);
+      } else {
+        box.appendChild(iphone);
+        box.appendChild(android);
+      }
+    }
+  }
+
   // Toggle .scrolled on the nav so the wordmark collapses and the CTA fills.
   // Plain scroll listener (passive) is lighter than an IntersectionObserver sentinel
   // for this single boolean — no element to insert, no observer to manage.
@@ -405,6 +433,7 @@
     for (var i = 0; i < els.length; i++) init(els[i]);
 
     initInstallLinks();
+    initDownloadCtas();
     initNavScroll();
   }
 
