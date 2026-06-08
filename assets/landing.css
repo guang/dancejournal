@@ -857,3 +857,57 @@ a { color: inherit; }
 
   .dz-footer { padding: 24px 20px; flex-direction: column; gap: 12px; text-align: center; }
 }
+
+/* ============== Content / legal pages (Privacy · Terms · Support · Delete account) ==============
+   These pages are plain HTML (no per-element classes), so everything is styled via the
+   .dz-doc wrapper to inherit the landing page's type system. The first <h1> is the page
+   title; the <p> right after it is treated as the "Last updated" line. */
+.dz-doc {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 72px 24px 96px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--secondary);
+}
+.dz-doc h1, .dz-doc h2, .dz-doc h3 {
+  color: var(--ink);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+.dz-doc > h1:first-child {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1.2px;
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+.dz-doc h2 { font-size: 26px; font-weight: 700; margin: 48px 0 12px; }
+.dz-doc h3 { font-size: 20px; font-weight: 700; margin: 32px 0 8px; }
+.dz-doc p  { margin: 0 0 16px; }
+.dz-doc ul, .dz-doc ol { margin: 0 0 16px; padding-left: 24px; }
+.dz-doc li { margin: 6px 0; }
+.dz-doc li > p { margin: 0 0 8px; }
+.dz-doc a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.dz-doc a:hover { color: #C98A12; }
+.dz-doc strong { color: var(--ink); font-weight: 700; }
+/* "Last updated" line directly under the title. */
+.dz-doc > h1:first-child + p {
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .dz-doc { padding: 48px 20px 72px; font-size: 16px; }
+  .dz-doc > h1:first-child { font-size: 32px; letter-spacing: -.8px; }
+  .dz-doc h2 { font-size: 22px; }
+  .dz-doc h3 { font-size: 18px; }
+}
