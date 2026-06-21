@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dance Journal — What's New</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="What's new in Dance Journal — the latest features and improvements for partner dancers refining their practice.">
+  <meta property="og:title" content="Dance Journal — What's New">
+  <meta property="og:description" content="The latest features and improvements in Dance Journal.">
+  <meta name="theme-color" content="#FAFAFA">
+  <link rel="stylesheet" href="assets/landing.css?v=71">
+  <script>
+    // Mirrors index.html: set the platform class before paint so [data-install-link]
+    // resolves to the right store. Apple ecosystem → App Store; everything else → Play.
+    (function () {
+      var ua = navigator.userAgent;
+      var platform = navigator.platform || '';
+      var isIOS = /iPhone|iPad|iPod/.test(ua) ||
+                  (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      var isAndroid = /Android/.test(ua);
+      var isMac = !isIOS && /Mac/.test(platform);
+      var cls = isIOS ? 'platform-ios'
+              : isAndroid ? 'platform-android'
+              : isMac ? 'platform-macos'
+              : 'platform-other';
+      document.documentElement.classList.add(cls);
+    })();
+  </script>
+
+  <!-- Changelog-specific styles. Kept inline (a single one-off page) and built
+       entirely on landing.css's design tokens so it stays in lockstep with the
+       rest of the site: 2px ink borders, gold accents, hard offset shadows. -->
+  <style>
+    .cl-hero {
+      padding: 88px 64px 72px;
+      text-align: center;
+      border-bottom: 2px solid var(--ink);
+      background-image: radial-gradient(var(--ink) 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
+    }
+    .cl-hero h1 {
+      font-size: 52px; line-height: 1.04; font-weight: 800;
+      letter-spacing: -1.5px; margin: 0; color: var(--ink);
+    }
+    .cl-hero p {
+      font-size: 20px; font-weight: 500; color: var(--secondary);
+      line-height: 1.5; margin: 20px auto 0; max-width: 560px;
+    }
+
+    .cl-list {
+      max-width: 760px; margin: 0 auto;
+      padding: 72px 24px 96px;
+      display: flex; flex-direction: column; gap: 40px;
+    }
+    .cl-entry {
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 18px;
+      box-shadow: 4px 4px 0 var(--ink);
+      padding: 32px 36px;
+    }
+    .cl-meta {
+      display: flex; align-items: center; gap: 14px;
+      flex-wrap: wrap; margin-bottom: 18px;
+    }
+    .cl-ver {
+      display: inline-block;
+      background: var(--gold); color: #fff;
+      font-size: 15px; font-weight: 800; letter-spacing: .3px;
+      padding: 5px 12px; border-radius: 8px;
+    }
+    .cl-date {
+      font-size: 14px; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .6px;
+    }
+    .cl-entry h2 {
+      font-size: 25px; line-height: 1.2; font-weight: 800;
+      letter-spacing: -.4px; margin: 0 0 12px; color: var(--ink);
+    }
+    .cl-entry p {
+      font-size: 17px; font-weight: 500; color: var(--secondary);
+      line-height: 1.55; margin: 0 0 16px;
+    }
+    .cl-entry ul {
+      margin: 0; padding: 0; list-style: none;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .cl-entry li {
+      position: relative; padding-left: 26px;
+      font-size: 16px; font-weight: 500; color: var(--ink);
+      line-height: 1.5;
+    }
+    .cl-entry li::before {
+      content: ""; position: absolute; left: 0; top: 9px;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--gold); border: 2px solid var(--ink);
+    }
+    .cl-entry li strong { font-weight: 800; }
+
+    @media (max-width: 640px) {
+      .cl-hero { padding: 64px 24px 52px; }
+      .cl-hero h1 { font-size: 38px; letter-spacing: -1px; }
+      .cl-hero p { font-size: 18px; }
+      .cl-list { padding: 48px 18px 72px; gap: 28px; }
+      .cl-entry { padding: 24px 22px; box-shadow: 3px 3px 0 var(--ink); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============== Nav (verbatim from index.html) ============== -->
+  <nav class="dz-nav">
+    <a class="dj-wordmark dz-nav-wm" href="./" aria-label="Dance Journal home">
+      <span class="dj-mark dj-mark-img">
+        <img src="assets/icons/app-icon.png" alt="" width="40" height="40" loading="eager">
+      </span>
+      <span class="dj-word">Dance Journal</span>
+    </a>
+    <a href="#" target="_blank" rel="noopener" class="dz-nav-cta" data-install-link>
+      <span class="dz-store-glyph" data-store-glyph aria-hidden="true"></span>
+      <span>Get the app</span>
+    </a>
+  </nav>
+
+  <!-- ============== Hero ============== -->
+  <section class="cl-hero">
+    <h1>What's New</h1>
+    <p>Every release of Dance Journal, and what it means for your practice.</p>
+  </section>
+
+  <!-- ============== Changelog entries (newest first) ============== -->
+  <section class="cl-list">
+    <!-- DJ_CHANGELOG_INSERT_BELOW: the dj-release skill (Phase 8) prepends each new
+         <article class="cl-entry"> directly under this marker, keeping newest first. -->
+
+    <article class="cl-entry">
+      <div class="cl-meta">
+        <span class="cl-ver">v0.10.0</span>
+        <span class="cl-date">June 19, 2026</span>
+      </div>
+      <h2>Set your goals, sharpen your feedback</h2>
+      <p>This update helps you aim your practice and get more out of every piece of feedback.</p>
+      <ul>
+        <li><strong>Goals</strong> — set personal dance goals and watch your progress build toward them.</li>
+        <li><strong>Feedback, all in one place</strong> — teacher feedback and your own notes now live together on each clip, with a redesigned review flow.</li>
+        <li><strong>Draw on your videos</strong> — mark up your take recordings with on-screen annotations as you study a move.</li>
+        <li><strong>Practice progression</strong> — see how a move has developed across your sessions.</li>
+        <li><strong>Dial in the tempo</strong> — a finer speed slider slows a move down to exactly the right pace.</li>
+      </ul>
+    </article>
+
+    <article class="cl-entry">
+      <div class="cl-meta">
+        <span class="cl-ver">v0.9.0</span>
+        <span class="cl-date">June 1, 2026</span>
+      </div>
+      <h2>Bring clips in from anywhere</h2>
+      <p>This release opens your library up to the videos you already learn from — and makes it faster to get back to them.</p>
+      <ul>
+        <li><strong>Import from Instagram</strong> — paste a reel link and it lands in your library, ready to study.</li>
+        <li><strong>Share to Dance Notes</strong> — send a clip straight in from Instagram's share sheet.</li>
+        <li><strong>Recent rails</strong> — jump right back to what you were just working on, in both Library and Discover.</li>
+        <li><strong>Streamlined Discover</strong> — a cleaner split between tutorials and your own practice recordings.</li>
+      </ul>
+    </article>
+
+    <article class="cl-entry">
+      <div class="cl-meta">
+        <span class="cl-ver">v0.8.2</span>
+        <span class="cl-date">May 29, 2026</span>
+      </div>
+      <h2>Sharper feedback, clearer progress</h2>
+      <p>This update is all about making your clips easier to compare, your feedback easier to refine, and your library easier to move through.</p>
+      <ul>
+        <li><strong>Compare and link in one flow</strong> — line your clip up against a tutorial or a past recording without breaking your stride.</li>
+        <li><strong>Edit your feedback notes</strong> — long-press any message in a review thread to fix a typo or reword a note.</li>
+        <li><strong>Tidier clip controls</strong> — delete moved to the top-level options menu, with a smoother progress-stage picker.</li>
+        <li><strong>Discover, renamed and refreshed</strong> — Home is now Discover, with a clearer split between tutorials and your own practice recordings.</li>
+        <li><strong>Follow your dance friends</strong> — follow notifications, an "added you" banner, and quick invite sharing.</li>
+      </ul>
+    </article>
+
+  </section>
+
+  <!-- ============== Footer ============== -->
+  <footer class="dz-footer">
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="changelog.html">What's New</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="support.html">Support</a>
+    </div>
+    <div class="copyright">© 2026 Dance Journal</div>
+  </footer>
+
+  <script src="assets/landing.js?v=26" defer></script>
+</body>
+</html>
