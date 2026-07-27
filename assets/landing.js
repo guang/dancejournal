@@ -333,7 +333,7 @@
   }
 
   var APP_STORE_URL = 'https://apps.apple.com/app/id6751278168';
-  var PLAY_STORE_URL = 'https://play.google.com/apps/testing/app.dancejournal.dancenotes';
+  var PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.dancejournal.dancenotes';
 
   // Monochrome brand glyphs — inherit currentColor so they read correctly on the
   // button's shifting backgrounds (nav transparent→gold, final white→gold).
