@@ -130,10 +130,23 @@ a { color: inherit; }
   position: relative;
   width: 100%; height: 100%;
 }
-.dj-phone-screen img,
-.dj-phone-screen video {
+.dj-phone-screen img {
   display: block; width: 100%; height: 100%;
   object-fit: cover; object-position: top center;
+}
+/* The source captures are iOS screen recordings, which bake a red recording
+   pill into the top-left corner of every frame. The pill is shallow (a few
+   percent of the frame height) but some screens have real text flush with
+   the left edge below it, so only crop off the top - a left shift too would
+   cut into that text. Oversize height only and shift up within the
+   (overflow:hidden) screen so the pill sits above the visible crop - cheaper
+   than re-exporting, and invisible unless you go looking. */
+.dj-phone-screen video {
+  display: block;
+  position: absolute;
+  width: 100%; height: 122%;
+  top: -12%; left: 0;
+  object-fit: cover;
 }
 .dj-phone-notch {
   position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
@@ -148,6 +161,7 @@ a { color: inherit; }
 .dz-nav {
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; row-gap: 10px;
   padding: 18px 64px;
   border-bottom: 2px solid var(--ink);
   background: var(--bg);
@@ -731,8 +745,8 @@ a { color: inherit; }
 .dz-store-glyph { display: inline-flex; align-items: center; }
 .dz-store-glyph svg { display: block; width: auto; flex-shrink: 0; }
 /* Dual install (desktop / unknown platform): two separate store buttons. */
-.dz-install-dual { display: inline-flex; align-items: center; gap: 12px; }
-.dz-install-lead { font-size: 14px; font-weight: 700; color: var(--ink); }
+.dz-install-dual { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.dz-install-lead { font-size: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; }
 /* Final CTA sits on a dark section — lead text needs to read light. */
 .dz-final .dz-install-lead { font-size: 16px; color: #fff; }
 .dz-final-cta:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
@@ -815,6 +829,10 @@ a { color: inherit; }
   .dz-nav-wm .dj-mark { width: 34px; height: 34px; border-radius: 9px; }
   .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
   .dz-nav-cta svg { width: 13px; height: 13px; }
+  /* Ambiguous-platform fallback (two store pills + lead text) is too wide next
+     to the wordmark on a phone-width viewport — the label is redundant with
+     the pills' own "iOS"/"Android" text, so drop it first before anything wraps. */
+  .dz-nav .dz-install-lead { display: none; }
   .dz-hero { padding: 56px 20px 64px; }
   .dz-hero h1 { font-size: 40px; letter-spacing: -1px; }
   .dz-hero-sub { font-size: 17px; margin-top: 18px; }
