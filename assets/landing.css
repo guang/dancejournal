@@ -130,7 +130,8 @@ a { color: inherit; }
   position: relative;
   width: 100%; height: 100%;
 }
-.dj-phone-screen img {
+.dj-phone-screen img,
+.dj-phone-screen video {
   display: block; width: 100%; height: 100%;
   object-fit: cover; object-position: top center;
 }
@@ -320,13 +321,15 @@ a { color: inherit; }
   line-height: 1.5; margin: 0;
 }
 .dz-tl-shot { grid-area: shot; display: flex; align-items: center; justify-content: center; }
-.dz-tl-shot .dj-phone { width: 260px; height: 556px; }
+/* Aspect matches the source screenshots (~0.49–0.51) rather than a real iPhone
+   frame (~0.46) — object-fit:cover was overcropping the sides on form-heavy
+   screens (dropdown chevrons, chip close buttons) that sit close to the edge. */
+.dz-tl-shot .dj-phone { width: 260px; height: 520px; }
 
 /* Bonus row — must read as "the loop ended, this is extra" before a word is
    read: distinct (blue) badge, a question for a title, extra gap above. */
 .dz-tl-bonus { margin-top: 40px; padding-top: 56px; }
 .dz-tl-bonus .dz-tl-num { background: #2563EB; font-size: 22px; }
-.dz-tl-bonus .dz-tl-shot .dz-app-phone { width: min(280px, 100%); }
 
 /* Section */
 .dz-section {
@@ -799,10 +802,9 @@ a { color: inherit; }
 
   .dz-tl-txt h3 { font-size: 21px; }
   .dz-tl-txt p { font-size: 15px; }
-  .dz-tl-shot .dj-phone { width: min(260px, 100%); height: auto; aspect-ratio: 300 / 640; }
+  .dz-tl-shot .dj-phone { width: min(260px, 100%); height: auto; aspect-ratio: 1 / 2; }
 
   .dz-tl-bonus { margin-top: 24px; padding-top: 36px; }
-  .dz-tl-bonus .dz-tl-shot .dz-app-phone { height: auto; aspect-ratio: 308 / 740; }
 }
 
 @media (max-width: 768px) {

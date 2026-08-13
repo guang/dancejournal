@@ -17,7 +17,7 @@
   <meta name="twitter:description" content="Actually reach your dance goals. Save a clip from Instagram or your camera roll, loop the hard part, compare side by side, pin notes to the exact frame, and track every move from Learning to Got it.">
   <meta name="twitter:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=72">
+  <link rel="stylesheet" href="assets/landing.css?v=73">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
   <!-- End Cloudflare Web Analytics -->
@@ -58,8 +58,8 @@
   <!-- ============== Hero ============== -->
   <section class="dz-hero">
     <div class="dz-hero-inner">
-      <h1>Actually reach your dance goals.</h1>
-      <p class="dz-hero-sub">The practice app for dance nerds 🤓</p>
+      <h1>(actually) reach your dance goals.</h1>
+      <p class="dz-hero-sub">Dance Journal is the training app for dance nerds 🤓</p>
       <!-- Platform-aware download buttons (built by landing.js): one store on a known
            phone, both on desktop / ambiguous platforms. -->
       <div class="dz-hero-cta" data-download-cta data-btn-class="dz-download-btn"></div>
@@ -83,7 +83,9 @@
             <div class="dj-phone">
               <div class="dj-phone-notch"></div>
               <div class="dj-phone-screen">
-                <img src="assets/shots/step-1-import.jpg" alt="Create Clip screen — saving an Instagram tutorial into a goal">
+                <video src="assets/video/step-1-import.mp4?v=1" poster="assets/video/step-1-import-poster.jpg?v=1"
+                       muted playsinline webkit-playsinline loop autoplay preload="auto"
+                       aria-label="Sharing an Instagram tutorial into the Create Clip screen"></video>
               </div>
             </div>
           </div>
@@ -100,7 +102,9 @@
             <div class="dj-phone">
               <div class="dj-phone-notch"></div>
               <div class="dj-phone-screen">
-                <img src="assets/shots/step-2-goal.jpg" alt="Home screen showing the August Bachata Footwork goal, not started, ends Aug 31">
+                <video src="assets/video/step-2-goal.mp4?v=1" poster="assets/video/step-2-goal-poster.jpg?v=1"
+                       muted playsinline webkit-playsinline loop autoplay preload="auto"
+                       aria-label="Adding a clip to a goal and seeing it appear in the moves list"></video>
               </div>
             </div>
           </div>
@@ -117,7 +121,9 @@
             <div class="dj-phone">
               <div class="dj-phone-notch"></div>
               <div class="dj-phone-screen">
-                <img src="assets/shots/step-3-loop.jpg" alt="A section of a clip marked and looped, with Practice Now ready to start recording">
+                <video src="assets/video/step-3-loop.mp4?v=1" poster="assets/video/step-3-loop-poster.jpg?v=1"
+                       muted playsinline webkit-playsinline loop autoplay preload="auto"
+                       aria-label="Marking a loop range on a clip and arming Record"></video>
               </div>
             </div>
           </div>
@@ -168,7 +174,9 @@
             <div class="dj-phone">
               <div class="dj-phone-notch"></div>
               <div class="dj-phone-screen">
-                <img src="assets/shots/step-6-progress.jpg" alt="Goal detail screen with moves grouped by Learning, Polishing, and Got it">
+                <video src="assets/video/step-6-progress.mp4?v=1" poster="assets/video/step-6-progress-poster.jpg?v=1"
+                       muted playsinline webkit-playsinline loop autoplay preload="auto"
+                       aria-label="Bumping a move from Learning to Polishing to Got it"></video>
               </div>
             </div>
           </div>
@@ -182,62 +190,10 @@
             <p>Send the clip to your teacher or a friend. Their notes land pinned to the exact frame — so this time the correction doesn't evaporate on the walk home.</p>
           </div>
           <div class="dz-tl-shot">
-            <div class="dz-phone-wrap">
-              <div class="dj-phone dz-app-phone" data-notebook>
-                <div class="dj-phone-notch"></div>
-                <div class="dj-phone-screen dz-app-screen">
-                  <header class="dz-app-bar">
-                    <span class="dz-app-bar-icon" aria-hidden="true">‹</span>
-                    <span class="dz-app-bar-title"></span>
-                    <span class="dz-app-bar-icon" aria-hidden="true">⋯</span>
-                  </header>
-                  <div class="dz-app-video">
-                    <video data-notebook-video
-                           src="assets/video/notebook-demo.mp4?v=2"
-                           poster="assets/video/notebook-demo-poster.jpg?v=2"
-                           muted playsinline webkit-playsinline loop autoplay preload="auto"
-                           aria-label="Dance clip demo"></video>
-                    <div class="dz-app-caption" data-notebook-caption hidden>
-                      <span class="dj-ts dz-app-caption-ts">00:00</span>
-                      <span class="dz-app-caption-text"></span>
-                    </div>
-                    <div class="dz-app-controls">
-                      <button class="dz-app-ctrl back" data-notebook-back aria-label="rewind 3 seconds">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M11 17l-5-5 5-5"/><path d="M18 17l-5-5 5-5"/>
-                        </svg>
-                      </button>
-                      <button class="dz-app-ctrl play" data-notebook-play aria-label="play / pause"></button>
-                      <button class="dz-app-ctrl speed" data-notebook-speed aria-label="playback speed, currently 1×">1×</button>
-                    </div>
-                  </div>
-                  <div class="dz-app-scrubber">
-                    <div class="dz-scrub-bar" data-notebook-bar>
-                      <div class="dz-scrub-fill"></div>
-                      <div class="dz-scrub-knob"></div>
-                      <!-- ticks injected by landing.js -->
-                    </div>
-                    <div class="dz-app-times">
-                      <span data-notebook-cur>00:00</span>
-                      <span data-notebook-total>00:12</span>
-                    </div>
-                  </div>
-                  <div class="dz-app-chat">
-                    <header class="dz-chat-head">Feedback from Teacher</header>
-                    <div class="dz-chat-thread" data-notebook-thread><!-- messages injected by landing.js --></div>
-                    <form class="dz-chat-composer" data-notebook-composer>
-                      <input type="text" class="dz-chat-input" data-notebook-input placeholder="Reply…" aria-label="Reply" autocomplete="off">
-                      <button type="submit" class="dz-chat-send" data-notebook-send aria-label="Send" disabled>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M12 19V5"/><path d="M5 12l7-7 7 7"/>
-                        </svg>
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <div class="dz-float dz-try-stamp">
-                <span class="dj-ts gold lg">Try this demo ↓</span>
+            <div class="dj-phone">
+              <div class="dj-phone-notch"></div>
+              <div class="dj-phone-screen">
+                <img src="assets/shots/step-7-feedback.jpg?v=1" alt="A teacher's notes pinned to marks on the clip's timeline, with numbered feedback below">
               </div>
             </div>
           </div>
