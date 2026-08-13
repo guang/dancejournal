@@ -246,46 +246,6 @@ a { color: inherit; }
 .dz-download-btn:active { transform: translateY(1px); box-shadow: 1px 1px 0 var(--gold); }
 .dz-download-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
-/* Muted lead that frames the chips below as the "how it works" preview, kept
-   subordinate to the download CTA above it (small, secondary color, tracked-out). */
-.dz-hero-chips-lead {
-  font-family: var(--font-sans);
-  font-size: 14px; font-weight: 600;
-  color: var(--muted);
-  margin: 30px 0 0;
-}
-
-/* Hero chips — pill-anchors below the hero sub that preview the three feature sections. */
-.dz-hero-chips {
-  list-style: none; padding: 0;
-  margin: 12px 0 0;
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 10px;
-}
-.dz-hero-chips li { display: inline-flex; }
-.dz-hero-chips a {
-  font-size: 14px; font-weight: 600;
-  color: var(--ink);
-  background: #F2EFE7;
-  border: 2px solid var(--ink);
-  padding: 8px 18px;
-  border-radius: var(--btn-radius);
-  line-height: 1;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background .15s ease, transform .12s ease, box-shadow .15s ease;
-}
-.dz-hero-chips a:hover {
-  background: var(--gold-light);
-  transform: translateY(-1px);
-  box-shadow: 2px 2px 0 var(--ink);
-}
-.dz-hero-chips a:active { transform: translateY(1px); box-shadow: none; }
-.dz-hero-chips a:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 3px;
-}
-
 .dz-phone-wrap { position: relative; display: inline-block; }
 .dz-float { position: absolute; }
 .dz-try-stamp {
@@ -300,6 +260,73 @@ a { color: inherit; }
   0%, 100% { transform: rotate(8deg) translateY(0); }
   50%      { transform: rotate(6deg) translateY(-4px); }
 }
+
+/* ============== How it works — vertical timeline (6 steps + bonus) ============== */
+.dz-timeline {
+  padding: 96px 64px 112px;
+  border-bottom: 2px solid var(--ink);
+  background: var(--gold-light);
+}
+.dz-timeline-inner { max-width: 1120px; margin: 0 auto; }
+.dz-timeline-h2 {
+  font-size: 44px; line-height: 1.2; font-weight: 800;
+  letter-spacing: -1px; margin: 0 0 64px;
+  text-align: center;
+}
+
+.dz-tl-rail { position: relative; }
+/* Continuous connecting line down the rail — the thing that turns seven cards
+   into one process, not decorative. A single ::before on the container. */
+.dz-tl-rail::before {
+  content: '';
+  position: absolute;
+  top: 8px; bottom: 8px; left: 50%;
+  width: 2px;
+  background: var(--ink);
+  opacity: .15;
+  transform: translateX(-50%);
+}
+
+.dz-tl-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 64px 1fr;
+  grid-template-areas: "txt num shot";
+  align-items: center;
+  gap: 48px;
+  padding: 40px 0;
+}
+.dz-tl-row.dz-tl-alt { grid-template-areas: "shot num txt"; }
+
+.dz-tl-num {
+  grid-area: num;
+  position: relative; z-index: 2;
+  width: 48px; height: 48px;
+  margin: 0 auto;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--gold); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 18px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.dz-tl-txt { grid-area: txt; display: flex; flex-direction: column; gap: 12px; }
+.dz-tl-txt h3 {
+  font-size: 28px; line-height: 1.2; font-weight: 800;
+  letter-spacing: -.5px; margin: 0;
+}
+.dz-tl-txt p {
+  font-size: 17px; font-weight: 500; color: var(--secondary);
+  line-height: 1.5; margin: 0;
+}
+.dz-tl-shot { grid-area: shot; display: flex; align-items: center; justify-content: center; }
+.dz-tl-shot .dj-phone { width: 260px; height: 556px; }
+
+/* Bonus row — must read as "the loop ended, this is extra" before a word is
+   read: distinct (blue) badge, a question for a title, extra gap above. */
+.dz-tl-bonus { margin-top: 40px; padding-top: 56px; }
+.dz-tl-bonus .dz-tl-num { background: #2563EB; font-size: 22px; }
+.dz-tl-bonus .dz-tl-shot .dz-app-phone { width: min(280px, 100%); }
 
 /* Section */
 .dz-section {
@@ -317,8 +344,6 @@ a { color: inherit; }
   letter-spacing: -1px; margin: 0;
 }
 .dz-section h2 .nowrap { white-space: nowrap; }
-/* Feedback h2 has two locked lines; trim a touch so the longer line fits the column. */
-#feedback h2 { font-size: 38px; letter-spacing: -.6px; }
 .dz-sub {
   font-size: 18px; font-weight: 500; color: var(--secondary);
   line-height: 1.5; max-width: 540px; margin: 0;
@@ -336,24 +361,6 @@ a { color: inherit; }
   height: 0.3em;
   overflow: visible;
   pointer-events: none;
-}
-
-/* Progress stage flowchart */
-.dz-progress-flow {
-  display: flex; align-items: center; gap: 5px;
-  flex-wrap: wrap;
-}
-.dz-flow-stage {
-  font-size: 13px; font-weight: 700; letter-spacing: .2px;
-  padding: 5px 9px; border-radius: var(--btn-radius);
-  border: 1.5px solid currentColor; white-space: nowrap;
-}
-.dz-flow-new      { color: #6B7280; background: #F3F4F6; }
-.dz-flow-training { color: #2563EB; background: #EFF6FF; }
-.dz-flow-testing  { color: #D97706; background: #FFFBEB; }
-.dz-flow-mastered { color: #059669; background: #ECFDF5; }
-.dz-flow-arrow {
-  font-size: 14px; color: var(--muted); line-height: 1;
 }
 
 /* Inline timestamp chip used inside a heading — scales with the h2 */
@@ -657,23 +664,6 @@ a { color: inherit; }
 .dz-scrub-hint .arr { animation: dz-bob 1.6s ease-in-out infinite; }
 @keyframes dz-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-/* §01 mini callouts */
-.dz-mini-callouts { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
-.dz-mini-callouts .dz-stamped-card {
-  padding: 12px 20px; display: flex; gap: 12px; align-items: center;
-  box-shadow: 3px 3px 0 var(--ink);
-}
-.dz-mini-callouts .num {
-  width: 32px; height: 32px;
-  border: 2px solid var(--ink);
-  border-radius: 10px;
-  background: var(--gold);
-  display: inline-flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 14px;
-  flex-shrink: 0;
-}
-.dz-mini-callouts strong { font-size: 16px; font-weight: 700; }
-
 /* §02 compare floating chips */
 .dz-chip {
   display: inline-flex; align-items: center; gap: 8px;
@@ -685,36 +675,6 @@ a { color: inherit; }
 }
 .dz-chip .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
 .dz-chip.gold { background: var(--gold); color: #fff; font-weight: 800; }
-
-/* Compare phone wrap — anchors floating callouts to the phone itself. */
-.dz-compare-wrap { position: relative; display: inline-block; }
-
-/* Hand-position callouts — labels sit outside the phone, vertically centered
-   on each of the two stacked videos (top ~60% of phone, bottom ~40%). */
-.dz-compare-callout {
-  z-index: 3;
-  pointer-events: none;
-}
-.dz-callout-label {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 14px;
-  background: #fff; color: var(--ink);
-  border: 2px solid var(--ink); border-radius: var(--btn-radius);
-  font-size: 13px; font-weight: 700; line-height: 1.2;
-  box-shadow: 3px 3px 0 var(--ink);
-  white-space: nowrap;
-}
-.dz-callout-icon { font-size: 14px; line-height: 1; }
-/* Top callout — vertically centered on the top video (~30% of phone height). */
-.dz-compare-callout-top {
-  top: 192px; right: 100%;
-  transform: translate(-12px, -50%);
-}
-/* Bottom callout — vertically centered on the bottom video (~80% of phone height). */
-.dz-compare-callout-bot {
-  top: 512px; left: 100%;
-  transform: translate(12px, -50%);
-}
 
 /* Feedback: floating timestamped note overlaid on the phone */
 .dz-feedback-note {
@@ -797,6 +757,9 @@ a { color: inherit; }
   .dz-nav { padding: 20px 40px; }
   .dz-section { padding: 80px 40px; }
   .dz-section h2 { font-size: 36px; letter-spacing: -.8px; }
+  .dz-timeline { padding: 80px 40px 96px; }
+  .dz-timeline-h2 { font-size: 36px; margin-bottom: 48px; }
+  .dz-tl-row { grid-template-columns: 1fr 56px 1fr; gap: 32px; }
   .dz-final { padding: 96px 40px; }
   .dz-final h2 { font-size: 40px; }
   .dz-footer { padding: 28px 40px; }
@@ -806,6 +769,40 @@ a { color: inherit; }
   .dz-split-text { text-align: left; align-items: flex-start; }
   .dz-split.text-right .dz-split-text   { order: 1; }
   .dz-split.text-right .dz-split-visual { order: 2; }
+}
+
+/* Timeline mobile layout — number rail left, title, body, screenshot beneath.
+   Rows are placed by explicit grid-column/grid-row (not DOM order and not the
+   desktop grid-template-areas): the alternating desktop markup would otherwise
+   put the screenshot ahead of its own title on a single-column stack. */
+@media (max-width: 720px) {
+  .dz-timeline { padding: 56px 20px 72px; }
+  .dz-timeline-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; text-align: left; }
+
+  .dz-tl-rail::before { left: 22px; }
+
+  .dz-tl-row,
+  .dz-tl-row.dz-tl-alt {
+    grid-template-columns: 44px 1fr;
+    grid-template-rows: auto auto;
+    align-items: start;
+    column-gap: 16px;
+    row-gap: 8px;
+    padding: 28px 0;
+  }
+  .dz-tl-row .dz-tl-num,
+  .dz-tl-row.dz-tl-alt .dz-tl-num  { grid-column: 1; grid-row: 1; width: 36px; height: 36px; font-size: 15px; }
+  .dz-tl-row .dz-tl-txt,
+  .dz-tl-row.dz-tl-alt .dz-tl-txt  { grid-column: 2; grid-row: 1; gap: 8px; }
+  .dz-tl-row .dz-tl-shot,
+  .dz-tl-row.dz-tl-alt .dz-tl-shot { grid-column: 2; grid-row: 2; margin-top: 12px; justify-content: flex-start; }
+
+  .dz-tl-txt h3 { font-size: 21px; }
+  .dz-tl-txt p { font-size: 15px; }
+  .dz-tl-shot .dj-phone { width: min(260px, 100%); height: auto; aspect-ratio: 300 / 640; }
+
+  .dz-tl-bonus { margin-top: 24px; padding-top: 36px; }
+  .dz-tl-bonus .dz-tl-shot .dz-app-phone { height: auto; aspect-ratio: 308 / 740; }
 }
 
 @media (max-width: 768px) {
@@ -821,28 +818,11 @@ a { color: inherit; }
   .dz-hero-sub { font-size: 17px; margin-top: 18px; }
   .dz-hero-cta { gap: 10px; margin-top: 22px; }
   .dz-download-btn { font-size: 14px; padding: 11px 18px; }
-  .dz-hero-chips-lead { font-size: 12px; margin-top: 24px; }
-  .dz-hero-chips { gap: 8px; margin-top: 10px; }
-  .dz-hero-chips a { font-size: 12px; padding: 7px 14px; }
 
   .dz-try-stamp { top: -8px; right: -4px; }
-  /* Mobile: the phone column has no room to the sides for outside-the-phone
-     badges, so overlay them in opposite corners — away from the hand areas
-     they're calling out, preserving the diagonal comparison. */
-  .dz-callout-label { font-size: 11px; padding: 6px 10px; box-shadow: 2px 2px 0 var(--ink); gap: 4px; }
-  .dz-callout-icon { font-size: 12px; }
-  .dz-compare-callout-top {
-    top: 18px; left: 14px; right: auto;
-    transform: none;
-  }
-  .dz-compare-callout-bot {
-    top: auto; right: 14px; bottom: 18px; left: auto;
-    transform: none;
-  }
 
   .dz-section { padding: 44px 20px 64px; }
   .dz-section h2 { font-size: 28px; letter-spacing: -.6px; }
-  #feedback h2 { font-size: 26px; letter-spacing: -.5px; }
   /* Nowrap halves of the feedback h2 are wider than a phone column — they push the
      grid track wider than the viewport and cause horizontal overflow. */
   .dz-section h2 .nowrap { white-space: normal; }
