@@ -8,7 +8,7 @@
   <meta property="og:title" content="Dance Journal — What's New">
   <meta property="og:description" content="The latest features and improvements in Dance Journal.">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=71">
+  <link rel="stylesheet" href="assets/landing.css?v=79">
   <script>
     // Mirrors index.html: set the platform class before paint so [data-install-link]
     // resolves to the right store. Apple ecosystem → App Store; everything else → Play.
@@ -116,10 +116,13 @@
       </span>
       <span class="dj-word">Dance Journal</span>
     </a>
-    <a href="#" target="_blank" rel="noopener" class="dz-nav-cta" data-install-link>
-      <span class="dz-store-glyph" data-store-glyph aria-hidden="true"></span>
-      <span>Get the app</span>
-    </a>
+    <div class="dz-nav-right">
+      <a href="changelog.html" class="dz-nav-whatsnew">What's New</a>
+      <a href="#" target="_blank" rel="noopener" class="dz-nav-cta" data-install-link>
+        <span class="dz-store-glyph" data-store-glyph aria-hidden="true"></span>
+        <span>Get the app</span>
+      </a>
+    </div>
   </nav>
 
   <!-- ============== Hero ============== -->
@@ -132,6 +135,54 @@
   <section class="cl-list">
     <!-- DJ_CHANGELOG_INSERT_BELOW: the dj-release skill (Phase 8) prepends each new
          <article class="cl-entry"> directly under this marker, keeping newest first. -->
+
+    <article class="cl-entry">
+      <div class="cl-meta">
+        <span class="cl-ver">v0.13.0</span>
+        <span class="cl-date">August 7, 2026</span>
+      </div>
+      <h2>One thread per clip, and a streak worth keeping</h2>
+      <p>This release folds notes and feedback into a single thread on every clip, and gives your consistency somewhere to show up.</p>
+      <ul>
+        <li><strong>One thread per clip</strong> — your notes and a teacher's feedback now live in the same running thread, not separate lists.</li>
+        <li><strong>Practice streak</strong> — a weekly streak band on Home tracks how consistently you're showing up.</li>
+        <li><strong>Flip any video</strong> — mirror a clip for either viewer, on every clip you save or receive.</li>
+        <li><strong>Cloud storage, redesigned</strong> — see what's using space and manage it clip by clip.</li>
+        <li><strong>Ask for a review</strong> — share a public link that asks specifically for feedback on a clip.</li>
+      </ul>
+    </article>
+
+    <article class="cl-entry">
+      <div class="cl-meta">
+        <span class="cl-ver">v0.12.0</span>
+        <span class="cl-date">July 22, 2026</span>
+      </div>
+      <h2>Discover, and a Home that gets out of your way</h2>
+      <p>This release opens up a way to find other dancers' work, and clears out Home so it just shows you what's next.</p>
+      <ul>
+        <li><strong>Discover</strong> — browse public collections and schools, and request to join a class.</li>
+        <li><strong>Home, redesigned</strong> — one clear hero card and a consistent set of stats, instead of a stack of staged sections.</li>
+        <li><strong>Collections</strong> — group moves and clips into a shareable collection with its own public link.</li>
+        <li><strong>Pick a goal on day one</strong> — new students set a monthly goal as part of onboarding.</li>
+        <li><strong>Practice reminders</strong> — a nudge tied to your goals and classes, not just a generic push.</li>
+      </ul>
+    </article>
+
+    <article class="cl-entry">
+      <div class="cl-meta">
+        <span class="cl-ver">v0.11.0</span>
+        <span class="cl-date">June 30, 2026</span>
+      </div>
+      <h2>A calmer look, and a place for every note</h2>
+      <p>This release trades the old high-contrast look for something calmer, and gives every note you've ever left a home.</p>
+      <ul>
+        <li><strong>A calmer look</strong> — a top-to-bottom visual redesign, softer and easier to read at a glance.</li>
+        <li><strong>My notes</strong> — a chronological journal of every note you've left, across every clip.</li>
+        <li><strong>Feedback tab</strong> — Coaching is now Feedback, with a streamlined sheet for asking or sending it.</li>
+        <li><strong>Role-aware onboarding</strong> — sign in as a student or a teacher and get a setup built for that role.</li>
+        <li><strong>Faster multi-select</strong> — a persistent strip keeps your selected clips in view as you pick more.</li>
+      </ul>
+    </article>
 
     <article class="cl-entry">
       <div class="cl-meta">
