@@ -83,13 +83,8 @@ a { color: inherit; }
 .dj-btn:hover  { background: #C98A12; }
 .dj-btn:active { transform: translateY(1px); }
 
-/* Shared focus ring for interactive primitives — kept after store-badge removal
-   so app controls / chat / nav links retain a consistent focus treatment. */
+/* Shared focus ring for interactive primitives. */
 .dj-btn:focus-visible,
-.dz-app-ctrl:focus-visible,
-.dz-chat-msg:focus-visible,
-.dz-chat-send:focus-visible,
-.dz-chat-input:focus-visible,
 .dz-nav-links a:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 3px;
@@ -117,12 +112,6 @@ a { color: inherit; }
   padding: 10px;
   border: 2px solid var(--ink);
 }
-/* On dark sections, the black bezel + black border vanish against the bg —
-   lighten the bezel and add a contrasting edge so the device silhouette reads. */
-.dz-section.dark .dj-phone {
-  background: #1c1c1c;
-  border-color: rgba(255, 255, 255, .3);
-}
 .dj-phone-screen {
   border-radius: 28px;
   overflow: hidden;
@@ -130,9 +119,28 @@ a { color: inherit; }
   position: relative;
   width: 100%; height: 100%;
 }
-.dj-phone-screen img {
+.dj-phone-screen img,
+.dj-phone-screen video {
   display: block; width: 100%; height: 100%;
   object-fit: cover; object-position: top center;
+}
+/* The source captures are iOS screen recordings, which bake a red recording
+   indicator into the top of every frame (a small time pill for two of the
+   clips, a full-width toolbar with "swipe to step" for the other two).
+   Relying on object-fit's crop to push it out of frame was fragile - the
+   box-sizing: border-box padding on .dj-phone shrinks .dj-phone-screen's
+   actual content box below what the crop math assumed, so it only shaved
+   off part of the indicator instead of all of it. Painting an opaque mask
+   sized to each clip's real indicator height (measured directly from the
+   source frames, plus margin) is exact regardless of container sizing, and
+   works identically at every viewport width since it's percentage-based. */
+.dj-phone-screen:has(video)::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: var(--rec-mask-h, 6%);
+  background: var(--rec-mask-bg, #fff);
+  z-index: 1;
+  pointer-events: none;
 }
 .dj-phone-notch {
   position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
@@ -147,6 +155,7 @@ a { color: inherit; }
 .dz-nav {
   position: sticky; top: 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; row-gap: 10px;
   padding: 18px 64px;
   border-bottom: 2px solid var(--ink);
   background: var(--bg);
@@ -246,491 +255,74 @@ a { color: inherit; }
 .dz-download-btn:active { transform: translateY(1px); box-shadow: 1px 1px 0 var(--gold); }
 .dz-download-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
-/* Muted lead that frames the chips below as the "how it works" preview, kept
-   subordinate to the download CTA above it (small, secondary color, tracked-out). */
-.dz-hero-chips-lead {
-  font-family: var(--font-sans);
-  font-size: 14px; font-weight: 600;
-  color: var(--muted);
-  margin: 30px 0 0;
-}
-
-/* Hero chips — pill-anchors below the hero sub that preview the three feature sections. */
-.dz-hero-chips {
-  list-style: none; padding: 0;
-  margin: 12px 0 0;
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 10px;
-}
-.dz-hero-chips li { display: inline-flex; }
-.dz-hero-chips a {
-  font-size: 14px; font-weight: 600;
-  color: var(--ink);
-  background: #F2EFE7;
-  border: 2px solid var(--ink);
-  padding: 8px 18px;
-  border-radius: var(--btn-radius);
-  line-height: 1;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background .15s ease, transform .12s ease, box-shadow .15s ease;
-}
-.dz-hero-chips a:hover {
-  background: var(--gold-light);
-  transform: translateY(-1px);
-  box-shadow: 2px 2px 0 var(--ink);
-}
-.dz-hero-chips a:active { transform: translateY(1px); box-shadow: none; }
-.dz-hero-chips a:focus-visible {
-  outline: 3px solid var(--gold);
-  outline-offset: 3px;
-}
-
-.dz-phone-wrap { position: relative; display: inline-block; }
-.dz-float { position: absolute; }
-.dz-try-stamp {
-  top: -14px; right: -14px;
-  transform: rotate(8deg);
-  z-index: 3;
-  animation: dz-wobble 3.2s ease-in-out infinite;
-}
-/* User has touched the demo — drop the wobble so the badge stops competing. */
-.dz-try-stamp.dz-quiet { animation: none; }
-@keyframes dz-wobble {
-  0%, 100% { transform: rotate(8deg) translateY(0); }
-  50%      { transform: rotate(6deg) translateY(-4px); }
-}
-
-/* Section */
-.dz-section {
-  padding: 96px 64px;
+/* ============== How it works — vertical timeline (6 steps + bonus) ============== */
+.dz-timeline {
+  padding: 96px 64px 112px;
   border-bottom: 2px solid var(--ink);
-  position: relative;
+  background: var(--gold-light);
 }
-.dz-section.cream { background: var(--gold-light); }
-.dz-section.dark { background: var(--ink); color: #fff; }
-.dz-section.dark h2 { color: #fff; }
-.dz-section.dark .dz-sub { color: rgba(255,255,255,.7); }
-.dz-section-inner { max-width: 1280px; margin: 0 auto; }
-.dz-section h2 {
+.dz-timeline-inner { max-width: 1120px; margin: 0 auto; }
+.dz-timeline-h2 {
   font-size: 44px; line-height: 1.2; font-weight: 800;
-  letter-spacing: -1px; margin: 0;
-}
-.dz-section h2 .nowrap { white-space: nowrap; }
-/* Feedback h2 has two locked lines; trim a touch so the longer line fits the column. */
-#feedback h2 { font-size: 38px; letter-spacing: -.6px; }
-.dz-sub {
-  font-size: 18px; font-weight: 500; color: var(--secondary);
-  line-height: 1.5; max-width: 540px; margin: 0;
-}
-/* Keyword highlight — inline SVG arc underline */
-.dz-highlight {
-  position: relative;
-  display: inline-block;
-}
-.dz-highlight-svg {
-  position: absolute;
-  left: 0;
-  bottom: 0.04em;
-  width: 100%;
-  height: 0.3em;
-  overflow: visible;
-  pointer-events: none;
-}
-
-/* Progress stage flowchart */
-.dz-progress-flow {
-  display: flex; align-items: center; gap: 5px;
-  flex-wrap: wrap;
-}
-.dz-flow-stage {
-  font-size: 13px; font-weight: 700; letter-spacing: .2px;
-  padding: 5px 9px; border-radius: var(--btn-radius);
-  border: 1.5px solid currentColor; white-space: nowrap;
-}
-.dz-flow-new      { color: #6B7280; background: #F3F4F6; }
-.dz-flow-training { color: #2563EB; background: #EFF6FF; }
-.dz-flow-testing  { color: #D97706; background: #FFFBEB; }
-.dz-flow-mastered { color: #059669; background: #ECFDF5; }
-.dz-flow-arrow {
-  font-size: 14px; color: var(--muted); line-height: 1;
-}
-
-/* Inline timestamp chip used inside a heading — scales with the h2 */
-.dz-section h2 .dj-ts {
-  font-size: .62em;
-  padding: .12em .32em;
-  border-radius: .18em;
-  letter-spacing: 0;
-  vertical-align: .1em;
-  line-height: 1;
-}
-/* Two-column section split (Feedback / Compare / Progress) */
-.dz-split {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 64px; align-items: center;
-  max-width: 1200px; margin: 0 auto;
-}
-.dz-split-text   { display: flex; flex-direction: column; gap: 22px; }
-.dz-split-visual { display: flex; align-items: center; justify-content: center; }
-.dz-split.text-right .dz-split-text   { order: 2; }
-.dz-split.text-right .dz-split-visual { order: 1; }
-
-/* Stamped card */
-.dz-stamped-card {
-  background: var(--paper);
-  border: 2px solid var(--ink);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 4px 4px 0 var(--ink);
-}
-
-.dz-phone-stage { position: relative; display: flex; align-items: center; justify-content: center; }
-
-/* ============== §01 In-phone video player ============== */
-.dz-notebook-stage {
-  display: flex; justify-content: center; align-items: flex-start;
-  padding: 0;
-}
-.dz-app-phone {
-  width: min(308px, calc(100vw - 32px));
-  height: min(740px, calc(100vh - 80px));
-}
-.dz-app-phone .dj-phone-screen {
-  display: flex; flex-direction: column;
-  min-height: 0;
-}
-.dz-app-bar {
-  flex: 0 0 auto;
-  padding: 12px 14px;
-  border-bottom: 2px solid var(--ink);
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 13px; font-weight: 800;
-  letter-spacing: -.2px;
-}
-.dz-app-bar-title { flex: 1; text-align: center; font-weight: 800; }
-.dz-app-bar-icon  { width: 22px; font-size: 18px; font-weight: 700; color: var(--secondary); }
-.dz-app-bar-icon:last-child { text-align: right; }
-.dz-app-bar-icon:first-child { text-align: left; }
-
-.dz-app-video {
-  flex: 0 0 auto;
-  position: relative;
-  background: #111;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-}
-.dz-app-video video {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-  background: #111;
-}
-.dz-app-caption {
-  position: absolute;
-  left: 10px; right: 10px; top: 10px;
-  display: flex; gap: 10px; align-items: flex-start;
-  background: rgba(255, 255, 255, .96);
-  border: 2px solid var(--ink);
-  border-radius: 10px;
-  padding: 8px 10px;
-  box-shadow: 3px 3px 0 var(--ink);
-  font-size: 13px; font-weight: 500;
-  color: var(--ink);
-  line-height: 1.3;
-  animation: dz-caption-pop .18s ease-out;
-  z-index: 2;
-}
-.dz-app-caption[hidden] { display: none; }
-.dz-app-caption .dj-ts { flex-shrink: 0; margin-top: 1px; }
-@keyframes dz-caption-pop {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.dz-app-scrubber {
-  flex: 0 0 auto;
-  padding: 12px 16px 4px;
-  background: var(--bg);
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
-.dz-app-scrubber .dz-scrub-bar { margin: 4px 2px 8px; }
-.dz-app-times {
-  display: flex; justify-content: space-between;
-  font-size: 10px; font-weight: 700; color: var(--secondary);
-  font-variant-numeric: tabular-nums;
-}
-
-.dz-app-controls {
-  position: absolute;
-  left: 0; right: 0; bottom: 8px;
-  display: flex; gap: 14px; justify-content: center;
-  padding: 0;
-  background: transparent;
-  z-index: 2;
-  pointer-events: none;
-}
-.dz-app-ctrl {
-  pointer-events: auto;
-  width: 32px; height: 32px;
-  border: 2px solid var(--ink);
-  background: rgba(255, 255, 255, .92);
-  border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  color: var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
-  padding: 0;
-  font-family: inherit;
-  transition: transform .12s ease, background .15s ease;
-}
-.dz-app-ctrl:hover  { background: var(--gold-light); }
-.dz-app-ctrl:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
-.dz-app-ctrl.play   { background: var(--gold); color: #fff; width: 40px; height: 40px; }
-.dz-app-ctrl.play:hover { background: #C98A12; color: #fff; }
-.dz-app-ctrl.speed  {
-  font-size: 11px; font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
-/* Chat panel — student/teacher thread + composer */
-.dz-app-chat {
-  flex: 1 1 auto;
-  display: flex; flex-direction: column;
-  background: var(--paper);
-  min-height: 0; /* allow inner scroll area to shrink */
-}
-.dz-chat-head {
-  flex: 0 0 auto;
-  padding: 9px 12px;
-  font-size: 12px; font-weight: 700;
-  color: var(--secondary);
+  letter-spacing: -1px; margin: 0 0 64px;
   text-align: center;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-  letter-spacing: .2px;
-}
-.dz-chat-thread {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 10px;
-  display: flex; flex-direction: column; gap: 8px;
-  -webkit-overflow-scrolling: touch;
-}
-.dz-chat-msg {
-  max-width: 78%;
-  padding: 7px 10px;
-  border: 2px solid var(--ink);
-  border-radius: 12px;
-  font-size: 12.5px;
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--ink);
-  font-family: inherit;
-  text-align: left;
-  transition: background .15s ease, transform .15s ease, box-shadow .15s ease;
-}
-.dz-chat-msg.from-teacher {
-  align-self: flex-start;
-  background: var(--paper);
-  display: flex; gap: 8px; align-items: flex-start;
-  cursor: pointer;
-  border-bottom-left-radius: 4px;
-}
-.dz-chat-msg.from-teacher .dj-ts { flex-shrink: 0; margin-top: 1px; }
-.dz-chat-msg.from-teacher:hover { background: var(--gold-light); }
-.dz-chat-msg.from-teacher.active {
-  background: var(--gold-light);
-  transform: translateX(4px);
-  box-shadow: 3px 3px 0 var(--ink);
-}
-.dz-chat-msg.from-student {
-  align-self: flex-end;
-  background: var(--gold-light);
-  border-bottom-right-radius: 4px;
 }
 
-/* One-time teach pulse to suggest tappability */
-@keyframes dz-teach-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(227,160,24,.55); }
-  60%  { box-shadow: 0 0 0 10px rgba(227,160,24,0); }
-  100% { box-shadow: 0 0 0 0 rgba(227,160,24,0); }
-}
-.dz-chat-msg.from-teacher.dz-teach:not(.active) {
-  animation: dz-teach-pulse 1.6s ease-out 3;
-}
-
-/* Composer (bottom of chat panel) */
-.dz-chat-composer {
-  flex: 0 0 auto;
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px;
-  border-top: 2px solid var(--ink);
-  background: var(--bg);
-}
-.dz-chat-input {
-  flex: 1 1 auto;
-  min-width: 0;
-  border: 2px solid var(--ink);
-  border-radius: 100px;
-  padding: 6px 12px;
-  background: var(--paper);
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--ink);
-  outline: none;
-  transition: box-shadow .12s ease, border-color .12s ease;
-}
-.dz-chat-input::placeholder { color: var(--secondary); }
-.dz-chat-input:focus {
-  border-color: var(--gold);
-  box-shadow: 2px 2px 0 var(--ink);
-}
-.dz-chat-send {
-  flex: 0 0 auto;
-  width: 30px; height: 30px;
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  background: #d8d8d8;
-  color: #6a6a6a;
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0;
-  cursor: pointer;
-  transition: background .15s ease, color .15s ease, box-shadow .15s ease, transform .12s ease;
-  font-family: inherit;
-}
-.dz-chat-send svg { display: block; }
-.dz-chat-send[disabled] { cursor: not-allowed; }
-.dz-chat-composer.is-armed .dz-chat-send {
-  background: var(--gold);
-  color: #fff;
-  box-shadow: 2px 2px 0 var(--ink);
-}
-.dz-chat-composer.is-armed .dz-chat-send:hover { background: #C98A12; }
-.dz-chat-composer.is-armed .dz-chat-send:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
-
-/* Scrub bar (also used inside the app player) */
-.dz-scrub-bar {
-  position: relative;
-  height: 8px;
+.dz-tl-rail { position: relative; }
+/* Continuous connecting line down the rail — the thing that turns seven cards
+   into one process, not decorative. A single ::before on the container. */
+.dz-tl-rail::before {
+  content: '';
+  position: absolute;
+  top: 8px; bottom: 8px; left: 50%;
+  width: 2px;
   background: var(--ink);
-  border-radius: 100px;
-  cursor: pointer;
-  margin: 14px 6px;
-}
-.dz-scrub-fill {
-  position: absolute; left: 0; top: 0; height: 100%;
-  background: var(--gold);
-  border-radius: 100px;
-}
-.dz-scrub-knob {
-  position: absolute; top: 50%; transform: translate(-50%, -50%);
-  width: 24px; height: 24px;
-  background: var(--paper);
-  border: 2px solid var(--ink);
-  border-radius: 50%;
-  cursor: grab;
-  box-shadow: 2px 2px 0 var(--ink);
-}
-.dz-scrub-knob:active { cursor: grabbing; }
-.dz-scrub-tick {
-  position: absolute; top: -8px; height: 24px; width: 2.5px;
-  background: var(--ink);
+  opacity: .15;
   transform: translateX(-50%);
-  border-radius: 2px;
-  opacity: .35;
-  pointer-events: none;
 }
-.dz-scrub-tick.active { background: var(--gold); opacity: 1; height: 28px; top: -10px; }
 
-.dz-scrub-hint {
-  display: flex; align-items: center; gap: 8px;
-  justify-content: center;
-  font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
-  color: var(--secondary);
-  margin-top: 28px;
+.dz-tl-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 64px 1fr;
+  grid-template-areas: "txt num shot";
+  align-items: center;
+  gap: 48px;
+  padding: 40px 0;
 }
-.dz-scrub-hint .arr { animation: dz-bob 1.6s ease-in-out infinite; }
-@keyframes dz-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.dz-tl-row.dz-tl-alt { grid-template-areas: "shot num txt"; }
 
-/* §01 mini callouts */
-.dz-mini-callouts { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; justify-content: center; }
-.dz-mini-callouts .dz-stamped-card {
-  padding: 12px 20px; display: flex; gap: 12px; align-items: center;
-  box-shadow: 3px 3px 0 var(--ink);
-}
-.dz-mini-callouts .num {
-  width: 32px; height: 32px;
+.dz-tl-num {
+  grid-area: num;
+  position: relative; z-index: 2;
+  width: 48px; height: 48px;
+  margin: 0 auto;
   border: 2px solid var(--ink);
-  border-radius: 10px;
-  background: var(--gold);
+  border-radius: 50%;
+  background: var(--gold); color: #fff;
   display: inline-flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 14px;
-  flex-shrink: 0;
-}
-.dz-mini-callouts strong { font-size: 16px; font-weight: 700; }
-
-/* §02 compare floating chips */
-.dz-chip {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 14px;
-  background: #fff; color: var(--ink);
-  border: 2px solid var(--ink); border-radius: var(--btn-radius);
-  font-size: 13px; font-weight: 700;
-  box-shadow: 3px 3px 0 #000;
-}
-.dz-chip .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--success); }
-.dz-chip.gold { background: var(--gold); color: #fff; font-weight: 800; }
-
-/* Compare phone wrap — anchors floating callouts to the phone itself. */
-.dz-compare-wrap { position: relative; display: inline-block; }
-
-/* Hand-position callouts — labels sit outside the phone, vertically centered
-   on each of the two stacked videos (top ~60% of phone, bottom ~40%). */
-.dz-compare-callout {
-  z-index: 3;
-  pointer-events: none;
-}
-.dz-callout-label {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 14px;
-  background: #fff; color: var(--ink);
-  border: 2px solid var(--ink); border-radius: var(--btn-radius);
-  font-size: 13px; font-weight: 700; line-height: 1.2;
+  font-weight: 800; font-size: 18px;
   box-shadow: 3px 3px 0 var(--ink);
-  white-space: nowrap;
 }
-.dz-callout-icon { font-size: 14px; line-height: 1; }
-/* Top callout — vertically centered on the top video (~30% of phone height). */
-.dz-compare-callout-top {
-  top: 192px; right: 100%;
-  transform: translate(-12px, -50%);
+.dz-tl-txt { grid-area: txt; display: flex; flex-direction: column; gap: 12px; }
+.dz-tl-txt h3 {
+  font-size: 28px; line-height: 1.2; font-weight: 800;
+  letter-spacing: -.5px; margin: 0;
 }
-/* Bottom callout — vertically centered on the bottom video (~80% of phone height). */
-.dz-compare-callout-bot {
-  top: 512px; left: 100%;
-  transform: translate(12px, -50%);
+.dz-tl-txt p {
+  font-size: 17px; font-weight: 500; color: var(--secondary);
+  line-height: 1.5; margin: 0;
 }
+.dz-tl-shot { grid-area: shot; display: flex; align-items: center; justify-content: center; }
+/* Aspect matches the source screenshots (~0.49–0.51) rather than a real iPhone
+   frame (~0.46) — object-fit:cover was overcropping the sides on form-heavy
+   screens (dropdown chevrons, chip close buttons) that sit close to the edge. */
+.dz-tl-shot .dj-phone { width: 260px; height: 520px; }
 
-/* Feedback: floating timestamped note overlaid on the phone */
-.dz-feedback-note {
-  background: var(--paper);
-  border: 2px solid var(--ink);
-  border-radius: 12px;
-  box-shadow: 4px 4px 0 var(--ink);
-  padding: 10px 14px;
-  display: flex; gap: 10px; align-items: flex-start;
-  max-width: 240px;
-  font-size: 13px; font-weight: 600; line-height: 1.35;
-  color: var(--ink);
-}
-.dz-feedback-note .dj-ts { flex-shrink: 0; }
-.dz-feedback-chip-tl { top: 56px; left: -36px; transform: rotate(-3deg); z-index: 2; }
-.dz-feedback-chip-br { bottom: 80px; right: -32px; transform: rotate(2deg); z-index: 2; }
+/* Bonus row — must read as "the loop ended, this is extra" before a word is
+   read: distinct (blue) badge, a question for a title, extra gap above. */
+.dz-tl-bonus { margin-top: 40px; padding-top: 56px; }
+.dz-tl-bonus .dz-tl-num { background: #2563EB; font-size: 22px; }
 
 /* Final CTA */
 .dz-final {
@@ -768,8 +360,8 @@ a { color: inherit; }
 .dz-store-glyph { display: inline-flex; align-items: center; }
 .dz-store-glyph svg { display: block; width: auto; flex-shrink: 0; }
 /* Dual install (desktop / unknown platform): two separate store buttons. */
-.dz-install-dual { display: inline-flex; align-items: center; gap: 12px; }
-.dz-install-lead { font-size: 14px; font-weight: 700; color: var(--ink); }
+.dz-install-dual { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.dz-install-lead { font-size: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; }
 /* Final CTA sits on a dark section — lead text needs to read light. */
 .dz-final .dz-install-lead { font-size: 16px; color: #fff; }
 .dz-final-cta:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
@@ -795,17 +387,45 @@ a { color: inherit; }
   .dz-hero h1 { font-size: 56px; letter-spacing: -1.4px; }
   .dz-hero-sub { font-size: 20px; }
   .dz-nav { padding: 20px 40px; }
-  .dz-section { padding: 80px 40px; }
-  .dz-section h2 { font-size: 36px; letter-spacing: -.8px; }
+  .dz-timeline { padding: 80px 40px 96px; }
+  .dz-timeline-h2 { font-size: 36px; margin-bottom: 48px; }
+  .dz-tl-row { grid-template-columns: 1fr 56px 1fr; gap: 32px; }
   .dz-final { padding: 96px 40px; }
   .dz-final h2 { font-size: 40px; }
   .dz-footer { padding: 28px 40px; }
+}
 
-  /* Stacked split: text always comes before image, left-aligned. */
-  .dz-split { grid-template-columns: 1fr; gap: 40px; }
-  .dz-split-text { text-align: left; align-items: flex-start; }
-  .dz-split.text-right .dz-split-text   { order: 1; }
-  .dz-split.text-right .dz-split-visual { order: 2; }
+/* Timeline mobile layout — number rail left, title, body, screenshot beneath.
+   Rows are placed by explicit grid-column/grid-row (not DOM order and not the
+   desktop grid-template-areas): the alternating desktop markup would otherwise
+   put the screenshot ahead of its own title on a single-column stack. */
+@media (max-width: 720px) {
+  .dz-timeline { padding: 56px 20px 72px; }
+  .dz-timeline-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; text-align: left; }
+
+  .dz-tl-rail::before { left: 22px; }
+
+  .dz-tl-row,
+  .dz-tl-row.dz-tl-alt {
+    grid-template-columns: 44px 1fr;
+    grid-template-rows: auto auto;
+    align-items: start;
+    column-gap: 16px;
+    row-gap: 8px;
+    padding: 28px 0;
+  }
+  .dz-tl-row .dz-tl-num,
+  .dz-tl-row.dz-tl-alt .dz-tl-num  { grid-column: 1; grid-row: 1; width: 36px; height: 36px; font-size: 15px; }
+  .dz-tl-row .dz-tl-txt,
+  .dz-tl-row.dz-tl-alt .dz-tl-txt  { grid-column: 2; grid-row: 1; gap: 8px; }
+  .dz-tl-row .dz-tl-shot,
+  .dz-tl-row.dz-tl-alt .dz-tl-shot { grid-column: 2; grid-row: 2; margin-top: 12px; justify-content: flex-start; }
+
+  .dz-tl-txt h3 { font-size: 21px; }
+  .dz-tl-txt p { font-size: 15px; }
+  .dz-tl-shot .dj-phone { width: min(260px, 100%); height: auto; aspect-ratio: 1 / 2; }
+
+  .dz-tl-bonus { margin-top: 24px; padding-top: 36px; }
 }
 
 @media (max-width: 768px) {
@@ -816,38 +436,15 @@ a { color: inherit; }
   .dz-nav-wm .dj-mark { width: 34px; height: 34px; border-radius: 9px; }
   .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
   .dz-nav-cta svg { width: 13px; height: 13px; }
+  /* Ambiguous-platform fallback (two store pills + lead text) is too wide next
+     to the wordmark on a phone-width viewport — the label is redundant with
+     the pills' own "iOS"/"Android" text, so drop it first before anything wraps. */
+  .dz-nav .dz-install-lead { display: none; }
   .dz-hero { padding: 56px 20px 64px; }
   .dz-hero h1 { font-size: 40px; letter-spacing: -1px; }
   .dz-hero-sub { font-size: 17px; margin-top: 18px; }
   .dz-hero-cta { gap: 10px; margin-top: 22px; }
   .dz-download-btn { font-size: 14px; padding: 11px 18px; }
-  .dz-hero-chips-lead { font-size: 12px; margin-top: 24px; }
-  .dz-hero-chips { gap: 8px; margin-top: 10px; }
-  .dz-hero-chips a { font-size: 12px; padding: 7px 14px; }
-
-  .dz-try-stamp { top: -8px; right: -4px; }
-  /* Mobile: the phone column has no room to the sides for outside-the-phone
-     badges, so overlay them in opposite corners — away from the hand areas
-     they're calling out, preserving the diagonal comparison. */
-  .dz-callout-label { font-size: 11px; padding: 6px 10px; box-shadow: 2px 2px 0 var(--ink); gap: 4px; }
-  .dz-callout-icon { font-size: 12px; }
-  .dz-compare-callout-top {
-    top: 18px; left: 14px; right: auto;
-    transform: none;
-  }
-  .dz-compare-callout-bot {
-    top: auto; right: 14px; bottom: 18px; left: auto;
-    transform: none;
-  }
-
-  .dz-section { padding: 44px 20px 64px; }
-  .dz-section h2 { font-size: 28px; letter-spacing: -.6px; }
-  #feedback h2 { font-size: 26px; letter-spacing: -.5px; }
-  /* Nowrap halves of the feedback h2 are wider than a phone column — they push the
-     grid track wider than the viewport and cause horizontal overflow. */
-  .dz-section h2 .nowrap { white-space: normal; }
-
-  .dz-phone-stage { padding: 20px 0; }
 
   .dz-final { padding: 80px 20px; }
   .dz-final h2 { font-size: 32px; letter-spacing: -.6px; }
