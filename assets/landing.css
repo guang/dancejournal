@@ -450,13 +450,27 @@ a { color: inherit; }
   /* "What's New" is hidden at the top (tight space) and slides into the gap the
      wordmark vacates once scrolled — the two crossfade in the same horizontal slot.
      visibility (not just opacity) is toggled so the collapsed link can't be tabbed
-     to or announced by a screen reader while it has zero visible width. */
+     to or announced by a screen reader while it has zero visible width.
+
+     The unscrolled nav (word + "What's New" collapsed + CTA) has only a couple px
+     of slack before wrapping. If the word's collapse and "What's New"'s reveal ran
+     concurrently, their independently-eased widths wouldn't sum to a constant —
+     mid-transition the combined width can transiently exceed that slack and force
+     a one-frame wrap to two rows. transition-delay sequences them instead: the
+     word finishes collapsing/re-expanding before the other one starts moving, so
+     the two widths never grow at the same time and the sum never overshoots
+     either resting state. */
+  .dz-nav-wm .dj-word { transition-delay: 200ms; }
+  .dz-nav.scrolled .dz-nav-wm .dj-word { transition-delay: 0ms; }
   .dz-nav-whatsnew {
     display: inline-block; overflow: hidden;
     max-width: 0; opacity: 0; visibility: hidden; margin-right: 0;
     transition: max-width 240ms ease, opacity 180ms ease, margin-right 240ms ease, visibility 240ms;
   }
-  .dz-nav.scrolled .dz-nav-whatsnew { max-width: 160px; opacity: 1; visibility: visible; margin-right: 14px; }
+  .dz-nav.scrolled .dz-nav-whatsnew {
+    max-width: 160px; opacity: 1; visibility: visible; margin-right: 14px;
+    transition-delay: 200ms;
+  }
   .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
   .dz-nav-cta svg { width: 13px; height: 13px; }
   /* Ambiguous-platform fallback (two store pills + lead text) is too wide next
