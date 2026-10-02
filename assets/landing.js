@@ -118,6 +118,8 @@
   // load, and most sit below the fold anyway. The poster image covers
   // the gap until playback starts. `data-started` records that the observer has
   // already played one, so the How it works tabs know it's safe to resume it.
+  var lazyObserver = null;
+
   function initLazyVideos() {
     var videos = document.querySelectorAll('[data-lazy-video]');
     if (!videos.length) return;
@@ -125,7 +127,7 @@
       videos.forEach(function (v) { v.dataset.started = '1'; v.play(); });
       return;
     }
-    var observer = new IntersectionObserver(function (entries) {
+    var observer = lazyObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         entry.target.dataset.started = '1';
@@ -139,8 +141,8 @@
 
   // How it works, card 1: the Instagram | Photos tab switch. Only the active panel
   // is shown; the hidden panel's video is paused. Resuming the shown video is only
-  // our job once the lazy observer has already started it (data-started) and it's
-  // on screen — before that the observer plays it when it scrolls into view.
+  // our job once the lazy observer has already started it (data-started): play now if
+  // it's on screen, otherwise re-observe it. Before that the observer plays it itself.
   function initHowTabs() {
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-how-tab]'));
     if (!tabs.length) return;
@@ -162,9 +164,15 @@
         if (!video) return;
         if (!on) {
           video.pause();
-        } else if (video.dataset.started && inView(video)) {
-          var p = video.play();
-          if (p && p.catch) p.catch(function () {});
+        } else if (video.dataset.started) {
+          if (inView(video)) {
+            var p = video.play();
+            if (p && p.catch) p.catch(function () {});
+          } else if (lazyObserver) {
+            // Off screen: the lazy observer already let go of it, so hand it back
+            // to play when it scrolls into view (observe() is a no-op if already watched).
+            lazyObserver.observe(video);
+          }
         }
       });
       if (focus) tab.focus();
@@ -176,6 +184,8 @@
         var next;
         if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
         else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') next = tabs[0];
+        else if (e.key === 'End') next = tabs[tabs.length - 1];
         else return;
         e.preventDefault();
         select(next, true);

@@ -389,7 +389,7 @@ a { color: inherit; }
 .dz-c2-tray i::after { border-left-color: #fff; }
 .dz-c2-grid i.ghost {
   background: transparent; border: 2px dashed #cfc9c0; box-sizing: border-box;
-  font-size: 11px; font-weight: 800; color: #8a857d;
+  font-size: 11px; font-weight: 800; color: #6f6a62;
 }
 .dz-c2-grid i.ghost::after { display: none; }
 /* Gold shows up only here: the small number badges. */
@@ -464,14 +464,13 @@ a { color: inherit; }
 }
 
 /* scene 2 · celebration */
-.dz-c3-s2 { background: rgba(0, 0, 0, .55); }
 .dz-c3-done {
   position: absolute; left: 12px; right: 12px; top: 50%; transform: translateY(-50%);
   background: #fff; border-radius: 16px; padding: 16px 12px 14px; text-align: center;
 }
 .dz-c3-done h4 { font-size: 15px; font-weight: 800; line-height: 1.2; margin: 0 0 4px; }
 .dz-c3-done p { font-size: 12px; line-height: 1.35; color: #6f6a62; margin: 0 0 10px; }
-.dz-c3-lab { font-size: 9.5px; font-weight: 800; letter-spacing: .08em; color: #8a857d; margin-bottom: 6px; }
+.dz-c3-lab { font-size: 9.5px; font-weight: 800; letter-spacing: .08em; color: #6f6a62; margin-bottom: 6px; }
 .dz-c3-th { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 11px; }
 .dz-c3-th span { position: relative; display: block; }
 .dz-c3-th img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 7px; }
@@ -483,7 +482,7 @@ a { color: inherit; }
 .dz-c3-th em.w { background: conic-gradient(var(--warning) 0 50%, #fff 0); }
 .dz-c3-btn { background: var(--gold); color: #fff; font-size: 13px; font-weight: 700; border-radius: 99px; padding: 8px; }
 .dz-c3-cf { position: absolute; top: -12px; width: 7px; height: 12px; border-radius: 2px; animation: dz-c3-fall 3s linear infinite; }
-@keyframes dz-c3-fall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(470px) rotate(540deg); } }
+@keyframes dz-c3-fall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(540px) rotate(540deg); } }
 
 /* scene 3 · streak */
 .dz-c3-s3 { background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 14px; text-align: center; }
@@ -498,12 +497,12 @@ a { color: inherit; }
 .dz-c3-segs i.today { background: #fff; border: 2px solid var(--gold); box-sizing: border-box; animation: dz-c3-fill 9s infinite; }
 @keyframes dz-c3-fill { 0%, 72% { background: #fff; } 80%, 100% { background: var(--gold); } }
 .dz-c3-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; margin-top: 6px; }
-.dz-c3-days span { font-size: 10px; font-weight: 700; color: #8a857d; text-align: center; }
+.dz-c3-days span { font-size: 10px; font-weight: 700; color: #6f6a62; text-align: center; }
 .dz-c3-days .now { color: var(--ink); }
 
 /* progress dots under the phone — one per scene */
 /* Zero-height row so it doesn't push card 3's badge below cards 1 and 2. */
-.dz-c3-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin-top: 8px; }
+.dz-c3-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin: 8px 0 -8px; }
 .dz-c3-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-c3-dot 9s infinite; }
 .dz-c3-dots i:nth-child(2) { animation-delay: 3s; }
 .dz-c3-dots i:nth-child(3) { animation-delay: 6s; }
@@ -621,16 +620,17 @@ a { color: inherit; }
 }
 
 /* Feature band: 3 + 2 below the width where five 200px tiles fit in one row. */
-@media (max-width: 1160px) {
+@media (max-width: 1224px) {
   .dz-deeper-tile { flex-basis: calc((100% - 48px) / 3); }
-  .dz-deeper-tile .dj-phone { width: min(200px, 100%); }
+  .dz-deeper-tile .dj-phone { width: min(200px, 100%); height: auto; min-height: 0; aspect-ratio: 1 / 2; }
 }
 
-/* How it works — stacked cards below 900px: one column, phones a touch larger. */
+/* How it works — stacked cards below 900px: one column. */
 @media (max-width: 900px) {
   .dz-how-grid { grid-template-columns: 1fr; gap: 64px; }
   .dz-how-card-plain { padding-top: 0; }
 }
+/* Phones a touch larger (260×520) on small screens. */
 @media (max-width: 720px) {
   .dz-how { padding: 56px 20px 72px; }
   .dz-how-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; }
@@ -642,7 +642,7 @@ a { color: inherit; }
   .dz-deeper-h2 { font-size: 28px; letter-spacing: -.6px; }
   .dz-deeper-sub { font-size: 16px; margin-bottom: 40px; }
   .dz-deeper-tile { flex-basis: 100%; }
-  .dz-deeper-tile .dj-phone { width: min(220px, 100%); height: auto; aspect-ratio: 1 / 2; }
+  .dz-deeper-tile .dj-phone { width: min(220px, 100%); height: auto; min-height: 0; aspect-ratio: 1 / 2; }
 }
 
 @media (max-width: 768px) {
