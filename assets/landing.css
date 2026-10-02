@@ -629,7 +629,7 @@ a { color: inherit; }
 /* Feature band: 3 + 2 below the width where five 200px tiles fit in one row. */
 @media (max-width: 1224px) {
   .dz-deeper-grid { gap: 48px 32px; }
-  .dz-deeper-tile { flex-basis: calc((100% - 64px) / 3); }
+  .dz-deeper-tile { flex-basis: calc((100% - 32px) / 2); }
   .dz-deeper-tile .dj-phone { width: min(200px, 100%); height: auto; min-height: 0; aspect-ratio: 1 / 2; }
 }
 
