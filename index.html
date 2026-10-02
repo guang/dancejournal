@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Actually reach your dance goals. Save a clip from Instagram or your camera roll, loop the hard part, compare side by side, pin notes to the exact frame, and track every move from Learning to Got it.">
   <meta name="twitter:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=79">
+  <link rel="stylesheet" href="assets/landing.css?v=85">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
   <!-- End Cloudflare Web Analytics -->
@@ -72,137 +72,160 @@
     </div>
   </section>
 
-  <!-- ============== How it works (vertical timeline: 6 steps + bonus) ============== -->
-  <section class="dz-timeline" id="how-it-works">
-    <div class="dz-timeline-inner">
-      <h2 class="dz-timeline-h2">How it works</h2>
-      <div class="dz-tl-rail">
+  <!-- ============== How it works (3 cards: save → pick 3 → check off) ============== -->
+  <section class="dz-how" id="how-it-works">
+    <div class="dz-how-inner">
+      <h2 class="dz-how-h2">How it works</h2>
+      <div class="dz-how-grid">
 
-        <!-- 1 -->
-        <div class="dz-tl-row">
-          <div class="dz-tl-num">1</div>
-          <div class="dz-tl-txt">
-            <h3>Start with a clip</h3>
-            <p>From Instagram or your camera roll - share a clip straight into the app.</p>
+        <!-- 1 · Save: Instagram | Class tabs -->
+        <div class="dz-how-card">
+          <div class="dz-how-tabs" role="tablist" aria-label="Where to save a move from">
+            <button type="button" role="tab" id="how-tab-instagram" aria-selected="true"
+                    aria-controls="how-panel-instagram" tabindex="0" data-how-tab>Instagram</button>
+            <button type="button" role="tab" id="how-tab-class" aria-selected="false"
+                    aria-controls="how-panel-class" tabindex="-1" data-how-tab>Class</button>
           </div>
-          <div class="dz-tl-shot">
-            <div class="dj-phone">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen" style="--rec-mask-h: 6%; --rec-mask-bg: #fff;">
+          <div class="dj-phone dz-how-phone">
+            <div class="dj-phone-notch"></div>
+            <div class="dj-phone-screen dz-how-screen">
+              <div class="dz-how-panel" role="tabpanel" id="how-panel-instagram"
+                   aria-labelledby="how-tab-instagram" tabindex="0" style="--rec-mask-h: 6%; --rec-mask-bg: #fff;">
                 <video src="assets/video/step-1-import.mp4?v=1" poster="assets/video/step-1-import-poster.jpg?v=1"
                        muted playsinline webkit-playsinline loop preload="none" data-lazy-video
                        aria-label="Sharing an Instagram tutorial into the Create Clip screen"></video>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2 -->
-        <div class="dz-tl-row dz-tl-alt">
-          <div class="dz-tl-num">2</div>
-          <div class="dz-tl-txt">
-            <h3>Drop it into a goal</h3>
-            <p>Just a few moves and a deadline. That's what turns a saved clip into something you'll practice.</p>
-          </div>
-          <div class="dz-tl-shot">
-            <div class="dj-phone">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen" style="--rec-mask-h: 12%; --rec-mask-bg: #000;">
-                <video src="assets/video/step-2-goal.mp4?v=1" poster="assets/video/step-2-goal-poster.jpg?v=1"
-                       muted playsinline webkit-playsinline loop preload="none" data-lazy-video
-                       aria-label="Adding a clip to a goal and seeing it appear in the moves list"></video>
+              <!-- TODO(#26): replace with step-1-class.mp4 recording (saving a class video from the camera roll) -->
+              <div class="dz-how-panel" role="tabpanel" id="how-panel-class"
+                   aria-labelledby="how-tab-class" tabindex="0" hidden>
+                <img src="assets/how/save-class-interim.jpg" alt="The Add sheet in Dance Journal with the Photo gallery option">
               </div>
             </div>
           </div>
+          <div class="dz-how-num" aria-hidden="true">1</div>
+          <h3>Save any dance video to your practice list.</h3>
         </div>
 
-        <!-- 3 -->
-        <div class="dz-tl-row">
-          <div class="dz-tl-num">3</div>
-          <div class="dz-tl-txt">
-            <h3>Loop it, then film it</h3>
-            <p>Loop the four 8-counts that trip you up. Then film yourself against it.</p>
-          </div>
-          <div class="dz-tl-shot">
-            <div class="dj-phone">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen" style="--rec-mask-h: 12%; --rec-mask-bg: #000;">
-                <video src="assets/video/step-3-loop.mp4?v=1" poster="assets/video/step-3-loop-poster.jpg?v=1"
-                       muted playsinline webkit-playsinline loop preload="none" data-lazy-video
-                       aria-label="Marking a loop range on a clip and arming Record"></video>
-              </div>
+        <!-- 2 · Many → 3 (decorative diagram) -->
+        <div class="dz-how-card dz-how-card-plain">
+          <div class="dz-how-diagram dz-c2" data-how-reveal role="img"
+               aria-label="Your practice list of 22 moves, with 3 picked for today">
+            <div class="dz-c2-hd" aria-hidden="true"><b>Practice list</b><span>22 moves</span></div>
+            <div class="dz-c2-grid" aria-hidden="true">
+              <i></i><i class="pk"><b>1</b></i><i></i><i></i>
+              <i></i><i></i><i class="pk"><b>2</b></i><i></i>
+              <i class="pk"><b>3</b></i><i></i><i></i><i class="ghost">+10</i>
             </div>
+            <div class="dz-c2-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v17M5 13l7 7 7-7"/></svg>
+            </div>
+            <div class="dz-c2-hd" aria-hidden="true"><b>Today</b></div>
+            <div class="dz-c2-tray" aria-hidden="true"><i><b>1</b></i><i><b>2</b></i><i><b>3</b></i></div>
           </div>
+          <div class="dz-how-num" aria-hidden="true">2</div>
+          <h3>Each day, we pick 3 moves for you to practice.</h3>
         </div>
 
-        <!-- 4 -->
-        <div class="dz-tl-row dz-tl-alt">
-          <div class="dz-tl-num">4</div>
-          <div class="dz-tl-txt">
-            <h3>Spot the difference</h3>
-            <p>Play both at once, frame for frame - you'll see exactly what's off.</p>
-          </div>
-          <div class="dz-tl-shot">
-            <div class="dj-phone">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen">
-                <img src="assets/shots/step-4-compare.jpg" alt="Two clips synced side by side with independent timestamps for frame-accurate comparison">
+        <!-- 3 · Check-in → confetti → streak (9s loop, 3s per scene) -->
+        <div class="dz-how-card dz-how-card-plain">
+          <div class="dz-how-diagram dz-c3" data-how-loop role="img"
+               aria-label="Check in on a move, finish today's practice, and your streak grows">
+            <div class="dz-c3-scene dz-c3-s1" aria-hidden="true">
+              <div class="dz-c3-bg" style="filter: brightness(.55);"></div>
+              <div class="dz-c3-sheet">
+                <p class="dz-c3-q">How's this move going?</p>
+                <div class="dz-c3-tiles">
+                  <div class="dz-c3-tile"><span class="dz-c3-gl dz-c3-gl-w"></span>Working on it</div>
+                  <div class="dz-c3-tile dz-c3-sel"><span class="dz-c3-gl dz-c3-gl-g"></span>Got it<span class="dz-c3-tap"></span></div>
+                </div>
               </div>
             </div>
+            <div class="dz-c3-scene dz-c3-s2" aria-hidden="true">
+              <div class="dz-c3-bg" style="filter: brightness(.4);"></div>
+              <div class="dz-c3-done">
+                <h4>Today's practice is done</h4>
+                <p>You've finished today's practice.</p>
+                <div class="dz-c3-lab">PRACTICED TODAY</div>
+                <div class="dz-c3-th">
+                  <span><img src="assets/how/move-1.jpg" alt=""><em></em></span>
+                  <span><img src="assets/how/move-2.jpg" alt=""><em class="w"></em></span>
+                  <span><img src="assets/how/move-3.jpg" alt=""><em></em></span>
+                </div>
+                <div class="dz-c3-btn">Done</div>
+              </div>
+              <i class="dz-c3-cf" style="left: 8%;  background: #ef4444; animation-delay: -.2s;"></i>
+              <i class="dz-c3-cf" style="left: 22%; background: #3b82f6; animation-delay: -1.1s;"></i>
+              <i class="dz-c3-cf" style="left: 36%; background: var(--gold); animation-delay: -2.2s;"></i>
+              <i class="dz-c3-cf" style="left: 50%; background: var(--success); animation-delay: -.7s;"></i>
+              <i class="dz-c3-cf" style="left: 64%; background: #a855f7; animation-delay: -1.6s;"></i>
+              <i class="dz-c3-cf" style="left: 78%; background: #ef4444; animation-delay: -2.6s;"></i>
+              <i class="dz-c3-cf" style="left: 90%; background: #3b82f6; animation-delay: -.4s;"></i>
+              <i class="dz-c3-cf" style="left: 14%; background: var(--success); animation-delay: -1.9s;"></i>
+              <i class="dz-c3-cf" style="left: 58%; background: var(--gold); animation-delay: -2.9s;"></i>
+              <i class="dz-c3-cf" style="left: 84%; background: #a855f7; animation-delay: -1.3s;"></i>
+            </div>
+            <div class="dz-c3-scene dz-c3-s3" aria-hidden="true">
+              <div class="dz-c3-big"><span class="dz-c3-fl">🔥</span> <span class="dz-c3-cnt"><span class="pv">3</span><span class="nx">4</span></span></div>
+              <div class="dz-c3-sub">day streak</div>
+              <div class="dz-c3-segs"><i></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="today"></i></div>
+              <div class="dz-c3-days"><span>F</span><span>S</span><span>S</span><span>M</span><span>T</span><span>W</span><span class="now">T</span></div>
+            </div>
           </div>
+          <div class="dz-c3-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="dz-how-num" aria-hidden="true">3</div>
+          <h3>Check them off, and we track your progress.</h3>
         </div>
 
-        <!-- 5 -->
-        <div class="dz-tl-row">
-          <div class="dz-tl-num">5</div>
-          <div class="dz-tl-txt">
-            <h3>Pin the fix</h3>
-            <p>Circle it, emoji it, or write a note - pinned to the exact timestamp.</p>
-          </div>
-          <div class="dz-tl-shot">
-            <div class="dj-phone">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen">
-                <img src="assets/shots/step-5-annotate.jpg" alt="A drawn arrow and note reading move hands higher, pinned to an exact frame">
-              </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== Tools band (get more out of your practice) ============== -->
+  <section class="dz-deeper" id="tools">
+    <div class="dz-deeper-inner">
+      <h2 class="dz-deeper-h2">Get more out of your practice.</h2>
+      <div class="dz-deeper-grid">
+
+        <div class="dz-deeper-tile">
+          <div class="dj-phone">
+            <div class="dj-phone-notch"></div>
+            <div class="dj-phone-screen" style="--rec-mask-h: 12%; --rec-mask-bg: #000;">
+              <video src="assets/video/step-3-loop.mp4?v=1" poster="assets/video/step-3-loop-poster.jpg?v=1"
+                     muted playsinline webkit-playsinline loop preload="none" data-lazy-video
+                     aria-label="Marking a loop range on a clip and arming Record"></video>
             </div>
           </div>
+          <h3>Loop &amp; slow down</h3>
         </div>
 
-        <!-- 6 -->
-        <div class="dz-tl-row dz-tl-alt">
-          <div class="dz-tl-num">6</div>
-          <div class="dz-tl-txt">
-            <h3>Track your progress</h3>
-            <p>Learning ○ → Polishing ◐ → Got it ●.</p>
-          </div>
-          <div class="dz-tl-shot">
-            <div class="dj-phone">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen" style="--rec-mask-h: 6%; --rec-mask-bg: #f7f6f6;">
-                <video src="assets/video/step-6-progress.mp4?v=1" poster="assets/video/step-6-progress-poster.jpg?v=1"
-                       muted playsinline webkit-playsinline loop preload="none" data-lazy-video
-                       aria-label="Bumping a move from Learning to Polishing to Got it"></video>
-              </div>
+        <div class="dz-deeper-tile">
+          <div class="dj-phone">
+            <div class="dj-phone-notch"></div>
+            <div class="dj-phone-screen">
+              <img src="assets/shots/record-take.jpg" alt="Recording a take: the tutorial plays on the left while the camera films the dancer on the right">
             </div>
           </div>
+          <h3>Record yourself next to the tutorial</h3>
         </div>
 
-        <!-- Bonus -->
-        <div class="dz-tl-row dz-tl-bonus">
-          <div class="dz-tl-num">+</div>
-          <div class="dz-tl-txt">
-            <h3>Want another pair of eyes?</h3>
-            <p>Send it to a teacher or friend - their notes pin to the exact frame.</p>
-          </div>
-          <div class="dz-tl-shot">
-            <div class="dj-phone">
-              <div class="dj-phone-notch"></div>
-              <div class="dj-phone-screen">
-                <img src="assets/shots/step-7-feedback.jpg?v=1" alt="A teacher's notes pinned to marks on the clip's timeline, with numbered feedback below">
-              </div>
+        <div class="dz-deeper-tile">
+          <div class="dj-phone">
+            <div class="dj-phone-notch"></div>
+            <div class="dj-phone-screen">
+              <img src="assets/shots/step-4-compare.jpg" alt="Two clips synced side by side with independent timestamps for frame-accurate comparison">
             </div>
           </div>
+          <h3>Compare side by side</h3>
+        </div>
+
+        <div class="dz-deeper-tile">
+          <div class="dj-phone">
+            <div class="dj-phone-notch"></div>
+            <div class="dj-phone-screen">
+              <img src="assets/shots/step-5-annotate.jpg" alt="A drawn arrow and note reading move hands higher, pinned to an exact frame">
+            </div>
+          </div>
+          <h3>Take notes on the video</h3>
         </div>
 
       </div>
@@ -228,6 +251,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=27" defer></script>
+  <script src="assets/landing.js?v=28" defer></script>
 </body>
 </html>

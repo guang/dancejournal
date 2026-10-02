@@ -268,74 +268,291 @@ a { color: inherit; }
 .dz-download-btn:active { transform: translateY(1px); box-shadow: 1px 1px 0 var(--gold); }
 .dz-download-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
-/* ============== How it works — vertical timeline (6 steps + bonus) ============== */
-.dz-timeline {
+/* ============== How it works — 3 cards ============== */
+.dz-how {
   padding: 96px 64px 112px;
   border-bottom: 2px solid var(--ink);
   background: var(--gold-light);
 }
-.dz-timeline-inner { max-width: 1120px; margin: 0 auto; }
-.dz-timeline-h2 {
+.dz-how-inner { max-width: 1120px; margin: 0 auto; }
+.dz-how-h2 {
   font-size: 44px; line-height: 1.2; font-weight: 800;
-  letter-spacing: -1px; margin: 0 0 64px;
+  letter-spacing: -1px; margin: 0 0 56px;
   text-align: center;
 }
-
-.dz-tl-rail { position: relative; }
-/* Continuous connecting line down the rail — the thing that turns seven cards
-   into one process, not decorative. A single ::before on the container. */
-.dz-tl-rail::before {
-  content: '';
-  position: absolute;
-  top: 8px; bottom: 8px; left: 50%;
-  width: 2px;
-  background: var(--ink);
-  opacity: .15;
-  transform: translateX(-50%);
-}
-
-.dz-tl-row {
-  position: relative;
+.dz-how-grid {
   display: grid;
-  grid-template-columns: 1fr 64px 1fr;
-  grid-template-areas: "txt num shot";
-  align-items: center;
-  gap: 48px;
-  padding: 40px 0;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px 40px;
 }
-.dz-tl-row.dz-tl-alt { grid-template-areas: "shot num txt"; }
+.dz-how-card {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+/* Card 1 carries the Instagram | Class tabs above its phone; cards 2 and 3 have
+   no tab row, so they reserve the same height (tab pill 40 + 12 gap) and all
+   three phones start on one line. Dropped when the cards stack. */
+.dz-how-card-plain { padding-top: 52px; }
+.dz-how-card h3 {
+  font-size: 22px; line-height: 1.25; font-weight: 800;
+  letter-spacing: -.4px; margin: 12px 0 0;
+  max-width: 300px; text-wrap: balance;
+}
 
-.dz-tl-num {
-  grid-area: num;
-  position: relative; z-index: 2;
-  width: 48px; height: 48px;
-  margin: 0 auto;
+/* Number badge — same gold disc as the old timeline steps. */
+.dz-how-num {
+  width: 40px; height: 40px;
+  margin-top: 20px;
   border: 2px solid var(--ink);
   border-radius: 50%;
   background: var(--gold); color: #fff;
   display: inline-flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 18px;
+  font-weight: 800; font-size: 17px;
   box-shadow: 3px 3px 0 var(--ink);
 }
-.dz-tl-txt { grid-area: txt; display: flex; flex-direction: column; gap: 12px; }
-.dz-tl-txt h3 {
-  font-size: 28px; line-height: 1.2; font-weight: 800;
-  letter-spacing: -.5px; margin: 0;
-}
-.dz-tl-txt p {
-  font-size: 17px; font-weight: 500; color: var(--secondary);
-  line-height: 1.5; margin: 0;
-}
-.dz-tl-shot { grid-area: shot; display: flex; align-items: center; justify-content: center; }
-/* Aspect matches the source screenshots (~0.49–0.51) rather than a real iPhone
-   frame (~0.46) — object-fit:cover was overcropping the sides on form-heavy
-   screens (dropdown chevrons, chip close buttons) that sit close to the edge. */
-.dz-tl-shot .dj-phone { width: 260px; height: 520px; }
 
-/* Bonus row — must read as "the loop ended, this is extra" before a word is
-   read: distinct (blue) badge, a question for a title, extra gap above. */
-.dz-tl-bonus { margin-top: 40px; padding-top: 56px; }
-.dz-tl-bonus .dz-tl-num { background: #2563EB; font-size: 22px; }
+/* Instagram | Class switch — white pill, 2px ink border; active tab is ink with gold text. */
+.dz-how-tabs {
+  display: inline-flex; gap: 4px;
+  height: 40px; margin-bottom: 12px;
+  padding: 3px;
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 99px;
+}
+.dz-how-tabs button {
+  border: 0; background: transparent; color: var(--ink);
+  font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+  padding: 0 16px; border-radius: 99px;
+  cursor: pointer;
+}
+.dz-how-tabs button[aria-selected="true"] { background: var(--ink); color: var(--gold); }
+.dz-how-tabs button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* Shared phone footprint for all three cards. */
+.dz-how-phone,
+.dz-how-diagram { width: 240px; height: 480px; }
+
+/* Card 1 — two tab panels stacked in one screen. The recording mask lives on the
+   panel (not the screen) so it never paints over the Class still. */
+.dz-how-screen:has(video)::before { content: none; }
+.dz-how-panel { position: absolute; inset: 0; }
+.dz-how-panel[hidden] { display: none; }
+.dz-how-panel:has(video)::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: var(--rec-mask-h, 6%);
+  background: var(--rec-mask-bg, #fff);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Shell for the two pure-CSS phones (cards 2 and 3). */
+.dz-how-diagram {
+  position: relative;
+  background: #fff;
+  border: 6px solid var(--ink);
+  border-radius: 28px;
+  box-sizing: border-box;
+  text-align: left;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .18);
+}
+
+/* Card 2 — practice list → today's 3 */
+.dz-c2 { padding: 18px 13px; display: flex; flex-direction: column; }
+.dz-c2-hd { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.dz-c2-hd b { font-size: 17px; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
+.dz-c2-hd span {
+  font-size: 11px; font-weight: 700; color: #6f6a62;
+  background: #f1eee9; border-radius: 99px; padding: 3px 8px;
+}
+.dz-c2-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.dz-c2-tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; background: #fbf1d6; border-radius: 14px; padding: 9px; }
+.dz-c2-grid i,
+.dz-c2-tray i {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 3 / 4; border-radius: 6px;
+  background: #e7e3dd;
+}
+.dz-c2-tray i { border-radius: 8px; background: var(--ink); }
+.dz-c2-grid i.pk { background: var(--ink); }
+/* Small play triangle on every tile. */
+.dz-c2-grid i::after,
+.dz-c2-tray i::after {
+  content: '';
+  width: 0; height: 0; margin-left: 2px;
+  border-left: 8px solid #bdb7ad;
+  border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+}
+.dz-c2-grid i.pk::after,
+.dz-c2-tray i::after { border-left-color: #fff; }
+.dz-c2-grid i.ghost {
+  font-style: normal;
+  background: transparent; border: 2px dashed #cfc9c0; box-sizing: border-box;
+  font-size: 11px; font-weight: 800; color: #6f6a62;
+}
+.dz-c2-grid i.ghost::after { display: none; }
+/* Gold shows up only here: the small number badges. */
+.dz-c2-grid i b,
+.dz-c2-tray i b {
+  position: absolute; top: 4px; left: 4px;
+  width: 15px; height: 15px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--gold); color: var(--ink);
+  font-size: 9.5px; font-weight: 800; font-style: normal; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.dz-c2-arrow { display: flex; justify-content: center; margin: 12px 0 10px; color: var(--ink); }
+.dz-c2-arrow svg { width: 44px; height: 44px; }
+/* The three tray tiles rise in one after another the first time the card scrolls
+   into view. JS arms it (.dz-armed) only when motion is allowed, so without JS or
+   under reduced motion the tray is simply there. */
+.dz-c2.dz-armed .dz-c2-tray i { opacity: 0; transform: translateY(14px); }
+.dz-c2.dz-in .dz-c2-tray i { animation: dz-c2-rise 400ms ease-out forwards; }
+.dz-c2.dz-in .dz-c2-tray i:nth-child(2) { animation-delay: 150ms; }
+.dz-c2.dz-in .dz-c2-tray i:nth-child(3) { animation-delay: 300ms; }
+@keyframes dz-c2-rise { to { opacity: 1; transform: none; } }
+
+/* Card 3 — check-in → celebration → streak. Three stacked scenes cross-fade on a
+   9s loop (3s each); the scene delays are what offset them. */
+.dz-c3 { overflow: hidden; }
+.dz-c3-scene { position: absolute; inset: 0; opacity: 0; animation: dz-c3-scene 9s infinite; }
+.dz-c3-s1 { animation-delay: 0s; }
+.dz-c3-s2 { animation-delay: 3s; }
+.dz-c3-s3 { animation-delay: 6s; }
+@keyframes dz-c3-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
+.dz-c3-bg {
+  position: absolute; inset: 0;
+  background: #000 url(how/checkin-frame.jpg) center / cover no-repeat;
+}
+/* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
+   !important is load-bearing: the `animation` shorthand on the more specific scene-3
+   rules (.dz-c3-cnt .nx, .dz-c3-segs i.today, …) resets play-state to running, so
+   without it those keep ticking while the scenes pause and the streak plays out of sync. */
+.dz-c3.dz-paused *,
+.dz-c3-dots.dz-paused * { animation-play-state: paused !important; }
+
+/* scene 1 · check-in */
+.dz-c3-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: #fff; border-radius: 18px 18px 0 0;
+  padding: 15px 12px 20px;
+}
+.dz-c3-q { font-size: 14px; font-weight: 800; line-height: 1.2; margin: 0 0 11px; }
+.dz-c3-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dz-c3-tile {
+  position: relative;
+  border: 2px solid #e5e1da; border-radius: 12px;
+  padding: 13px 4px; text-align: center;
+  font-size: 12px; font-weight: 700; line-height: 1.2;
+}
+.dz-c3-gl { display: block; width: 19px; height: 19px; border-radius: 50%; margin: 0 auto 6px; }
+.dz-c3-gl-w { background: conic-gradient(var(--warning) 0 50%, #fff 0); border: 2px solid var(--warning); box-sizing: border-box; }
+.dz-c3-gl-g { background: var(--success); }
+.dz-c3-sel { animation: dz-c3-sel 9s infinite; }
+@keyframes dz-c3-sel {
+  0%, 14% { border-color: #e5e1da; background: #fff; }
+  17%, 33% { border-color: var(--success); background: #ecfdf5; }
+  100% { border-color: #e5e1da; }
+}
+.dz-c3-tap {
+  position: absolute; right: 8px; bottom: 6px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(17, 17, 17, .18); border: 2px solid rgba(17, 17, 17, .55);
+  animation: dz-c3-tap 9s infinite;
+}
+@keyframes dz-c3-tap {
+  0%, 8% { transform: scale(.5); opacity: 0; }
+  12% { opacity: 1; transform: scale(1); }
+  17% { opacity: 0; transform: scale(1.3); }
+  100% { opacity: 0; }
+}
+
+/* scene 2 · celebration */
+.dz-c3-done {
+  position: absolute; left: 12px; right: 12px; top: 50%; transform: translateY(-50%);
+  background: #fff; border-radius: 16px; padding: 16px 12px 14px; text-align: center;
+}
+.dz-c3-done h4 { font-size: 15px; font-weight: 800; line-height: 1.2; margin: 0 0 4px; }
+.dz-c3-done p { font-size: 12px; line-height: 1.35; color: #6f6a62; margin: 0 0 10px; }
+.dz-c3-lab { font-size: 9.5px; font-weight: 800; letter-spacing: .08em; color: #6f6a62; margin-bottom: 6px; }
+.dz-c3-th { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 11px; }
+.dz-c3-th span { position: relative; display: block; }
+.dz-c3-th img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 7px; }
+.dz-c3-th em {
+  position: absolute; left: 4px; bottom: 4px;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--success); border: 2px solid #fff;
+}
+.dz-c3-th em.w { background: conic-gradient(var(--warning) 0 50%, #fff 0); }
+.dz-c3-btn { background: var(--gold); color: #fff; font-size: 13px; font-weight: 700; border-radius: 99px; padding: 8px; }
+.dz-c3-cf { position: absolute; top: -12px; width: 7px; height: 12px; border-radius: 2px; animation: dz-c3-fall 3s linear infinite; }
+@keyframes dz-c3-fall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(540px) rotate(540deg); } }
+
+/* scene 3 · streak */
+.dz-c3-s3 { background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 14px; text-align: center; }
+.dz-c3-big { font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -.03em; }
+.dz-c3-fl { font-size: 44px; vertical-align: 8px; }
+/* The fill + count run on scene 3's own clock (same 6s delay as .dz-c3-s3), so
+   the segment is empty when the scene fades in, fills ~1s later, and is reset
+   only after the scene has faded out (local 34%). */
+.dz-c3-cnt { position: relative; display: inline-block; }
+.dz-c3-cnt span { display: inline-block; }
+.dz-c3-cnt .nx { position: absolute; left: 0; top: 0; opacity: 0; animation: dz-c3-nx 9s 6s infinite; }
+.dz-c3-cnt .pv { animation: dz-c3-pv 9s 6s infinite; }
+@keyframes dz-c3-pv { 0%, 14% { opacity: 1; } 17%, 36% { opacity: 0; } 40%, 100% { opacity: 1; } }
+@keyframes dz-c3-nx { 0%, 14% { opacity: 0; transform: translateY(6px); } 17%, 36% { opacity: 1; transform: none; } 40%, 100% { opacity: 0; } }
+.dz-c3-sub { font-size: 17px; font-weight: 800; margin: 6px 0 18px; }
+.dz-c3-segs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; }
+.dz-c3-segs i { height: 14px; border-radius: 5px; background: #f1eee9; }
+.dz-c3-segs i.on { background: var(--gold); }
+.dz-c3-segs i.today { background: #fff; border: 2px solid var(--gold); box-sizing: border-box; animation: dz-c3-fill 9s 6s infinite; }
+@keyframes dz-c3-fill { 0%, 13% { background: #fff; } 18%, 36% { background: var(--gold); } 40%, 100% { background: #fff; } }
+.dz-c3-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; margin-top: 6px; }
+.dz-c3-days span { font-size: 10px; font-weight: 700; color: #6f6a62; text-align: center; }
+.dz-c3-days .now { color: var(--ink); }
+
+/* progress dots under the phone — one per scene */
+/* Zero-height row so it doesn't push card 3's badge below cards 1 and 2. */
+.dz-c3-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin: 8px 0 -8px; }
+.dz-c3-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-c3-dot 9s infinite; }
+.dz-c3-dots i:nth-child(2) { animation-delay: 3s; }
+.dz-c3-dots i:nth-child(3) { animation-delay: 6s; }
+@keyframes dz-c3-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
+
+/* No motion: show the celebration scene (the loop's payoff) statically, no confetti. */
+@media (prefers-reduced-motion: reduce) {
+  .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-c3-cnt span, .dz-c3-segs i.today, .dz-c3-dots i { animation: none; }
+  .dz-c3-s2 { opacity: 1; }
+  .dz-c3-cf { display: none; }
+  .dz-c3-dots i:nth-child(2) { background: var(--ink); }
+}
+
+/* ============== Tools band ("Get more out of your practice") — dark band under How it works ============== */
+.dz-deeper {
+  padding: 96px 64px 104px;
+  background: var(--ink); color: #fff;
+  /* Sits directly above the (also ink) final CTA — a faint rule keeps the two bands distinct. */
+  border-bottom: 2px solid #2a2a2a;
+}
+.dz-deeper-inner { max-width: 1120px; margin: 0 auto; }
+.dz-deeper-h2 {
+  font-size: 44px; line-height: 1.2; font-weight: 800;
+  letter-spacing: -1px; margin: 0 0 64px; text-align: center; color: #fff;
+  text-wrap: balance;
+}
+/* Flex-wrap so a short last row stays centred: 5 across, then 3 + 2, then 1 column. */
+.dz-deeper-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 48px 56px; }
+.dz-deeper-tile {
+  flex: 0 0 200px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.dz-deeper-tile .dj-phone {
+  width: 200px; height: 400px;
+  border-color: #3a3a3a;
+}
+.dz-deeper-tile h3 { font-size: 19px; line-height: 1.25; font-weight: 800; letter-spacing: -.3px; margin: 20px 0 6px; color: #fff; }
 
 /* Final CTA */
 .dz-final {
@@ -400,45 +617,39 @@ a { color: inherit; }
   .dz-hero h1 { font-size: 56px; letter-spacing: -1.4px; }
   .dz-hero-sub { font-size: 20px; }
   .dz-nav { padding: 20px 40px; }
-  .dz-timeline { padding: 80px 40px 96px; }
-  .dz-timeline-h2 { font-size: 36px; margin-bottom: 48px; }
-  .dz-tl-row { grid-template-columns: 1fr 56px 1fr; gap: 32px; }
+  .dz-how { padding: 80px 40px 96px; }
+  .dz-deeper { padding: 80px 40px 88px; }
+  .dz-deeper-h2 { font-size: 36px; margin-bottom: 48px; }
+  .dz-how-h2 { font-size: 36px; margin-bottom: 48px; }
   .dz-final { padding: 96px 40px; }
   .dz-final h2 { font-size: 40px; }
   .dz-footer { padding: 28px 40px; }
 }
 
-/* Timeline mobile layout — number rail left, title, body, screenshot beneath.
-   Rows are placed by explicit grid-column/grid-row (not DOM order and not the
-   desktop grid-template-areas): the alternating desktop markup would otherwise
-   put the screenshot ahead of its own title on a single-column stack. */
+/* Feature band: 3 + 2 below the width where five 200px tiles fit in one row. */
+@media (max-width: 1224px) {
+  .dz-deeper-grid { gap: 48px 32px; }
+  .dz-deeper-tile { flex-basis: calc((100% - 32px) / 2); }
+  .dz-deeper-tile .dj-phone { width: min(200px, 100%); height: auto; min-height: 0; aspect-ratio: 1 / 2; }
+}
+
+/* How it works — stacked cards below 900px: one column. */
+@media (max-width: 900px) {
+  .dz-how-grid { grid-template-columns: 1fr; gap: 64px; }
+  .dz-how-card-plain { padding-top: 0; }
+}
+/* Phones a touch larger (260×520) on small screens. */
 @media (max-width: 720px) {
-  .dz-timeline { padding: 56px 20px 72px; }
-  .dz-timeline-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; text-align: left; }
+  .dz-how { padding: 56px 20px 72px; }
+  .dz-how-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; }
+  .dz-how-phone,
+  .dz-how-diagram { width: 260px; height: 520px; }
+  .dz-how-card h3 { font-size: 21px; }
 
-  .dz-tl-rail::before { left: 22px; }
-
-  .dz-tl-row,
-  .dz-tl-row.dz-tl-alt {
-    grid-template-columns: 44px 1fr;
-    grid-template-rows: auto auto;
-    align-items: start;
-    column-gap: 16px;
-    row-gap: 8px;
-    padding: 28px 0;
-  }
-  .dz-tl-row .dz-tl-num,
-  .dz-tl-row.dz-tl-alt .dz-tl-num  { grid-column: 1; grid-row: 1; width: 36px; height: 36px; font-size: 15px; }
-  .dz-tl-row .dz-tl-txt,
-  .dz-tl-row.dz-tl-alt .dz-tl-txt  { grid-column: 2; grid-row: 1; gap: 8px; }
-  .dz-tl-row .dz-tl-shot,
-  .dz-tl-row.dz-tl-alt .dz-tl-shot { grid-column: 2; grid-row: 2; margin-top: 12px; justify-content: flex-start; }
-
-  .dz-tl-txt h3 { font-size: 21px; }
-  .dz-tl-txt p { font-size: 15px; }
-  .dz-tl-shot .dj-phone { width: min(260px, 100%); height: auto; aspect-ratio: 1 / 2; }
-
-  .dz-tl-bonus { margin-top: 24px; padding-top: 36px; }
+  .dz-deeper { padding: 64px 20px 72px; }
+  .dz-deeper-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; }
+  .dz-deeper-tile { flex-basis: 100%; }
+  .dz-deeper-tile .dj-phone { width: min(220px, 100%); height: auto; min-height: 0; aspect-ratio: 1 / 2; }
 }
 
 @media (max-width: 768px) {
