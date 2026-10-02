@@ -289,7 +289,7 @@ a { color: inherit; }
   display: flex; flex-direction: column; align-items: center;
   text-align: center;
 }
-/* Card 1 carries the Instagram | Photos tabs above its phone; cards 2 and 3 have
+/* Card 1 carries the Instagram | Class tabs above its phone; cards 2 and 3 have
    no tab row, so they reserve the same height (tab pill 40 + 12 gap) and all
    three phones start on one line. Dropped when the cards stack. */
 .dz-how-card-plain { padding-top: 52px; }
@@ -311,7 +311,7 @@ a { color: inherit; }
   box-shadow: 3px 3px 0 var(--ink);
 }
 
-/* Instagram | Photos switch — white pill, 2px ink border; active tab is ink with gold text. */
+/* Instagram | Class switch — white pill, 2px ink border; active tab is ink with gold text. */
 .dz-how-tabs {
   display: inline-flex; gap: 4px;
   height: 40px; margin-bottom: 12px;
@@ -334,7 +334,7 @@ a { color: inherit; }
 .dz-how-diagram { width: 240px; height: 480px; }
 
 /* Card 1 — two tab panels stacked in one screen. The recording mask lives on the
-   panel (not the screen) so it never paints over the Photos still. */
+   panel (not the screen) so it never paints over the Class still. */
 .dz-how-screen:has(video)::before { content: none; }
 .dz-how-panel { position: absolute; inset: 0; }
 .dz-how-panel[hidden] { display: none; }
@@ -526,7 +526,7 @@ a { color: inherit; }
   .dz-c3-dots i:nth-child(2) { background: var(--ink); }
 }
 
-/* ============== Tools band — dark feature band under How it works ============== */
+/* ============== Tools band ("Get more out of your practice") — dark band under How it works ============== */
 .dz-deeper {
   padding: 96px 64px 104px;
   background: var(--ink); color: #fff;

@@ -139,7 +139,7 @@
     videos.forEach(function (v) { observer.observe(v); });
   }
 
-  // How it works, card 1: the Instagram | Photos tab switch. Only the active panel
+  // How it works, card 1: the Instagram | Class tab switch. Only the active panel
   // is shown; the hidden panel's video is paused. Resuming the shown video is only
   // our job once the lazy observer has already started it (data-started): play now if
   // it's on screen, otherwise re-observe it. Before that the observer plays it itself.
