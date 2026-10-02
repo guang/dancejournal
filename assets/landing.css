@@ -426,9 +426,12 @@ a { color: inherit; }
   position: absolute; inset: 0;
   background: #000 url(how/checkin-frame.jpg) center / cover no-repeat;
 }
-/* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU. */
+/* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
+   !important is load-bearing: the `animation` shorthand on the more specific scene-3
+   rules (.dz-c3-cnt .nx, .dz-c3-segs i.today, …) resets play-state to running, so
+   without it those keep ticking while the scenes pause and the streak plays out of sync. */
 .dz-c3.dz-paused *,
-.dz-c3-dots.dz-paused * { animation-play-state: paused; }
+.dz-c3-dots.dz-paused * { animation-play-state: paused !important; }
 
 /* scene 1 · check-in */
 .dz-c3-sheet {
