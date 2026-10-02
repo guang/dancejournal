@@ -112,21 +112,23 @@
     onScroll();
   }
 
-  // Timeline step videos start fetching/playing only once they're about to
-  // scroll into view (rootMargin gives it a head start), instead of all four
+  // Feature videos start fetching/playing only once they're about to
+  // scroll into view (rootMargin gives it a head start), instead of all of them
   // loading + autoplaying on page load — the combined ~5MB was hurting first
-  // load, and steps 3/6 sit below the fold anyway. The poster image covers
-  // the gap until playback starts.
+  // load, and most sit below the fold anyway. The poster image covers
+  // the gap until playback starts. `data-started` records that the observer has
+  // already played one, so the How it works tabs know it's safe to resume it.
   function initLazyVideos() {
     var videos = document.querySelectorAll('[data-lazy-video]');
     if (!videos.length) return;
     if (!('IntersectionObserver' in window)) {
-      videos.forEach(function (v) { v.play(); });
+      videos.forEach(function (v) { v.dataset.started = '1'; v.play(); });
       return;
     }
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
+        entry.target.dataset.started = '1';
         var p = entry.target.play();
         if (p && p.catch) p.catch(function () {});
         observer.unobserve(entry.target);
@@ -135,11 +137,90 @@
     videos.forEach(function (v) { observer.observe(v); });
   }
 
+  // How it works, card 1: the Instagram | Photos tab switch. Only the active panel
+  // is shown; the hidden panel's video is paused. Resuming the shown video is only
+  // our job once the lazy observer has already started it (data-started) and it's
+  // on screen — before that the observer plays it when it scrolls into view.
+  function initHowTabs() {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-how-tab]'));
+    if (!tabs.length) return;
+
+    function inView(el) {
+      var r = el.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight;
+    }
+
+    function select(tab, focus) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (!panel) return;
+        panel.hidden = !on;
+        var video = panel.querySelector('video');
+        if (!video) return;
+        if (!on) {
+          video.pause();
+        } else if (video.dataset.started && inView(video)) {
+          var p = video.play();
+          if (p && p.catch) p.catch(function () {});
+        }
+      });
+      if (focus) tab.focus();
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab, false); });
+      tab.addEventListener('keydown', function (e) {
+        var next;
+        if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        else return;
+        e.preventDefault();
+        select(next, true);
+      });
+    });
+  }
+
+  // How it works, cards 2 and 3: motion that starts when the card scrolls into view.
+  //  - [data-how-reveal] (card 2): the three "Today" tiles rise in once.
+  //  - [data-how-loop]   (card 3): the 9s scene loop runs only while on screen.
+  // Under prefers-reduced-motion neither is armed (card 3's CSS shows a still scene).
+  function initHowMotion() {
+    var reveal = document.querySelector('[data-how-reveal]');
+    var loop = document.querySelector('[data-how-loop]');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) return;
+
+    if (reveal) {
+      reveal.classList.add('dz-armed');
+      var revealObs = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        reveal.classList.add('dz-in');
+        revealObs.disconnect();
+      }, { threshold: 0.4 });
+      revealObs.observe(reveal);
+    }
+
+    if (loop) {
+      // The progress dots sit just outside the phone; they pause with it.
+      var paused = [loop, loop.parentNode.querySelector('.dz-c3-dots')];
+      paused.forEach(function (el) { if (el) el.classList.add('dz-paused'); });
+      new IntersectionObserver(function (entries) {
+        var on = entries[0].isIntersecting;
+        paused.forEach(function (el) { if (el) el.classList.toggle('dz-paused', !on); });
+      }).observe(loop);
+    }
+  }
+
   function boot() {
     initInstallLinks();
     initDownloadCtas();
     initNavScroll();
     initLazyVideos();
+    initHowTabs();
+    initHowMotion();
   }
 
   if (document.readyState === 'loading') {
