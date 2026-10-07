@@ -333,19 +333,39 @@ a { color: inherit; }
 .dz-how-phone,
 .dz-how-diagram { width: 240px; height: 480px; }
 
-/* Card 1 — two tab panels stacked in one screen. The recording mask lives on the
-   panel (not the screen) so it never paints over the Class still. */
-.dz-how-screen:has(video)::before { content: none; }
+/* Card 1 — two tab panels stacked in one screen. */
 .dz-how-panel { position: absolute; inset: 0; }
 .dz-how-panel[hidden] { display: none; }
-.dz-how-panel:has(video)::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: var(--rec-mask-h, 6%);
-  background: var(--rec-mask-bg, #fff);
-  z-index: 1;
-  pointer-events: none;
+
+/* Card 1's two panels (Instagram, Class) — three steps cross-fade like card 3's
+   (dz-how-scene), but 4s each, because a step can hold two beats (.dz-c1-beat fades
+   in halfway). A tap ring marks what to tap; step 3's gold box marks the move that
+   just landed. */
+.dz-c1 { --how-step: 4s; }
+.dz-c1-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene calc(var(--how-step) * 3) infinite; }
+.dz-c1-s2 { animation-delay: var(--how-step); }
+.dz-c1-s3 { animation-delay: calc(var(--how-step) * 2); }
+.dz-c1-beat { position: absolute; inset: 0; opacity: 0; animation: dz-c1-beat 12s infinite; }
+@keyframes dz-c1-beat { 0%, 15% { opacity: 0; } 17%, 100% { opacity: 1; } }
+.dz-c1-tap {
+  position: absolute;
+  width: 34px; height: 34px; margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  background: rgba(17, 17, 17, .18); border: 2px solid rgba(17, 17, 17, .55);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .7);
+  animation: dz-how-tap 12s infinite;
 }
+.dz-c1-s1 .dz-c1-beat .dz-c1-tap { animation-delay: 2s; }
+.dz-c1-s2 .dz-c1-tap { animation-delay: 4s; }
+.dz-c1-s2 .dz-c1-beat { animation-delay: 4s; }
+.dz-c1-s2 .dz-c1-beat .dz-c1-tap { animation-delay: 6s; }
+.dz-c1-hi {
+  position: absolute;
+  border: 3px solid var(--gold); border-radius: 12px;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .8);
+  animation: dz-c1-hi 12s 8s infinite;
+}
+@keyframes dz-c1-hi { 0%, 6% { opacity: 0; transform: scale(1.12); } 10%, 100% { opacity: 1; transform: none; } }
 
 /* Shell for the two pure-CSS phones (cards 2 and 3). */
 .dz-how-diagram {
@@ -417,21 +437,22 @@ a { color: inherit; }
 /* Card 3 — check-in → celebration → streak. Three stacked scenes cross-fade on a
    9s loop (3s each); the scene delays are what offset them. */
 .dz-c3 { overflow: hidden; }
-.dz-c3-scene { position: absolute; inset: 0; opacity: 0; animation: dz-c3-scene 9s infinite; }
+.dz-c3-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene 9s infinite; }
 .dz-c3-s1 { animation-delay: 0s; }
 .dz-c3-s2 { animation-delay: 3s; }
 .dz-c3-s3 { animation-delay: 6s; }
-@keyframes dz-c3-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes dz-how-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
 .dz-c3-bg {
   position: absolute; inset: 0;
-  background: #000 url(how/checkin-frame.jpg) center / cover no-repeat;
+  background: #000 url(how/checkin-player.jpg) center / cover no-repeat;
 }
+.dz-c3-bg-clean { background-image: url(how/checkin-clean.jpg); }
 /* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
    !important is load-bearing: the `animation` shorthand on the more specific scene-3
    rules (.dz-c3-cnt .nx, .dz-c3-segs i.today, …) resets play-state to running, so
    without it those keep ticking while the scenes pause and the streak plays out of sync. */
-.dz-c3.dz-paused *,
-.dz-c3-dots.dz-paused * { animation-play-state: paused !important; }
+[data-how-loop].dz-paused *,
+.dz-how-dots.dz-paused * { animation-play-state: paused !important; }
 
 /* scene 1 · check-in */
 .dz-c3-sheet {
@@ -460,9 +481,9 @@ a { color: inherit; }
   position: absolute; right: 8px; bottom: 6px;
   width: 32px; height: 32px; border-radius: 50%;
   background: rgba(17, 17, 17, .18); border: 2px solid rgba(17, 17, 17, .55);
-  animation: dz-c3-tap 9s infinite;
+  animation: dz-how-tap 9s infinite;
 }
-@keyframes dz-c3-tap {
+@keyframes dz-how-tap {
   0%, 8% { transform: scale(.5); opacity: 0; }
   12% { opacity: 1; transform: scale(1); }
   17% { opacity: 0; transform: scale(1.3); }
@@ -513,20 +534,29 @@ a { color: inherit; }
 .dz-c3-days span { font-size: 10px; font-weight: 700; color: #6f6a62; text-align: center; }
 .dz-c3-days .now { color: var(--ink); }
 
-/* progress dots under the phone — one per scene */
-/* Zero-height row so it doesn't push card 3's badge below cards 1 and 2. */
-.dz-c3-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin: 8px 0 -8px; }
-.dz-c3-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-c3-dot 9s infinite; }
-.dz-c3-dots i:nth-child(2) { animation-delay: 3s; }
-.dz-c3-dots i:nth-child(3) { animation-delay: 6s; }
-@keyframes dz-c3-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
+/* progress dots under the phone — one per scene (cards 1 and 3) */
+/* Zero-height row so it doesn't push the badge below card 2's. */
+.dz-how-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin: 8px 0 -8px; }
+.dz-how-card { --how-step: 3s; }
+.dz-how-card:has(.dz-c1) { --how-step: 4s; }
+.dz-how-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-how-dot calc(var(--how-step) * 3) infinite; }
+.dz-how-dots i:nth-child(2) { animation-delay: var(--how-step); }
+.dz-how-dots i:nth-child(3) { animation-delay: calc(var(--how-step) * 2); }
+/* Card 1 has a dot row per tab panel; only the shown panel's is laid out. */
+.dz-how-card:has(#how-panel-instagram[hidden]) .dz-how-dots[data-for="how-panel-instagram"],
+.dz-how-card:has(#how-panel-class[hidden]) .dz-how-dots[data-for="how-panel-class"] { display: none; }
+@keyframes dz-how-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
 
-/* No motion: show the celebration scene (the loop's payoff) statically, no confetti. */
+/* No motion: card 1 holds on step 1's share sheet (pick Dance Journal) and card 3 on the
+   celebration scene (the loop's payoff), statically, no confetti. */
 @media (prefers-reduced-motion: reduce) {
-  .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-c3-cnt span, .dz-c3-segs i.today, .dz-c3-dots i { animation: none; }
-  .dz-c3-s2 { opacity: 1; }
+  .dz-c1-scene, .dz-c1-beat, .dz-c1-tap, .dz-c1-hi,
+  .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-c3-cnt span, .dz-c3-segs i.today, .dz-how-dots i { animation: none; }
+  .dz-c1-s1, .dz-c3-s2 { opacity: 1; }
+  .dz-c1-beat, .dz-c1-tap { opacity: 1; }
   .dz-c3-cf { display: none; }
-  .dz-c3-dots i:nth-child(2) { background: var(--ink); }
+  .dz-how-card:has(.dz-c1) .dz-how-dots i:nth-child(1),
+  .dz-how-card:has(.dz-c3) .dz-how-dots i:nth-child(2) { background: var(--ink); }
 }
 
 /* ============== Tools band ("Get more out of your practice") — dark band under How it works ============== */

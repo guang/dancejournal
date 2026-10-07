@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Actually reach your dance goals. Save a clip from Instagram or your camera roll, loop the hard part, compare side by side, pin notes to the exact frame, and track every move from Learning to Got it.">
   <meta name="twitter:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=85">
+  <link rel="stylesheet" href="assets/landing.css?v=89">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
   <!-- End Cloudflare Web Analytics -->
@@ -89,19 +89,59 @@
           <div class="dj-phone dz-how-phone">
             <div class="dj-phone-notch"></div>
             <div class="dj-phone-screen dz-how-screen">
-              <div class="dz-how-panel" role="tabpanel" id="how-panel-instagram"
-                   aria-labelledby="how-tab-instagram" tabindex="0" style="--rec-mask-h: 6%; --rec-mask-bg: #fff;">
-                <video src="assets/video/step-1-import.mp4?v=1" poster="assets/video/step-1-import-poster.jpg?v=1"
-                       muted playsinline webkit-playsinline loop preload="none" data-lazy-video
-                       aria-label="Sharing an Instagram tutorial into the Create Clip screen"></video>
+              <!-- Instagram: Share → Create → on your practice list (12s loop, 4s per step).
+                   Step 1 has two beats: the reel's Share button, then Dance Journal in the share sheet.
+                   Stills, not a screen recording: they paint at once on a slow connection. -->
+              <div class="dz-how-panel dz-c1" role="tabpanel" id="how-panel-instagram"
+                   aria-labelledby="how-tab-instagram" tabindex="0" data-how-loop>
+                <div class="dz-c1-scene dz-c1-s1">
+                  <img src="assets/how/ig-1-reel.jpg" alt="Step 1: on an Instagram reel, tap Share">
+                  <span class="dz-c1-tap" style="left: 91.8%; top: 67.7%;" aria-hidden="true"></span>
+                  <div class="dz-c1-beat">
+                    <img src="assets/how/ig-1-share.jpg" alt="Then pick Dance Journal in the share sheet">
+                    <span class="dz-c1-tap" style="left: 61%; top: 75.5%;" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div class="dz-c1-scene dz-c1-s2">
+                  <img src="assets/how/ig-2-create.jpg?v=2" alt="Step 2: the Create clip screen, marked as a Cuban Salsa tutorial with Practice list switched on, then tap Create">
+                  <span class="dz-c1-tap" style="left: 50%; top: 93.1%;" aria-hidden="true"></span>
+                </div>
+                <div class="dz-c1-scene dz-c1-s3">
+                  <img src="assets/how/ig-3-list.jpg?v=2" alt="Step 3: the move is first in your library, starred for your practice list">
+                  <span class="dz-c1-hi" style="left: 4.3%; top: 21.1%; width: 44.1%; height: 26.1%;" aria-hidden="true"></span>
+                </div>
               </div>
-              <!-- TODO(#26): replace with step-1-class.mp4 recording (saving a class video from the camera roll) -->
-              <div class="dz-how-panel" role="tabpanel" id="how-panel-class"
-                   aria-labelledby="how-tab-class" tabindex="0" hidden>
-                <img src="assets/how/save-class-interim.jpg" alt="The Add sheet in Dance Journal with the Photo gallery option">
+              <!-- Class: + → Photo gallery, pick → Create, first on the practice list. Same
+                   12s clock as Instagram; steps 1 and 2 each hold two beats. Lazy images: the
+                   panel starts hidden, so they're fetched only when the Class tab is opened. -->
+              <div class="dz-how-panel dz-c1" role="tabpanel" id="how-panel-class"
+                   aria-labelledby="how-tab-class" tabindex="0" data-how-loop hidden>
+                <div class="dz-c1-scene dz-c1-s1">
+                  <img src="assets/how/class-1-add.jpg" loading="lazy" alt="Step 1: in your Library, tap the + button">
+                  <span class="dz-c1-tap" style="left: 88.2%; top: 83.9%;" aria-hidden="true"></span>
+                  <div class="dz-c1-beat">
+                    <img src="assets/how/class-1-gallery.jpg" loading="lazy" alt="Then pick Photo gallery">
+                    <span class="dz-c1-tap" style="left: 30%; top: 67.2%;" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div class="dz-c1-scene dz-c1-s2">
+                  <img src="assets/how/class-2-pick.jpg" loading="lazy" alt="Step 2: pick your class video">
+                  <span class="dz-c1-tap" style="left: 37.2%; top: 84.4%;" aria-hidden="true"></span>
+                  <div class="dz-c1-beat">
+                    <img src="assets/how/class-2-create.jpg" loading="lazy" alt="Then, on the Create clip screen with Practice list switched on, tap Create">
+                    <span class="dz-c1-tap" style="left: 50%; top: 93.2%;" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div class="dz-c1-scene dz-c1-s3">
+                  <img src="assets/how/class-3-list.jpg" loading="lazy" alt="Step 3: the video is first on your practice list">
+                  <span class="dz-c1-hi" style="left: 3.8%; top: 32.9%; width: 44.4%; height: 26.1%;" aria-hidden="true"></span>
+                </div>
               </div>
             </div>
           </div>
+          <!-- One dot row per tab panel, shown and hidden with it, so both restart together. -->
+          <div class="dz-how-dots" data-for="how-panel-instagram" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="dz-how-dots" data-for="how-panel-class" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="dz-how-num" aria-hidden="true">1</div>
           <h3>Save any dance video to your practice list.</h3>
         </div>
@@ -141,7 +181,7 @@
               </div>
             </div>
             <div class="dz-c3-scene dz-c3-s2" aria-hidden="true">
-              <div class="dz-c3-bg" style="filter: brightness(.4);"></div>
+              <div class="dz-c3-bg dz-c3-bg-clean" style="filter: brightness(.4);"></div>
               <div class="dz-c3-done">
                 <h4>Today's practice is done</h4>
                 <p>You've finished today's practice.</p>
@@ -171,7 +211,7 @@
               <div class="dz-c3-days"><span>F</span><span>S</span><span>S</span><span>M</span><span>T</span><span>W</span><span class="now">T</span></div>
             </div>
           </div>
-          <div class="dz-c3-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="dz-how-dots" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="dz-how-num" aria-hidden="true">3</div>
           <h3>Check them off, and we track your progress.</h3>
         </div>
@@ -251,6 +291,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=28" defer></script>
+  <script src="assets/landing.js?v=30" defer></script>
 </body>
 </html>
