@@ -337,10 +337,10 @@ a { color: inherit; }
 .dz-how-panel { position: absolute; inset: 0; }
 .dz-how-panel[hidden] { display: none; }
 
-/* Instagram panel — share → create → on your list. Three steps cross-fade like card
-   3's (dz-how-scene), but 4s each: step 1 holds two beats (the reel's Share button,
-   then Dance Journal in the share sheet). A tap ring marks what to tap; step 3's
-   gold box marks the move that just landed. */
+/* Card 1's two panels (Instagram, Class) — three steps cross-fade like card 3's
+   (dz-how-scene), but 4s each, because a step can hold two beats (.dz-c1-beat fades
+   in halfway). A tap ring marks what to tap; step 3's gold box marks the move that
+   just landed. */
 .dz-c1 { --how-step: 4s; }
 .dz-c1-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene calc(var(--how-step) * 3) infinite; }
 .dz-c1-s2 { animation-delay: var(--how-step); }
@@ -355,8 +355,10 @@ a { color: inherit; }
   box-shadow: 0 0 0 2px rgba(255, 255, 255, .7);
   animation: dz-how-tap 12s infinite;
 }
-.dz-c1-beat .dz-c1-tap { animation-delay: 2s; }
+.dz-c1-s1 .dz-c1-beat .dz-c1-tap { animation-delay: 2s; }
 .dz-c1-s2 .dz-c1-tap { animation-delay: 4s; }
+.dz-c1-s2 .dz-c1-beat { animation-delay: 4s; }
+.dz-c1-s2 .dz-c1-beat .dz-c1-tap { animation-delay: 6s; }
 .dz-c1-hi {
   position: absolute;
   border: 3px solid var(--gold); border-radius: 12px;
@@ -442,8 +444,9 @@ a { color: inherit; }
 @keyframes dz-how-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
 .dz-c3-bg {
   position: absolute; inset: 0;
-  background: #000 url(how/checkin-still.jpg) center / cover no-repeat;
+  background: #000 url(how/checkin-player.jpg) center / cover no-repeat;
 }
+.dz-c3-bg-clean { background-image: url(how/checkin-clean.jpg); }
 /* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
    !important is load-bearing: the `animation` shorthand on the more specific scene-3
    rules (.dz-c3-cnt .nx, .dz-c3-segs i.today, …) resets play-state to running, so
@@ -539,8 +542,9 @@ a { color: inherit; }
 .dz-how-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-how-dot calc(var(--how-step) * 3) infinite; }
 .dz-how-dots i:nth-child(2) { animation-delay: var(--how-step); }
 .dz-how-dots i:nth-child(3) { animation-delay: calc(var(--how-step) * 2); }
-/* Card 1's dots belong to the Instagram steps; the Class tab is a single still. */
-.dz-how-card:has(#how-panel-instagram[hidden]) .dz-how-dots { visibility: hidden; }
+/* Card 1 has a dot row per tab panel; only the shown panel's is laid out. */
+.dz-how-card:has(#how-panel-instagram[hidden]) .dz-how-dots[data-for="how-panel-instagram"],
+.dz-how-card:has(#how-panel-class[hidden]) .dz-how-dots[data-for="how-panel-class"] { display: none; }
 @keyframes dz-how-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
 
 /* No motion: card 1 holds on step 1's share sheet (pick Dance Journal) and card 3 on the

@@ -170,7 +170,7 @@
   // How it works: motion that starts when a card scrolls into view.
   //  - [data-how-reveal] (card 2): the three "Today" tiles rise in once.
   //  - [data-how-loop]   (cards 1 and 3): the 9s step loop runs only while on screen.
-  //    Card 1's is a tab panel, so it also pauses while the Class tab hides it.
+  //    Card 1 has one per tab panel, so the hidden panel's loop also pauses.
   // Under prefers-reduced-motion neither is armed (the CSS shows a still step).
   function initHowMotion() {
     var reveal = document.querySelector('[data-how-reveal]');
@@ -189,8 +189,12 @@
     }
 
     Array.prototype.forEach.call(loops, function (loop) {
-      // The progress dots sit just outside the phone; they pause with it.
-      var paused = [loop, loop.closest('.dz-how-card').querySelector('.dz-how-dots')];
+      // The progress dots sit just outside the phone; they pause with it. Card 1 has
+      // one row per tab panel (data-for = the panel's id); card 3 has just the one.
+      var card = loop.closest('.dz-how-card');
+      var dots = (loop.id && card.querySelector('.dz-how-dots[data-for="' + loop.id + '"]')) ||
+                 card.querySelector('.dz-how-dots');
+      var paused = [loop, dots];
       paused.forEach(function (el) { if (el) el.classList.add('dz-paused'); });
       new IntersectionObserver(function (entries) {
         var on = entries[0].isIntersecting;
