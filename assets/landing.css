@@ -337,20 +337,33 @@ a { color: inherit; }
 .dz-how-panel { position: absolute; inset: 0; }
 .dz-how-panel[hidden] { display: none; }
 
-/* Instagram panel — share → create → on your list. Three stills cross-fade on the
-   same 9s clock as card 3 (dz-how-scene), with a tap ring on the thing to tap. */
-.dz-c1-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene 9s infinite; }
-.dz-c1-s2 { animation-delay: 3s; }
-.dz-c1-s3 { animation-delay: 6s; }
+/* Instagram panel — share → create → on your list. Three steps cross-fade like card
+   3's (dz-how-scene), but 4s each: step 1 holds two beats (the reel's Share button,
+   then Dance Journal in the share sheet). A tap ring marks what to tap; step 3's
+   gold box marks the move that just landed. */
+.dz-c1 { --how-step: 4s; }
+.dz-c1-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene calc(var(--how-step) * 3) infinite; }
+.dz-c1-s2 { animation-delay: var(--how-step); }
+.dz-c1-s3 { animation-delay: calc(var(--how-step) * 2); }
+.dz-c1-beat { position: absolute; inset: 0; opacity: 0; animation: dz-c1-beat 12s infinite; }
+@keyframes dz-c1-beat { 0%, 15% { opacity: 0; } 17%, 100% { opacity: 1; } }
 .dz-c1-tap {
   position: absolute;
   width: 34px; height: 34px; margin: -17px 0 0 -17px;
   border-radius: 50%;
   background: rgba(17, 17, 17, .18); border: 2px solid rgba(17, 17, 17, .55);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, .7);
-  animation: dz-how-tap 9s infinite;
+  animation: dz-how-tap 12s infinite;
 }
-.dz-c1-s2 .dz-c1-tap { animation-delay: 3s; }
+.dz-c1-beat .dz-c1-tap { animation-delay: 2s; }
+.dz-c1-s2 .dz-c1-tap { animation-delay: 4s; }
+.dz-c1-hi {
+  position: absolute;
+  border: 3px solid var(--gold); border-radius: 12px;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, .8);
+  animation: dz-c1-hi 12s 8s infinite;
+}
+@keyframes dz-c1-hi { 0%, 6% { opacity: 0; transform: scale(1.12); } 10%, 100% { opacity: 1; transform: none; } }
 
 /* Shell for the two pure-CSS phones (cards 2 and 3). */
 .dz-how-diagram {
@@ -429,7 +442,7 @@ a { color: inherit; }
 @keyframes dz-how-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
 .dz-c3-bg {
   position: absolute; inset: 0;
-  background: #000 url(how/checkin-frame.jpg) center / cover no-repeat;
+  background: #000 url(how/checkin-still.jpg) center / cover no-repeat;
 }
 /* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
    !important is load-bearing: the `animation` shorthand on the more specific scene-3
@@ -521,20 +534,22 @@ a { color: inherit; }
 /* progress dots under the phone — one per scene (cards 1 and 3) */
 /* Zero-height row so it doesn't push the badge below card 2's. */
 .dz-how-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin: 8px 0 -8px; }
-.dz-how-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-how-dot 9s infinite; }
-.dz-how-dots i:nth-child(2) { animation-delay: 3s; }
-.dz-how-dots i:nth-child(3) { animation-delay: 6s; }
+.dz-how-card { --how-step: 3s; }
+.dz-how-card:has(.dz-c1) { --how-step: 4s; }
+.dz-how-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-how-dot calc(var(--how-step) * 3) infinite; }
+.dz-how-dots i:nth-child(2) { animation-delay: var(--how-step); }
+.dz-how-dots i:nth-child(3) { animation-delay: calc(var(--how-step) * 2); }
 /* Card 1's dots belong to the Instagram steps; the Class tab is a single still. */
 .dz-how-card:has(#how-panel-instagram[hidden]) .dz-how-dots { visibility: hidden; }
 @keyframes dz-how-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
 
-/* No motion: card 1 holds on step 1 (share to Dance Journal) and card 3 on the
+/* No motion: card 1 holds on step 1's share sheet (pick Dance Journal) and card 3 on the
    celebration scene (the loop's payoff), statically, no confetti. */
 @media (prefers-reduced-motion: reduce) {
-  .dz-c1-scene, .dz-c1-tap,
+  .dz-c1-scene, .dz-c1-beat, .dz-c1-tap, .dz-c1-hi,
   .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-c3-cnt span, .dz-c3-segs i.today, .dz-how-dots i { animation: none; }
   .dz-c1-s1, .dz-c3-s2 { opacity: 1; }
-  .dz-c1-tap { opacity: 1; }
+  .dz-c1-beat, .dz-c1-tap { opacity: 1; }
   .dz-c3-cf { display: none; }
   .dz-how-card:has(.dz-c1) .dz-how-dots i:nth-child(1),
   .dz-how-card:has(.dz-c3) .dz-how-dots i:nth-child(2) { background: var(--ink); }

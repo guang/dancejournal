@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Actually reach your dance goals. Save a clip from Instagram or your camera roll, loop the hard part, compare side by side, pin notes to the exact frame, and track every move from Learning to Got it.">
   <meta name="twitter:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=86">
+  <link rel="stylesheet" href="assets/landing.css?v=88">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
   <!-- End Cloudflare Web Analytics -->
@@ -89,20 +89,26 @@
           <div class="dj-phone dz-how-phone">
             <div class="dj-phone-notch"></div>
             <div class="dj-phone-screen dz-how-screen">
-              <!-- Share → Create → on your practice list (9s loop, 3s per step, same clock as card 3).
+              <!-- Share → Create → on your practice list (12s loop, 4s per step). Step 1 has two
+                   beats: the reel's Share button, then Dance Journal in the share sheet.
                    Stills, not a screen recording: they paint at once on a slow connection. -->
               <div class="dz-how-panel dz-c1" role="tabpanel" id="how-panel-instagram"
                    aria-labelledby="how-tab-instagram" tabindex="0" data-how-loop>
                 <div class="dz-c1-scene dz-c1-s1">
-                  <img src="assets/how/ig-1-share-interim.jpg" alt="Step 1: on an Instagram reel, tap Share and pick Dance Journal">
-                  <span class="dz-c1-tap" style="left: 58%; top: 74%;" aria-hidden="true"></span>
+                  <img src="assets/how/ig-1-reel.jpg" alt="Step 1: on an Instagram reel, tap Share">
+                  <span class="dz-c1-tap" style="left: 91.8%; top: 67.7%;" aria-hidden="true"></span>
+                  <div class="dz-c1-beat">
+                    <img src="assets/how/ig-1-share.jpg" alt="Then pick Dance Journal in the share sheet">
+                    <span class="dz-c1-tap" style="left: 61%; top: 75.5%;" aria-hidden="true"></span>
+                  </div>
                 </div>
                 <div class="dz-c1-scene dz-c1-s2">
-                  <img src="assets/how/ig-2-create-interim.jpg" alt="Step 2: the Create clip screen, with the Create button">
-                  <span class="dz-c1-tap" style="left: 50%; top: 91%;" aria-hidden="true"></span>
+                  <img src="assets/how/ig-2-create.jpg" alt="Step 2: the Create clip screen, with Practice list switched on, then tap Create">
+                  <span class="dz-c1-tap" style="left: 50%; top: 93.1%;" aria-hidden="true"></span>
                 </div>
                 <div class="dz-c1-scene dz-c1-s3">
-                  <img src="assets/how/ig-3-list-interim.jpg" alt="Step 3: the move is saved to your practice list">
+                  <img src="assets/how/ig-3-list.jpg" alt="Step 3: the move is on your practice list">
+                  <span class="dz-c1-hi" style="left: 35.8%; top: 81.9%; width: 29.4%; height: 17.2%;" aria-hidden="true"></span>
                 </div>
               </div>
               <!-- TODO(#26): replace with step-1-class.mp4 recording (saving a class video from the camera roll) -->
@@ -142,7 +148,7 @@
           <div class="dz-how-diagram dz-c3" data-how-loop role="img"
                aria-label="Check in on a move, finish today's practice, and your streak grows">
             <div class="dz-c3-scene dz-c3-s1" aria-hidden="true">
-              <div class="dz-c3-bg" style="filter: brightness(.55);"></div>
+              <div class="dz-c3-bg"></div>
               <div class="dz-c3-sheet">
                 <p class="dz-c3-q">How's this move going?</p>
                 <div class="dz-c3-tiles">
@@ -152,7 +158,7 @@
               </div>
             </div>
             <div class="dz-c3-scene dz-c3-s2" aria-hidden="true">
-              <div class="dz-c3-bg" style="filter: brightness(.4);"></div>
+              <div class="dz-c3-bg" style="filter: brightness(.7);"></div>
               <div class="dz-c3-done">
                 <h4>Today's practice is done</h4>
                 <p>You've finished today's practice.</p>
