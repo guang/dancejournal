@@ -112,30 +112,7 @@
     onScroll();
   }
 
-  // Feature videos start fetching/playing only once they're about to
-  // scroll into view (rootMargin gives it a head start), instead of all of them
-  // loading + autoplaying on page load — the combined ~5MB was hurting first
-  // load, and most sit below the fold anyway. The poster image covers
-  // the gap until playback starts.
-  function initLazyVideos() {
-    var videos = document.querySelectorAll('[data-lazy-video]');
-    if (!videos.length) return;
-    if (!('IntersectionObserver' in window)) {
-      videos.forEach(function (v) { v.play(); });
-      return;
-    }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var p = entry.target.play();
-        if (p && p.catch) p.catch(function () {});
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: '200px 0px' });
-    videos.forEach(function (v) { observer.observe(v); });
-  }
-
-  // How it works, card 1: the Instagram | Discover | Class tab switch. Only the active
+  // How it works, card 1: the Instagram | Class | Discover tab switch. Only the active
   // panel is shown; a hidden panel's step loop pauses on its own (initHowMotion).
   function initHowTabs() {
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-how-tab]'));
@@ -273,7 +250,6 @@
     initInstallLinks();
     initDownloadCtas();
     initNavScroll();
-    initLazyVideos();
     initHowTabs();
     initHowMotion();
     initLoopDemo();

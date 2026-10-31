@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="Master that move from Instagram, workshops, privates or classes. Save it, loop the part you can't get, and see yourself get better. Free on iPhone and Android.">
   <meta name="twitter:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=90">
+  <link rel="stylesheet" href="assets/landing.css?v=91">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
   <!-- End Cloudflare Web Analytics -->
@@ -98,15 +98,15 @@
       <h2 class="dz-how-h2">How it works</h2>
       <div class="dz-how-grid">
 
-        <!-- 1 · Save or browse: Instagram | Discover | Class tabs (Instagram first, like the hero) -->
+        <!-- 1 · Save or browse: Instagram | Class | Discover tabs (Instagram first, like the hero) -->
         <div class="dz-how-card">
           <div class="dz-how-tabs" role="tablist" aria-label="Where to save a move from">
             <button type="button" role="tab" id="how-tab-instagram" aria-selected="true"
                     aria-controls="how-panel-instagram" tabindex="0" data-how-tab>Instagram</button>
-            <button type="button" role="tab" id="how-tab-discover" aria-selected="false"
-                    aria-controls="how-panel-discover" tabindex="-1" data-how-tab>Discover</button>
             <button type="button" role="tab" id="how-tab-class" aria-selected="false"
                     aria-controls="how-panel-class" tabindex="-1" data-how-tab>Class</button>
+            <button type="button" role="tab" id="how-tab-discover" aria-selected="false"
+                    aria-controls="how-panel-discover" tabindex="-1" data-how-tab>Discover</button>
           </div>
           <div class="dj-phone dz-how-phone">
             <div class="dj-phone-notch"></div>
@@ -131,6 +131,32 @@
                 <div class="dz-c1-scene dz-c1-s3">
                   <img src="assets/how/ig-3-list.jpg?v=2" alt="Step 3: the move is first in your library, starred for your practice list">
                   <span class="dz-c1-hi" style="left: 4.3%; top: 21.1%; width: 44.1%; height: 26.1%;" aria-hidden="true"></span>
+                </div>
+              </div>
+              <!-- Class: + → Photo gallery, pick → Create, first on the practice list. Same
+                   12s clock as Instagram; steps 1 and 2 each hold two beats. Lazy images: the
+                   panel starts hidden, so they're fetched only when the Class tab is opened. -->
+              <div class="dz-how-panel dz-c1" role="tabpanel" id="how-panel-class"
+                   aria-labelledby="how-tab-class" tabindex="0" data-how-loop hidden>
+                <div class="dz-c1-scene dz-c1-s1">
+                  <img src="assets/how/class-1-add.jpg" loading="lazy" alt="Step 1: in your Library, tap the + button">
+                  <span class="dz-c1-tap" style="left: 88.2%; top: 83.9%;" aria-hidden="true"></span>
+                  <div class="dz-c1-beat">
+                    <img src="assets/how/class-1-gallery.jpg" loading="lazy" alt="Then pick Photo gallery">
+                    <span class="dz-c1-tap" style="left: 30%; top: 67.2%;" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div class="dz-c1-scene dz-c1-s2">
+                  <img src="assets/how/class-2-pick.jpg" loading="lazy" alt="Step 2: pick your class video">
+                  <span class="dz-c1-tap" style="left: 37.2%; top: 84.4%;" aria-hidden="true"></span>
+                  <div class="dz-c1-beat">
+                    <img src="assets/how/class-2-create.jpg" loading="lazy" alt="Then, on the Create clip screen with Practice list switched on, tap Create">
+                    <span class="dz-c1-tap" style="left: 50%; top: 93.2%;" aria-hidden="true"></span>
+                  </div>
+                </div>
+                <div class="dz-c1-scene dz-c1-s3">
+                  <img src="assets/how/class-3-list.jpg" loading="lazy" alt="Step 3: the video is first on your practice list">
+                  <span class="dz-c1-hi" style="left: 3.8%; top: 32.9%; width: 44.4%; height: 26.1%;" aria-hidden="true"></span>
                 </div>
               </div>
               <!-- Discover: pick a topic → + a move on its subtopic rows → it's your Next move.
@@ -170,38 +196,12 @@
                   <span class="dz-c1-hi" style="left: 41%; top: 17%; width: 53%; height: 53%;" aria-hidden="true"></span>
                 </div>
               </div>
-              <!-- Class: + → Photo gallery, pick → Create, first on the practice list. Same
-                   12s clock as Instagram; steps 1 and 2 each hold two beats. Lazy images: the
-                   panel starts hidden, so they're fetched only when the Class tab is opened. -->
-              <div class="dz-how-panel dz-c1" role="tabpanel" id="how-panel-class"
-                   aria-labelledby="how-tab-class" tabindex="0" data-how-loop hidden>
-                <div class="dz-c1-scene dz-c1-s1">
-                  <img src="assets/how/class-1-add.jpg" loading="lazy" alt="Step 1: in your Library, tap the + button">
-                  <span class="dz-c1-tap" style="left: 88.2%; top: 83.9%;" aria-hidden="true"></span>
-                  <div class="dz-c1-beat">
-                    <img src="assets/how/class-1-gallery.jpg" loading="lazy" alt="Then pick Photo gallery">
-                    <span class="dz-c1-tap" style="left: 30%; top: 67.2%;" aria-hidden="true"></span>
-                  </div>
-                </div>
-                <div class="dz-c1-scene dz-c1-s2">
-                  <img src="assets/how/class-2-pick.jpg" loading="lazy" alt="Step 2: pick your class video">
-                  <span class="dz-c1-tap" style="left: 37.2%; top: 84.4%;" aria-hidden="true"></span>
-                  <div class="dz-c1-beat">
-                    <img src="assets/how/class-2-create.jpg" loading="lazy" alt="Then, on the Create clip screen with Practice list switched on, tap Create">
-                    <span class="dz-c1-tap" style="left: 50%; top: 93.2%;" aria-hidden="true"></span>
-                  </div>
-                </div>
-                <div class="dz-c1-scene dz-c1-s3">
-                  <img src="assets/how/class-3-list.jpg" loading="lazy" alt="Step 3: the video is first on your practice list">
-                  <span class="dz-c1-hi" style="left: 3.8%; top: 32.9%; width: 44.4%; height: 26.1%;" aria-hidden="true"></span>
-                </div>
-              </div>
             </div>
           </div>
           <!-- One dot row per tab panel, shown and hidden with it, so both restart together. -->
           <div class="dz-how-dots" data-for="how-panel-instagram" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="dz-how-dots" data-for="how-panel-discover" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="dz-how-dots" data-for="how-panel-class" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="dz-how-dots" data-for="how-panel-discover" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="dz-how-num" aria-hidden="true">1</div>
           <h3>Save or browse a move you want to learn.</h3>
         </div>
@@ -295,10 +295,8 @@
         <div class="dz-deeper-tile">
           <div class="dj-phone">
             <div class="dj-phone-notch"></div>
-            <div class="dj-phone-screen" style="--rec-mask-h: 12%; --rec-mask-bg: #000;">
-              <video src="assets/video/step-3-loop.mp4?v=1" poster="assets/video/step-3-loop-poster.jpg?v=1"
-                     muted playsinline webkit-playsinline loop preload="none" data-lazy-video
-                     aria-label="Marking a loop range on a clip and arming Record"></video>
+            <div class="dj-phone-screen">
+              <img src="assets/shots/tools-speed.jpg?v=2" alt="The player slowed to 0.5x, with the speed button, the frame-step arrows and the play button under the timeline">
             </div>
           </div>
           <h3>Slow it down, frame by frame</h3>
@@ -328,7 +326,7 @@
           <div class="dj-phone">
             <div class="dj-phone-notch"></div>
             <div class="dj-phone-screen">
-              <img src="assets/shots/step-5-annotate.jpg" alt="A drawn arrow and note reading move hands higher, pinned to an exact frame">
+              <img src="assets/shots/tools-note.jpg?v=2" alt="A note reading Knee higher, with a pointer to the dancer's raised knee, pinned to one moment on the timeline">
             </div>
           </div>
           <h3>Take notes on the video</h3>
@@ -357,6 +355,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=31" defer></script>
+  <script src="assets/landing.js?v=32" defer></script>
 </body>
 </html>

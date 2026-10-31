@@ -125,24 +125,6 @@ a { color: inherit; }
   display: block; width: 100%; height: 100%;
   object-fit: cover; object-position: top center;
 }
-/* The source captures are iOS screen recordings, which bake a red recording
-   indicator into the top of every frame (a small time pill for two of the
-   clips, a full-width toolbar with "swipe to step" for the other two).
-   Relying on object-fit's crop to push it out of frame was fragile - the
-   box-sizing: border-box padding on .dj-phone shrinks .dj-phone-screen's
-   actual content box below what the crop math assumed, so it only shaved
-   off part of the indicator instead of all of it. Painting an opaque mask
-   sized to each clip's real indicator height (measured directly from the
-   source frames, plus margin) is exact regardless of container sizing, and
-   works identically at every viewport width since it's percentage-based. */
-.dj-phone-screen:has(video)::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: var(--rec-mask-h, 6%);
-  background: var(--rec-mask-bg, #fff);
-  z-index: 1;
-  pointer-events: none;
-}
 .dj-phone-notch {
   position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
   width: 70px; height: 18px;
