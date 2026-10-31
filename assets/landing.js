@@ -112,31 +112,8 @@
     onScroll();
   }
 
-  // Feature videos start fetching/playing only once they're about to
-  // scroll into view (rootMargin gives it a head start), instead of all of them
-  // loading + autoplaying on page load — the combined ~5MB was hurting first
-  // load, and most sit below the fold anyway. The poster image covers
-  // the gap until playback starts.
-  function initLazyVideos() {
-    var videos = document.querySelectorAll('[data-lazy-video]');
-    if (!videos.length) return;
-    if (!('IntersectionObserver' in window)) {
-      videos.forEach(function (v) { v.play(); });
-      return;
-    }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var p = entry.target.play();
-        if (p && p.catch) p.catch(function () {});
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: '200px 0px' });
-    videos.forEach(function (v) { observer.observe(v); });
-  }
-
-  // How it works, card 1: the Instagram | Class tab switch. Only the active panel
-  // is shown; the Instagram steps loop pauses on its own while hidden (initHowMotion).
+  // How it works, card 1: the Instagram | Class | Discover tab switch. Only the active
+  // panel is shown; a hidden panel's step loop pauses on its own (initHowMotion).
   function initHowTabs() {
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-how-tab]'));
     if (!tabs.length) return;
@@ -167,49 +144,133 @@
     });
   }
 
-  // How it works: motion that starts when a card scrolls into view.
-  //  - [data-how-reveal] (card 2): the three "Today" tiles rise in once.
-  //  - [data-how-loop]   (cards 1 and 3): the 9s step loop runs only while on screen.
-  //    Card 1 has one per tab panel, so the hidden panel's loop also pauses.
-  // Under prefers-reduced-motion neither is armed (the CSS shows a still step).
+  // How it works: each card's step loop ([data-how-loop]) runs only while it's on
+  // screen. Card 1 has one per tab panel, so the hidden panels' loops also pause.
+  // Under prefers-reduced-motion nothing is armed (the CSS shows a still step).
   function initHowMotion() {
-    var reveal = document.querySelector('[data-how-reveal]');
     var loops = document.querySelectorAll('[data-how-loop]');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || !('IntersectionObserver' in window)) return;
 
-    if (reveal) {
-      reveal.classList.add('dz-armed');
-      var revealObs = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        reveal.classList.add('dz-in');
-        revealObs.disconnect();
-      }, { threshold: 0.4 });
-      revealObs.observe(reveal);
-    }
-
     Array.prototype.forEach.call(loops, function (loop) {
       // The progress dots sit just outside the phone; they pause with it. Card 1 has
-      // one row per tab panel (data-for = the panel's id); card 3 has just the one.
+      // one row per tab panel (data-for = the panel's id); cards 2 and 3 have one each.
       var card = loop.closest('.dz-how-card');
       var dots = (loop.id && card.querySelector('.dz-how-dots[data-for="' + loop.id + '"]')) ||
                  card.querySelector('.dz-how-dots');
       var paused = [loop, dots];
       paused.forEach(function (el) { if (el) el.classList.add('dz-paused'); });
       new IntersectionObserver(function (entries) {
-        var on = entries[0].isIntersecting;
+        var on = entries[entries.length - 1].isIntersecting;
         paused.forEach(function (el) { if (el) el.classList.toggle('dz-paused', !on); });
       }).observe(loop);
     });
+  }
+
+  // Card 2 is one player that plays out the whole move, ~8s on repeat: paused on the start frame →
+  // Start loop is tapped and the clip plays while the band grows → End loop is tapped, the band locks
+  // and the clip loops. The state is an st-* class on the player (CSS draws everything from it); the
+  // playhead (--lp, 0 → 1) and the time readout are read off the video clock so they never drift.
+  // It runs only while on screen. With reduced motion (or no JS) it rests on st-looping + the poster.
+  function initLoopDemo() {
+    var demo = document.querySelector('.dz-c2');
+    var video = demo && demo.querySelector('.dz-loopvid');
+    if (!video || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var ring = demo.querySelector('.dz-c2-tap');
+    var pos = demo.querySelector('.dz-pos');
+    var START = 2.1;   // where Start loop lands, in clip seconds (the lane's 30%)
+    var SPAN = 2.0;    // the clip's length
+    var TAP_LEAD = 0.3; // seconds before the clip ends that the End loop tap lands
+    var LOOPS = 2;      // passes of the finished loop before the demo resets
+    var timers = [], raf = 0, lastTenth = -1, running = false, marking = false, tappedEnd = false;
+
+    function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+    function state(name) {
+      demo.className = demo.className.replace(/\bst-\w+/g, '').replace(/\s+/g, ' ') + ' st-' + name;
+    }
+    function tap() {
+      ring.classList.remove('go');
+      void ring.offsetWidth;
+      ring.classList.add('go');
+    }
+    function tick() {
+      // End loop's tap ring lands while the clip is still playing, just before its last frame,
+      // so the click and the video agree.
+      if (marking && !tappedEnd && video.duration && video.currentTime >= video.duration - TAP_LEAD) {
+        tappedEnd = true;
+        tap();
+      }
+      var lp = video.duration ? video.currentTime / video.duration : 0;
+      demo.style.setProperty('--lp', lp.toFixed(3));
+      var tenth = Math.round((START + lp * SPAN) * 10);
+      if (tenth !== lastTenth) {
+        lastTenth = tenth;
+        var t = tenth / 10;
+        pos.textContent = '0:' + (t < 10 ? '0' : '') + t.toFixed(1);
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    function play(onFail) {
+      var p = video.play();
+      if (p && p.catch) p.catch(function () { if (onFail) onFail(); });
+    }
+    // The clip can't play (autoplay blocked, load failed): rest on the finished loop and its poster
+    // frame instead of sitting on "End loop" forever.
+    function giveUp() {
+      marking = false;
+      timers.forEach(clearTimeout); timers = [];
+      video.onended = null;
+      state('looping');
+    }
+    // End loop lands: lock the band and loop the clip, LOOPS passes, then start over.
+    function enterLoop() {
+      if (!marking) return;
+      marking = false;
+      state('looping');
+      video.loop = true;
+      video.currentTime = 0;
+      play();
+      at(LOOPS * (video.duration || SPAN) * 1000, cycle);
+    }
+
+    function cycle() {
+      state('ready');
+      marking = false;
+      video.pause();
+      video.loop = false;
+      video.currentTime = 0;
+      at(1400, function () { tap(); });
+      at(1800, function () { tappedEnd = false; marking = true; state('marking'); play(giveUp); });
+      // The first pass is the marking pass; End loop lands as it ends. The timer is a backstop for
+      // a clip that stalls or a throttled tab, where `ended` never arrives.
+      video.onended = enterLoop;
+      video.onerror = giveUp;
+      at(1800 + SPAN * 1000 + 2500, enterLoop);
+    }
+    function stop() {
+      running = false;
+      timers.forEach(clearTimeout); timers = [];
+      cancelAnimationFrame(raf); raf = 0;
+      video.onended = null;
+      video.onerror = null;
+      video.pause();
+    }
+    new IntersectionObserver(function (entries) {
+      var visible = entries[entries.length - 1].isIntersecting;
+      if (visible && !running) { running = true; tick(); cycle(); }
+      else if (!visible && running) stop();
+    }).observe(demo);
   }
 
   function boot() {
     initInstallLinks();
     initDownloadCtas();
     initNavScroll();
-    initLazyVideos();
     initHowTabs();
     initHowMotion();
+    initLoopDemo();
   }
 
   if (document.readyState === 'loading') {

@@ -125,24 +125,6 @@ a { color: inherit; }
   display: block; width: 100%; height: 100%;
   object-fit: cover; object-position: top center;
 }
-/* The source captures are iOS screen recordings, which bake a red recording
-   indicator into the top of every frame (a small time pill for two of the
-   clips, a full-width toolbar with "swipe to step" for the other two).
-   Relying on object-fit's crop to push it out of frame was fragile - the
-   box-sizing: border-box padding on .dj-phone shrinks .dj-phone-screen's
-   actual content box below what the crop math assumed, so it only shaved
-   off part of the indicator instead of all of it. Painting an opaque mask
-   sized to each clip's real indicator height (measured directly from the
-   source frames, plus margin) is exact regardless of container sizing, and
-   works identically at every viewport width since it's percentage-based. */
-.dj-phone-screen:has(video)::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: var(--rec-mask-h, 6%);
-  background: var(--rec-mask-bg, #fff);
-  z-index: 1;
-  pointer-events: none;
-}
 .dj-phone-notch {
   position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
   width: 70px; height: 18px;
@@ -238,6 +220,41 @@ a { color: inherit; }
   font-size: 72px; line-height: 1.04; font-weight: 800;
   letter-spacing: -1.8px; margin: 0;
   text-wrap: balance;
+}
+/* Line 2 of the H1 ("from [word]") is always its own line. The slot is as wide as the
+   longest word (the track's widest child); each word sits at its left edge with a
+   highlight only as wide as itself, so a short word leaves blank space, not a gold bar.
+   The track rolls up one word every 2.5s; the 6th word repeats the 1st for a seamless wrap. */
+.dz-hero-l2 { display: block; }
+.dz-rot {
+  display: inline-block; vertical-align: bottom;
+  height: 1.12em; overflow: hidden; text-align: left;
+}
+.dz-rot-track {
+  display: flex; flex-direction: column; align-items: flex-start;
+  animation: dz-rot 12.5s cubic-bezier(.7, 0, .3, 1) infinite;
+}
+.dz-rot-track b {
+  display: block; height: 1.12em; line-height: 1.12em;
+  font-weight: inherit; white-space: nowrap;
+  padding: 0 .06em;
+  /* A thin band under the baseline, not a stripe through the letters; descenders (p, g) overprint it.
+     overflow clips the ~1px of descender that bleeds into the box below (a stray dash under line 1). */
+  overflow: hidden;
+  background: linear-gradient(transparent 82%, #F7D27A 82%, #F7D27A 96%, transparent 96%);
+}
+@keyframes dz-rot {
+  0%, 16%  { transform: translateY(0); }
+  20%, 36% { transform: translateY(-1.12em); }
+  40%, 56% { transform: translateY(-2.24em); }
+  60%, 76% { transform: translateY(-3.36em); }
+  80%, 96% { transform: translateY(-4.48em); }
+  100%     { transform: translateY(-5.6em); }
+}
+@media (prefers-reduced-motion: reduce) { .dz-rot-track { animation: none; } }
+.dz-hero-free {
+  margin: 14px 0 0;
+  font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--secondary); opacity: .8;
 }
 .dz-hero-sub {
   font-family: var(--font-sans);
@@ -378,83 +395,148 @@ a { color: inherit; }
   box-shadow: 0 10px 26px rgba(0, 0, 0, .18);
 }
 
-/* Card 2 — practice list → today's 3 */
-.dz-c2 { padding: 18px 13px; display: flex; flex-direction: column; }
-.dz-c2-hd { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
-.dz-c2-hd b { font-size: 17px; font-weight: 800; line-height: 1.1; letter-spacing: -.01em; }
-.dz-c2-hd span {
-  font-size: 11px; font-weight: 700; color: #6f6a62;
-  background: #f1eee9; border-radius: 99px; padding: 3px 8px;
+/* Shared in-phone UI kit for the drawn screens (Discover panel, cards 2 and 3): a
+   header row, filter pills, the Home "Diptych" (Last practiced | Next move). */
+.dz-ui { background: #fff; color: var(--ink); padding: 16px 12px; font-size: 12px; line-height: 1.3; text-align: left; }
+.dz-how-phone .dz-ui { padding-top: 38px; } /* clear the phone notch */
+.dz-ui-cream { background: #f4f1ed; }
+.dz-ui-dark { background: #151311; color: #f5f3f1; padding: 0; }
+.dz-ui-hd {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  font-size: 15px; font-weight: 800; letter-spacing: -.01em; white-space: nowrap; margin-bottom: 10px;
 }
-.dz-c2-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-.dz-c2-tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; background: #fbf1d6; border-radius: 14px; padding: 9px; }
-.dz-c2-grid i,
-.dz-c2-tray i {
-  position: relative;
-  display: flex; align-items: center; justify-content: center;
-  aspect-ratio: 3 / 4; border-radius: 6px;
-  background: #e7e3dd;
+.dz-ui-hd small { font-size: 11px; font-weight: 700; color: #6f6a62; background: #efebe6; border-radius: 99px; padding: 2px 8px; }
+.dz-ui-plus {
+  width: 22px; height: 22px; flex: none; border-radius: 50%; border: 2px solid var(--ink);
+  font-size: 15px; line-height: 17px; text-align: center; font-weight: 800;
 }
-.dz-c2-tray i { border-radius: 8px; background: var(--ink); }
-.dz-c2-grid i.pk { background: var(--ink); }
-/* Small play triangle on every tile. */
-.dz-c2-grid i::after,
-.dz-c2-tray i::after {
-  content: '';
-  width: 0; height: 0; margin-left: 2px;
-  border-left: 8px solid #bdb7ad;
-  border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+.dz-ui-pills { display: flex; gap: 5px; margin-bottom: 10px; }
+.dz-ui-pills span { font-size: 11px; font-weight: 700; border: 1.5px solid #ddd6ce; border-radius: 99px; padding: 2px 9px; }
+.dz-ui-pills span.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.dz-dip { display: grid; grid-template-columns: 7fr 8fr; border-radius: 14px; overflow: hidden; height: 240px; }
+.dz-dip span { position: relative; display: block; }
+.dz-dip img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.dz-dip b {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, .82); color: #fff;
+  font-size: 10.5px; font-weight: 800; padding: 6px; white-space: nowrap;
 }
-.dz-c2-grid i.pk::after,
-.dz-c2-tray i::after { border-left-color: #fff; }
-.dz-c2-grid i.ghost {
-  font-style: normal;
-  background: transparent; border: 2px dashed #cfc9c0; box-sizing: border-box;
-  font-size: 11px; font-weight: 800; color: #6f6a62;
-}
-.dz-c2-grid i.ghost::after { display: none; }
-/* Gold shows up only here: the small number badges. */
-.dz-c2-grid i b,
-.dz-c2-tray i b {
-  position: absolute; top: 4px; left: 4px;
-  width: 15px; height: 15px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--gold); color: var(--ink);
-  font-size: 9.5px; font-weight: 800; font-style: normal; line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.dz-c2-arrow { display: flex; justify-content: center; margin: 12px 0 10px; color: var(--ink); }
-.dz-c2-arrow svg { width: 44px; height: 44px; }
-/* The three tray tiles rise in one after another the first time the card scrolls
-   into view. JS arms it (.dz-armed) only when motion is allowed, so without JS or
-   under reduced motion the tray is simply there. */
-.dz-c2.dz-armed .dz-c2-tray i { opacity: 0; transform: translateY(14px); }
-.dz-c2.dz-in .dz-c2-tray i { animation: dz-c2-rise 400ms ease-out forwards; }
-.dz-c2.dz-in .dz-c2-tray i:nth-child(2) { animation-delay: 150ms; }
-.dz-c2.dz-in .dz-c2-tray i:nth-child(3) { animation-delay: 300ms; }
-@keyframes dz-c2-rise { to { opacity: 1; transform: none; } }
+.dz-dip .nx b { background: var(--gold); color: var(--ink); }
+.dz-ui-new { margin-top: 12px; }
+.dz-ui-new b { display: block; font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+.dz-ui-new div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.dz-ui-new img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px; display: block; }
 
-/* Card 3 — check-in → celebration → streak. Three stacked scenes cross-fade on a
-   9s loop (3s each); the scene delays are what offset them. */
+/* Card 1 · Discover panel */
+.dz-dsc-topic { position: relative; border-radius: 12px; overflow: hidden; height: 190px; }
+.dz-dsc-topic img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.7) brightness(.82); }
+.dz-dsc-topic div { position: absolute; left: 10px; bottom: 9px; color: #fff; }
+.dz-dsc-topic b { display: block; font-size: 16px; font-weight: 800; }
+.dz-dsc-topic small { font-size: 11px; font-weight: 600; }
+.dz-dsc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.dz-dsc-two img { width: 100%; height: 96px; object-fit: cover; border-radius: 10px; }
+.dz-dsc-saved { animation: dz-dsc-saved 12s 4s infinite; opacity: 0; }
+@keyframes dz-dsc-saved { 0%, 15% { opacity: 0; } 17%, 100% { opacity: 1; } }
+.dz-dsc-row { margin-bottom: 8px; }
+.dz-dsc-row > b { display: block; font-size: 12px; font-weight: 800; margin-bottom: 4px; }
+.dz-dsc-row > div { display: flex; gap: 5px; overflow: hidden; margin-right: -12px; }
+.dz-dsc-mv { position: relative; flex: 0 0 74px; height: 100px; }
+.dz-dsc-mv img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; display: block; }
+.dz-dsc-mv em {
+  position: absolute; left: 4px; top: 4px; font-style: normal;
+  background: var(--gold); color: var(--ink); font-size: 8.5px; font-weight: 800; border-radius: 4px; padding: 0 4px;
+}
+.dz-dsc-mv i {
+  position: absolute; right: 4px; top: 4px; width: 20px; height: 20px; border-radius: 50%;
+  background: #fff; color: var(--ink); font: 800 14px/20px var(--font-sans); font-style: normal; text-align: center;
+}
+.dz-dsc .dz-dsc-ok { inset: 4px 4px auto auto; background: var(--ink); color: #fff; font-size: 12px; }
+
+/* Card 2 — one player that plays the whole move (initLoopDemo, landing.js): paused on the start frame
+   → Start loop, the clip plays and the band grows under the playhead → End loop, the band locks and the
+   clip loops. Laid out like the app's player: the verb on top, the frame, the loop lane over the
+   scrubber, the time line, then the transport row (mute · ‹ · play · › · speed). The state is an st-*
+   class on .dz-c2; the markup rests on st-looping. */
+.dz-c2 { display: flex; flex-direction: column; overflow: hidden; --lp: 0; }
+.dz-verbrow { position: relative; flex: none; height: 38px; margin-top: 28px; display: flex; align-items: center; justify-content: center; }
+.dz-verbrow .v {
+  display: none; align-items: center; gap: 6px;
+  background: var(--gold); color: var(--ink); font-size: 14px; font-weight: 800; border-radius: 99px; padding: 8px 16px;
+}
+.st-ready .v-start, .st-marking .v-end { display: inline-flex; }
+.dz-c2-tap {
+  position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%;
+  background: rgba(17, 17, 17, .18); border: 2px solid rgba(255, 255, 255, .85); opacity: 0; pointer-events: none;
+}
+.dz-c2-tap.go { animation: dz-c2-ring .7s ease-out; }
+@keyframes dz-c2-ring { 0% { transform: scale(.5); opacity: 0; } 30% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.3); } }
+.dz-ic { width: 16px; height: 16px; flex: none; }
+.dz-ic-s { width: 9px; height: 9px; }
+.dz-vid { position: relative; flex: none; height: 61.5%; overflow: hidden; }
+.dz-vid video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
+/* The loop lane sits over the scrubber, 12pt apart, like the app. */
+.dz-lane { position: relative; flex: none; height: 16px; margin: 10px 12px 0; background: rgba(0, 0, 0, .38); border: 1px solid rgba(227, 160, 24, .75); border-radius: 6px; }
+.dz-lane i {
+  position: absolute; top: -1px; bottom: -1px; left: 30%; width: 0; box-sizing: border-box;
+  background: rgba(227, 160, 24, .45); border: 1.5px solid rgba(227, 160, 24, .85); border-radius: 6px;
+}
+.st-marking .dz-lane i { width: calc(28% * var(--lp)); }
+.st-looping .dz-lane i { width: 28%; background: var(--gold); border-color: var(--gold); }
+.dz-lane .dz-lane-tick { position: absolute; top: -1px; bottom: -1px; left: 30%; width: 3px; margin-left: -1px; background: var(--gold); border-radius: 2px; }
+.st-looping .dz-lane-tick { display: none; }
+/* The playhead is the video clock: 30% → 58% across the loop. */
+.dz-scrub { position: relative; flex: none; height: 3px; margin: 11px 12px 0; background: rgba(255, 255, 255, .32); border-radius: 2px; }
+.dz-scrub-head { position: absolute; top: -4px; left: calc(30% + 28% * var(--lp)); width: 11px; height: 11px; margin-left: -5.5px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); }
+.dz-times { position: relative; flex: none; display: flex; justify-content: space-between; align-items: center; height: 18px; margin: 6px 12px 0; font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.dz-times > span { color: rgba(255, 255, 255, .6); }
+.dz-times .dz-pill { visibility: hidden; color: #f0c46a; border: 1.5px solid #8a6a2a; border-radius: 99px; padding: 1px 8px; display: inline-flex; align-items: center; gap: 4px; font-weight: 700; }
+.st-looping .dz-pill { visibility: visible; }
+/* The transport row: mute left, ‹ ▶ › centred, the speed pill right. Three grid tracks with equal outer
+   columns, so the play button stays on the centre line whatever the mute offset or the pill's width. */
+.dz-tp { flex: none; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin: 10px 12px 0; color: #fff; }
+.dz-tp .l, .dz-tp .r { display: flex; align-items: center; }
+.dz-tp .l { padding-left: 20px; } /* mute sits in from the edge so the row reads balanced against the speed pill */
+.dz-tp .r { justify-content: flex-end; }
+.dz-tp .c { display: flex; align-items: center; gap: 12px; }
+.dz-tp .l .dz-ic { width: 16px; height: 16px; }
+.dz-tp .c > .dz-ic { width: 17px; height: 17px; }
+.dz-pp { width: 36px; height: 36px; border-radius: 50%; background: #fff; color: var(--ink); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, .4); }
+.dz-pp .dz-ic { width: 18px; height: 18px; display: block; }
+.dz-pp .ic-play { display: none; }
+.st-ready .dz-pp .ic-play { display: block; }
+.st-ready .dz-pp .ic-pause { display: none; }
+.dz-sp { display: inline-flex; align-items: center; gap: 2px; border: 1.5px solid rgba(255, 255, 255, .85); border-radius: 99px; padding: 4px 8px; font-size: 11.5px; font-weight: 600; }
+/* Progress dots: ready / marking / looping, driven by the state, not the CSS clock. */
+.dz-how-card:has(.dz-c2) .dz-how-dots i { animation: none; }
+.dz-how-card:has(.st-ready) .dz-how-dots i:nth-child(1),
+.dz-how-card:has(.st-marking) .dz-how-dots i:nth-child(2),
+.dz-how-card:has(.st-looping) .dz-how-dots i:nth-child(3) { background: var(--ink); }
+
+/* Card 3 — ? check-in → today's bar → the month's count. Three stacked scenes cross-fade on a
+   12s loop (4s each, so each one can be read); the scene delays are what offset them. */
 .dz-c3 { overflow: hidden; }
-.dz-c3-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene 9s infinite; }
+.dz-c3-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene 12s infinite; }
 .dz-c3-s1 { animation-delay: 0s; }
-.dz-c3-s2 { animation-delay: 3s; }
-.dz-c3-s3 { animation-delay: 6s; }
+.dz-c3-s2 { animation-delay: 4s; }
+.dz-c3-s3 { animation-delay: 8s; }
 @keyframes dz-how-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
 .dz-c3-bg {
   position: absolute; inset: 0;
-  background: #000 url(how/checkin-player.jpg) center / cover no-repeat;
+  background: #000 url(how/salsa-bg.jpg) center / cover no-repeat;
 }
-.dz-c3-bg-clean { background-image: url(how/checkin-clean.jpg); }
 /* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
    !important is load-bearing: the `animation` shorthand on the more specific scene-3
-   rules (.dz-c3-cnt .nx, .dz-c3-segs i.today, …) resets play-state to running, so
-   without it those keep ticking while the scenes pause and the streak plays out of sync. */
+   rules (.dz-bars .now i, .dz-plus1, …) resets play-state to running, so without it
+   those keep ticking while the scenes pause and play out of sync. */
 [data-how-loop].dz-paused *,
 .dz-how-dots.dz-paused * { animation-play-state: paused !important; }
 
-/* scene 1 · check-in */
+/* scene 1 · check-in from the clip's ? button */
+.dz-c3-qbtn {
+  position: absolute; right: 12px; top: 14px; width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(0,0,0,.55); border: 2px solid #fff; color: #fff;
+  font: 800 15px/24px var(--font-sans); text-align: center;
+}
 .dz-c3-sheet {
   position: absolute; left: 0; right: 0; bottom: 0;
   background: #fff; border-radius: 18px 18px 0 0;
@@ -471,7 +553,7 @@ a { color: inherit; }
 .dz-c3-gl { display: block; width: 19px; height: 19px; border-radius: 50%; margin: 0 auto 6px; }
 .dz-c3-gl-w { background: conic-gradient(var(--warning) 0 50%, #fff 0); border: 2px solid var(--warning); box-sizing: border-box; }
 .dz-c3-gl-g { background: var(--success); }
-.dz-c3-sel { animation: dz-c3-sel 9s infinite; }
+.dz-c3-sel { animation: dz-c3-sel 12s infinite; }
 @keyframes dz-c3-sel {
   0%, 14% { border-color: #e5e1da; background: #fff; }
   17%, 33% { border-color: var(--success); background: #ecfdf5; }
@@ -481,7 +563,7 @@ a { color: inherit; }
   position: absolute; right: 8px; bottom: 6px;
   width: 32px; height: 32px; border-radius: 50%;
   background: rgba(17, 17, 17, .18); border: 2px solid rgba(17, 17, 17, .55);
-  animation: dz-how-tap 9s infinite;
+  animation: dz-how-tap 12s infinite;
 }
 @keyframes dz-how-tap {
   0%, 8% { transform: scale(.5); opacity: 0; }
@@ -490,73 +572,73 @@ a { color: inherit; }
   100% { opacity: 0; }
 }
 
-/* scene 2 · celebration */
-.dz-c3-done {
-  position: absolute; left: 12px; right: 12px; top: 50%; transform: translateY(-50%);
-  background: #fff; border-radius: 16px; padding: 16px 12px 14px; text-align: center;
+/* scene 2 · today's bar grows (+1), and the practice month fills */
+.dz-act { position: relative; background: #fff; border-radius: 14px; padding: 12px; }
+.dz-act .t { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+.dz-act .t span { color: #9b948b; }
+.dz-bars { display: flex; align-items: flex-end; gap: 6px; height: 96px; }
+.dz-bars div { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.dz-bars i { display: block; width: 100%; background: #f2c45f; border-radius: 4px 4px 2px 2px; }
+.dz-bars i.nil { height: 5px; background: #e6e0d8; }
+.dz-bars small { position: relative; font-size: 10px; font-weight: 800; color: #6f6a62; }
+.dz-bars .now i { background: var(--gold); height: 27px; animation: dz-bar-grow 12s 4s infinite; }
+.dz-bars .now small { color: var(--ink); }
+.dz-bars .now .nx { position: absolute; left: 0; top: 0; opacity: 0; animation: dz-c3-nx 12s 4s infinite; }
+.dz-bars .now .pv { animation: dz-c3-pv 12s 4s infinite; }
+@keyframes dz-bar-grow { 0%, 9% { height: 27px; } 13%, 100% { height: 36px; } }
+@keyframes dz-c3-pv { 0%, 9% { opacity: 1; } 12%, 36% { opacity: 0; } 40%, 100% { opacity: 1; } }
+@keyframes dz-c3-nx { 0%, 9% { opacity: 0; transform: translateY(4px); } 12%, 36% { opacity: 1; transform: none; } 40%, 100% { opacity: 0; } }
+.dz-days { display: flex; gap: 6px; margin-top: 4px; }
+.dz-days span { flex: 1; text-align: center; font-size: 10px; font-weight: 700; color: #9b948b; }
+.dz-days .now { color: var(--ink); }
+.dz-plus1 {
+  position: absolute; right: 10px; top: 30px; opacity: 0;
+  background: var(--success); color: #fff; font-size: 11px; font-weight: 800; border-radius: 99px; padding: 1px 7px;
+  animation: dz-plus1 12s 4s infinite;
 }
-.dz-c3-done h4 { font-size: 15px; font-weight: 800; line-height: 1.2; margin: 0 0 4px; }
-.dz-c3-done p { font-size: 12px; line-height: 1.35; color: #6f6a62; margin: 0 0 10px; }
-.dz-c3-lab { font-size: 9.5px; font-weight: 800; letter-spacing: .08em; color: #6f6a62; margin-bottom: 6px; }
-.dz-c3-th { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 11px; }
-.dz-c3-th span { position: relative; display: block; }
-.dz-c3-th img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 7px; }
-.dz-c3-th em {
-  position: absolute; left: 4px; bottom: 4px;
-  width: 11px; height: 11px; border-radius: 50%;
-  background: var(--success); border: 2px solid #fff;
-}
-.dz-c3-th em.w { background: conic-gradient(var(--warning) 0 50%, #fff 0); }
-.dz-c3-btn { background: var(--gold); color: #fff; font-size: 13px; font-weight: 700; border-radius: 99px; padding: 8px; }
-.dz-c3-cf { position: absolute; top: -12px; width: 7px; height: 12px; border-radius: 2px; animation: dz-c3-fall 3s linear infinite; }
-@keyframes dz-c3-fall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(540px) rotate(540deg); } }
+@keyframes dz-plus1 { 0%, 9% { opacity: 0; transform: translateY(6px); } 13%, 26% { opacity: 1; transform: none; } 32%, 100% { opacity: 0; } }
+.dz-c3-bars { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
 
-/* scene 3 · streak */
-.dz-c3-s3 { background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 14px; text-align: center; }
-.dz-c3-big { font-size: 64px; font-weight: 900; line-height: 1; letter-spacing: -.03em; }
-.dz-c3-fl { font-size: 44px; vertical-align: 8px; }
-/* The fill + count run on scene 3's own clock (same 6s delay as .dz-c3-s3), so
-   the segment is empty when the scene fades in, fills ~1s later, and is reset
-   only after the scene has faded out (local 34%). */
-.dz-c3-cnt { position: relative; display: inline-block; }
-.dz-c3-cnt span { display: inline-block; }
-.dz-c3-cnt .nx { position: absolute; left: 0; top: 0; opacity: 0; animation: dz-c3-nx 9s 6s infinite; }
-.dz-c3-cnt .pv { animation: dz-c3-pv 9s 6s infinite; }
-@keyframes dz-c3-pv { 0%, 14% { opacity: 1; } 17%, 36% { opacity: 0; } 40%, 100% { opacity: 1; } }
-@keyframes dz-c3-nx { 0%, 14% { opacity: 0; transform: translateY(6px); } 17%, 36% { opacity: 1; transform: none; } 40%, 100% { opacity: 0; } }
-.dz-c3-sub { font-size: 17px; font-weight: 800; margin: 6px 0 18px; }
-.dz-c3-segs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; }
-.dz-c3-segs i { height: 14px; border-radius: 5px; background: #f1eee9; }
-.dz-c3-segs i.on { background: var(--gold); }
-.dz-c3-segs i.today { background: #fff; border: 2px solid var(--gold); box-sizing: border-box; animation: dz-c3-fill 9s 6s infinite; }
-@keyframes dz-c3-fill { 0%, 13% { background: #fff; } 18%, 36% { background: var(--gold); } 40%, 100% { background: #fff; } }
-.dz-c3-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; margin-top: 6px; }
-.dz-c3-days span { font-size: 10px; font-weight: 700; color: #6f6a62; text-align: center; }
-.dz-c3-days .now { color: var(--ink); }
+/* scene 3 · the month in two rows: moves you got, moves you're still working on. Row 2 follows row 1. */
+.dz-c3-s3 { display: flex; align-items: center; justify-content: center; }
+.dz-got { width: 100%; padding: 0 14px; box-sizing: border-box; }
+.dz-got .m { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.dz-got .r { background: #1f1c19; border: 1px solid #332e29; border-radius: 14px; padding: 12px; }
+.dz-got .r2 { margin-top: 10px; animation: dz-got-r2 12s 8s infinite; }
+@keyframes dz-got-r2 { 0%, 5% { opacity: 0; transform: translateY(6px); } 10%, 100% { opacity: 1; transform: none; } }
+.dz-got .h { display: flex; align-items: center; gap: 8px; }
+.dz-got .h .dz-c3-gl { width: 20px; height: 20px; margin: 0; flex: none; }
+.dz-got .h b { flex: 1; font-size: 15px; font-weight: 800; }
+.dz-got .h em { font-style: normal; font-size: 38px; font-weight: 900; line-height: 1; }
+.dz-got .r1 em { color: var(--success); }
+.dz-got .r2 em { color: var(--warning); }
+.dz-got .cov { display: flex; gap: 6px; margin-top: 10px; }
+.dz-got .cov img { flex: 1; min-width: 0; aspect-ratio: 3 / 4; max-height: 74px; object-fit: cover; object-position: 50% 20%; border-radius: 6px; display: block; }
 
 /* progress dots under the phone — one per scene (cards 1 and 3) */
 /* Zero-height row so it doesn't push the badge below card 2's. */
 .dz-how-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin: 8px 0 -8px; }
 .dz-how-card { --how-step: 3s; }
-.dz-how-card:has(.dz-c1) { --how-step: 4s; }
+.dz-how-card:has(.dz-c1), .dz-how-card:has(.dz-c3) { --how-step: 4s; }
 .dz-how-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-how-dot calc(var(--how-step) * 3) infinite; }
 .dz-how-dots i:nth-child(2) { animation-delay: var(--how-step); }
 .dz-how-dots i:nth-child(3) { animation-delay: calc(var(--how-step) * 2); }
 /* Card 1 has a dot row per tab panel; only the shown panel's is laid out. */
 .dz-how-card:has(#how-panel-instagram[hidden]) .dz-how-dots[data-for="how-panel-instagram"],
+.dz-how-card:has(#how-panel-discover[hidden]) .dz-how-dots[data-for="how-panel-discover"],
 .dz-how-card:has(#how-panel-class[hidden]) .dz-how-dots[data-for="how-panel-class"] { display: none; }
 @keyframes dz-how-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
 
-/* No motion: card 1 holds on step 1's share sheet (pick Dance Journal) and card 3 on the
-   celebration scene (the loop's payoff), statically, no confetti. */
+/* No motion: card 1 holds on step 1, card 2 on the finished loop (poster frame, band locked), and card 3 on the
+   month card (the payoff), statically. */
 @media (prefers-reduced-motion: reduce) {
-  .dz-c1-scene, .dz-c1-beat, .dz-c1-tap, .dz-c1-hi,
-  .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-c3-cnt span, .dz-c3-segs i.today, .dz-how-dots i { animation: none; }
-  .dz-c1-s1, .dz-c3-s2 { opacity: 1; }
+  .dz-c1-scene, .dz-c1-beat, .dz-c1-tap, .dz-c1-hi, .dz-dsc-saved,
+  .dz-got .r2,
+  .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-bars .now i, .dz-bars .now span, .dz-plus1, .dz-how-dots i { animation: none; }
+  .dz-c1-s1, .dz-c3-s3 { opacity: 1; }
   .dz-c1-beat, .dz-c1-tap { opacity: 1; }
-  .dz-c3-cf { display: none; }
   .dz-how-card:has(.dz-c1) .dz-how-dots i:nth-child(1),
-  .dz-how-card:has(.dz-c3) .dz-how-dots i:nth-child(2) { background: var(--ink); }
+  .dz-how-card:has(.dz-c3) .dz-how-dots i:nth-child(3) { background: var(--ink); }
 }
 
 /* ============== Tools band ("Get more out of your practice") — dark band under How it works ============== */
@@ -719,7 +801,8 @@ a { color: inherit; }
      the pills' own "iOS"/"Android" text, so drop it first before anything wraps. */
   .dz-nav .dz-install-lead { display: none; }
   .dz-hero { padding: 56px 20px 64px; }
-  .dz-hero h1 { font-size: 40px; letter-spacing: -1px; }
+  /* "from workshops." is the widest line and must stay on one row down to a 320px phone. */
+  .dz-hero h1 { font-size: clamp(32px, 10.3vw, 40px); letter-spacing: -1px; }
   .dz-hero-sub { font-size: 17px; margin-top: 18px; }
   .dz-hero-cta { gap: 10px; margin-top: 22px; }
   .dz-download-btn { font-size: 14px; padding: 11px 18px; }
