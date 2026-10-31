@@ -190,30 +190,70 @@
     });
   }
 
-  // Card 2's last scene is a real 2s clip of the looped stretch. It plays only while its card is on
-  // screen, and the playhead (--lp, 0 → 1) is read off the video clock so the two never drift. Under
-  // prefers-reduced-motion it stays on its poster frame.
-  function initLoopVideo() {
-    var video = document.querySelector('.dz-loopvid');
+  // Card 2 is one player that plays out the whole move, ~12s on repeat: paused on the start frame →
+  // Start loop is tapped and the clip plays while the band grows → End loop is tapped, the band locks
+  // and the clip loops. The state is an st-* class on the player (CSS draws everything from it); the
+  // playhead (--lp, 0 → 1) and the time readout are read off the video clock so they never drift.
+  // It runs only while on screen. With reduced motion (or no JS) it rests on st-looping + the poster.
+  function initLoopDemo() {
+    var demo = document.querySelector('.dz-c2');
+    var video = demo && demo.querySelector('.dz-loopvid');
     if (!video || !('IntersectionObserver' in window)) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var scene = video.closest('.dz-c2-scene');
-    var raf = 0;
+
+    var ring = demo.querySelector('.dz-c2-tap');
+    var pos = demo.querySelector('.dz-pos');
+    var START = 2.1;   // where Start loop lands, in clip seconds (the lane's 30%)
+    var SPAN = 2.0;    // the clip's length
+    var timers = [], raf = 0, lastTenth = -1, running = false;
+
+    function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
+    function state(name) {
+      demo.className = demo.className.replace(/\bst-\w+/g, '').replace(/\s+/g, ' ') + ' st-' + name;
+    }
+    function tap() {
+      ring.classList.remove('go');
+      void ring.offsetWidth;
+      ring.classList.add('go');
+    }
     function tick() {
-      if (video.duration) scene.style.setProperty('--lp', (video.currentTime / video.duration).toFixed(3));
+      var lp = video.duration ? video.currentTime / video.duration : 0;
+      demo.style.setProperty('--lp', lp.toFixed(3));
+      var tenth = Math.round((START + lp * SPAN) * 10);
+      if (tenth !== lastTenth) {
+        lastTenth = tenth;
+        var t = tenth / 10;
+        pos.textContent = '0:' + (t < 10 ? '0' : '') + t.toFixed(1);
+      }
       raf = requestAnimationFrame(tick);
     }
+    function play() { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+
+    function cycle() {
+      state('ready');
+      video.pause();
+      video.loop = false;
+      video.currentTime = 0;
+      at(1400, function () { tap(); });
+      at(1800, function () { state('marking'); play(); });
+      // The first pass is the marking pass: End loop lands on the last frame.
+      video.onended = function () {
+        at(500, function () { tap(); });
+        at(900, function () { state('looping'); video.loop = true; video.currentTime = 0; play(); });
+        at(900 + 7500, cycle);
+      };
+    }
+    function stop() {
+      running = false;
+      timers.forEach(clearTimeout); timers = [];
+      cancelAnimationFrame(raf); raf = 0;
+      video.onended = null;
+      video.pause();
+    }
     new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
-        var p = video.play();
-        if (p && p.catch) p.catch(function () {});
-        if (!raf) tick();
-      } else {
-        video.pause();
-        cancelAnimationFrame(raf);
-        raf = 0;
-      }
-    }).observe(video);
+      if (entries[0].isIntersecting && !running) { running = true; tick(); cycle(); }
+      else if (!entries[0].isIntersecting && running) stop();
+    }).observe(demo);
   }
 
   function boot() {
@@ -223,7 +263,7 @@
     initLazyVideos();
     initHowTabs();
     initHowMotion();
-    initLoopVideo();
+    initLoopDemo();
   }
 
   if (document.readyState === 'loading') {

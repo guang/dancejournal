@@ -206,39 +206,25 @@
           <h3>Save or browse a move you want to learn.</h3>
         </div>
 
-        <!-- 2 · Loop it: Start loop on one frame → End loop on another → the loop plays (12s, 4s per scene).
-             Scenes 1 and 2 are stills; scene 3 is a 2s, 12fps, 42KB clip of the looped stretch, with the
-             playhead driven from the video clock (initLoopVideo in landing.js). The frames are from a reel with
-             no burned-in text. -->
+        <!-- 2 · Loop it: one player that plays out the whole move (initLoopDemo in landing.js, ~12s):
+             paused on the start frame → tap Start loop, the clip plays and the band grows under the
+             playhead → tap End loop, the band locks and the clip loops. The state is the st-* class on the
+             player; without JS (or with reduced motion) it rests on st-looping with the poster frame.
+             The clip is 2s, 12fps, 42KB, from a reel with no burned-in text; the playhead (--lp) is read
+             off the video clock. -->
         <div class="dz-how-card dz-how-card-plain">
-          <div class="dz-how-diagram dz-c2" data-how-loop role="img"
+          <div class="dz-how-diagram dz-c2 dz-ui dz-ui-dark st-looping" role="img"
                aria-label="Tap Start loop where the move starts, tap End loop where it ends, and that stretch plays on repeat">
-            <div class="dz-c2-scene dz-c2-s1 dz-ui dz-ui-dark" aria-hidden="true">
-              <div class="dz-verbrow"><span class="v"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-repeat"/></svg>Start loop</span></div>
-              <div class="dz-vid"><img src="assets/how/loop-a.jpg" alt=""></div>
-              <div class="dz-lane"><u class="dz-lane-tick" style="left: 30%;"></u></div>
-              <div class="dz-scrub"><em class="dz-scrub-head " style="left: 30%;"></em></div>
-              <div class="dz-times"><span>0:02.1</span><span></span><span>0:07</span></div>
-              <div class="dz-tp"><span class="l"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-vol"/></svg></span><span class="c"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-left"/></svg><b class="dz-pp"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-play"/></svg></b><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-right"/></svg></span><span class="r"><span class="dz-sp">1x<svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-down"/></svg></span></span></div>
-              <span class="dz-c2-tap" style="left: 50%; top: 14%;"></span>
+            <div class="dz-verbrow" aria-hidden="true">
+              <span class="v v-start"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-repeat"/></svg>Start loop</span>
+              <span class="v v-end"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-stop"/></svg>End loop</span>
+              <span class="dz-c2-tap"></span>
             </div>
-            <div class="dz-c2-scene dz-c2-s2 dz-ui dz-ui-dark" aria-hidden="true">
-              <div class="dz-verbrow"><span class="v"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-stop"/></svg>End loop</span></div>
-              <div class="dz-vid"><img src="assets/how/loop-b.jpg" alt=""></div>
-              <div class="dz-lane"><i class="dz-lane-grow"></i><em class="dz-lane-head"></em></div>
-              <div class="dz-scrub"><em class="dz-scrub-head dz-lane-head" style="left: 30%;"></em></div>
-              <div class="dz-times"><span class="dz-t-a">0:02.1</span><span class="dz-t-b">0:04.1</span><span></span><span>0:07</span></div>
-              <div class="dz-tp"><span class="l"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-vol"/></svg></span><span class="c"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-left"/></svg><b class="dz-pp"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-pause"/></svg></b><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-right"/></svg></span><span class="r"><span class="dz-sp">1x<svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-down"/></svg></span></span></div>
-              <span class="dz-c2-tap" style="left: 50%; top: 14%;"></span>
-            </div>
-            <div class="dz-c2-scene dz-c2-s3 dz-ui dz-ui-dark" aria-hidden="true">
-              <div class="dz-verbrow"></div>
-              <div class="dz-vid"><video class="dz-loopvid" src="assets/video/loop-demo.mp4" poster="assets/how/loop-a.jpg" muted loop playsinline preload="metadata" tabindex="-1"></video></div>
-              <div class="dz-lane"><i class="act" style="left: 30%; width: 28%;"></i><em class="dz-lane-loop"></em></div>
-              <div class="dz-scrub"><em class="dz-scrub-head dz-lane-loop"></em></div>
-              <div class="dz-times"><span></span><span class="dz-pill"><svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-repeat"/></svg>Loop 1</span><span>0:07</span></div>
-              <div class="dz-tp"><span class="l"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-vol"/></svg></span><span class="c"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-left"/></svg><b class="dz-pp"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-pause"/></svg></b><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-right"/></svg></span><span class="r"><span class="dz-sp">1x<svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-down"/></svg></span></span></div>
-            </div>
+            <div class="dz-vid" aria-hidden="true"><video class="dz-loopvid" src="assets/video/loop-demo.mp4" poster="assets/how/loop-a.jpg" muted loop playsinline preload="metadata" tabindex="-1"></video></div>
+            <div class="dz-lane" aria-hidden="true"><u class="dz-lane-tick"></u><i></i></div>
+            <div class="dz-scrub" aria-hidden="true"><em class="dz-scrub-head"></em></div>
+            <div class="dz-times" aria-hidden="true"><span class="dz-pos">0:02.1</span><span class="dz-pill"><svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-repeat"/></svg>Loop 1</span><span>0:07</span></div>
+            <div class="dz-tp" aria-hidden="true"><span class="l"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-vol"/></svg></span><span class="c"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-left"/></svg><b class="dz-pp"><span class="ic-play"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-play"/></svg></span><span class="ic-pause"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-pause"/></svg></span></b><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-right"/></svg></span><span class="r"><span class="dz-sp">1x<svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-down"/></svg></span></span></div>
           </div>
           <div class="dz-how-dots" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="dz-how-num" aria-hidden="true">2</div>
@@ -279,12 +265,13 @@
             <div class="dz-c3-scene dz-c3-s3 dz-ui dz-ui-dark" aria-hidden="true">
               <div class="dz-got">
                 <div class="m">Your October</div>
-                <div class="big">6</div>
-                <div class="l">moves marked Got it</div>
-                <div class="cov">
-                  <span><img src="assets/how/got-25.jpg" alt=""><i><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-check"/></svg></i></span>
-                  <span><img src="assets/how/got-70.jpg" alt=""><i><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-check"/></svg></i></span>
-                  <span><img src="assets/how/got-110.jpg" alt=""><i><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-check"/></svg></i></span>
+                <div class="r r1">
+                  <div class="h"><span class="dz-c3-gl dz-c3-gl-g"></span><b>Got it</b><em>6</em></div>
+                  <div class="cov"><img src="assets/how/got-25.jpg" alt=""><img src="assets/how/got-70.jpg" alt=""><img src="assets/how/got-110.jpg" alt=""></div>
+                </div>
+                <div class="r r2">
+                  <div class="h"><span class="dz-c3-gl dz-c3-gl-w"></span><b>Working on it</b><em>8</em></div>
+                  <div class="cov"><img src="assets/how/work-45.jpg" alt=""><img src="assets/how/work-95.jpg" alt=""><img src="assets/how/work-140.jpg" alt=""></div>
                 </div>
               </div>
             </div>
