@@ -473,7 +473,7 @@ a { color: inherit; }
    scrubber, the time line, then the transport row (mute · ‹ · play · › · speed). The state is an st-*
    class on .dz-c2; the markup rests on st-looping. */
 .dz-c2 { display: flex; flex-direction: column; overflow: hidden; --lp: 0; }
-.dz-verbrow { position: relative; flex: none; height: 44px; margin-top: 34px; display: flex; align-items: center; justify-content: center; }
+.dz-verbrow { position: relative; flex: none; height: 38px; margin-top: 28px; display: flex; align-items: center; justify-content: center; }
 .dz-verbrow .v {
   display: none; align-items: center; gap: 6px;
   background: var(--gold); color: var(--ink); font-size: 14px; font-weight: 800; border-radius: 99px; padding: 8px 16px;
@@ -487,10 +487,10 @@ a { color: inherit; }
 @keyframes dz-c2-ring { 0% { transform: scale(.5); opacity: 0; } 30% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.3); } }
 .dz-ic { width: 16px; height: 16px; flex: none; }
 .dz-ic-s { width: 9px; height: 9px; }
-.dz-vid { position: relative; flex: none; height: 52%; overflow: hidden; }
-.dz-vid video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 16%; display: block; }
+.dz-vid { position: relative; flex: none; height: 61.5%; overflow: hidden; }
+.dz-vid video { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
 /* The loop lane sits over the scrubber, 12pt apart, like the app. */
-.dz-lane { position: relative; flex: none; height: 16px; margin: 14px 12px 0; background: rgba(0, 0, 0, .38); border: 1px solid rgba(227, 160, 24, .75); border-radius: 6px; }
+.dz-lane { position: relative; flex: none; height: 16px; margin: 10px 12px 0; background: rgba(0, 0, 0, .38); border: 1px solid rgba(227, 160, 24, .75); border-radius: 6px; }
 .dz-lane i {
   position: absolute; top: -1px; bottom: -1px; left: 30%; width: 0; box-sizing: border-box;
   background: rgba(227, 160, 24, .45); border: 1.5px solid rgba(227, 160, 24, .85); border-radius: 6px;
@@ -500,14 +500,14 @@ a { color: inherit; }
 .dz-lane .dz-lane-tick { position: absolute; top: -1px; bottom: -1px; left: 30%; width: 3px; margin-left: -1px; background: var(--gold); border-radius: 2px; }
 .st-looping .dz-lane-tick { display: none; }
 /* The playhead is the video clock: 30% → 58% across the loop. */
-.dz-scrub { position: relative; flex: none; height: 3px; margin: 13px 12px 0; background: rgba(255, 255, 255, .32); border-radius: 2px; }
+.dz-scrub { position: relative; flex: none; height: 3px; margin: 11px 12px 0; background: rgba(255, 255, 255, .32); border-radius: 2px; }
 .dz-scrub-head { position: absolute; top: -4px; left: calc(30% + 28% * var(--lp)); width: 11px; height: 11px; margin-left: -5.5px; border-radius: 50%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .5); }
-.dz-times { position: relative; flex: none; display: flex; justify-content: space-between; align-items: center; height: 18px; margin: 8px 12px 0; font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.dz-times { position: relative; flex: none; display: flex; justify-content: space-between; align-items: center; height: 18px; margin: 6px 12px 0; font-size: 10.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .dz-times > span { color: rgba(255, 255, 255, .6); }
 .dz-times .dz-pill { visibility: hidden; color: #f0c46a; border: 1.5px solid #8a6a2a; border-radius: 99px; padding: 1px 8px; display: inline-flex; align-items: center; gap: 4px; font-weight: 700; }
 .st-looping .dz-pill { visibility: visible; }
 /* The transport row: mute left, ‹ ▶ › centred, the speed pill right. */
-.dz-tp { flex: none; display: flex; align-items: center; margin: 12px 12px 0; color: #fff; }
+.dz-tp { flex: none; display: flex; align-items: center; margin: 10px 12px 0; color: #fff; }
 .dz-tp .l, .dz-tp .r { flex: 1; display: flex; align-items: center; }
 .dz-tp .r { justify-content: flex-end; }
 .dz-tp .c { display: flex; align-items: center; gap: 12px; }
@@ -535,7 +535,7 @@ a { color: inherit; }
 @keyframes dz-how-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
 .dz-c3-bg {
   position: absolute; inset: 0;
-  background: #000 url(how/loop-b.jpg) center / cover no-repeat;
+  background: #000 url(how/salsa-bg.jpg) center / cover no-repeat;
 }
 /* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
    !important is load-bearing: the `animation` shorthand on the more specific scene-3
