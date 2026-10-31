@@ -195,6 +195,16 @@ a { color: inherit; }
 .dz-nav-whatsnew:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .dz-nav-whatsnew:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
 
+/* "Library" — the first item in the nav, on every page (Move Library, storyboard 2026-11-01). Plain bold ink link
+   like the footer's; always visible, also on a phone (unlike "What's New", which only appears once scrolled). */
+.dz-nav-library {
+  margin-right: 18px;
+  font-family: var(--font-sans); font-size: 15px; font-weight: 700; line-height: 1;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+}
+.dz-nav-library:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.dz-nav-library:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
 /* Hero */
 .dz-hero {
   position: relative;
@@ -256,6 +266,9 @@ a { color: inherit; }
   margin: 14px 0 0;
   font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--secondary); opacity: .8;
 }
+.dz-hero-library { margin: 10px 0 0; font-size: 15px; font-weight: 700; }
+.dz-hero-library a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--gold); }
+.dz-hero-library a:hover { text-decoration-color: var(--ink); }
 .dz-hero-sub {
   font-family: var(--font-sans);
   font-size: 22px; font-weight: 500; color: var(--secondary);
@@ -794,6 +807,7 @@ a { color: inherit; }
     max-width: 160px; opacity: 1; visibility: visible; margin-right: 14px;
     transition-delay: 200ms;
   }
+  .dz-nav-library { margin-right: 12px; font-size: 14px; }
   .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
   .dz-nav-cta svg { width: 13px; height: 13px; }
   /* Ambiguous-platform fallback (two store pills + lead text) is too wide next
@@ -868,4 +882,9 @@ a { color: inherit; }
   .dz-doc > h1:first-child { font-size: 32px; letter-spacing: -.8px; }
   .dz-doc h2 { font-size: 22px; }
   .dz-doc h3 { font-size: 18px; }
+}
+
+/* Smallest phones: "Library" + the CTA leave no room for the word, so the nav shows the icon only. */
+@media (max-width: 360px) {
+  .dz-nav-wm .dj-word { display: none; }
 }
