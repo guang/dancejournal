@@ -190,6 +190,32 @@
     });
   }
 
+  // Card 2's last scene is a real 2s clip of the looped stretch. It plays only while its card is on
+  // screen, and the playhead (--lp, 0 → 1) is read off the video clock so the two never drift. Under
+  // prefers-reduced-motion it stays on its poster frame.
+  function initLoopVideo() {
+    var video = document.querySelector('.dz-loopvid');
+    if (!video || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var scene = video.closest('.dz-c2-scene');
+    var raf = 0;
+    function tick() {
+      if (video.duration) scene.style.setProperty('--lp', (video.currentTime / video.duration).toFixed(3));
+      raf = requestAnimationFrame(tick);
+    }
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {});
+        if (!raf) tick();
+      } else {
+        video.pause();
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    }).observe(video);
+  }
+
   function boot() {
     initInstallLinks();
     initDownloadCtas();
@@ -197,6 +223,7 @@
     initLazyVideos();
     initHowTabs();
     initHowMotion();
+    initLoopVideo();
   }
 
   if (document.readyState === 'loading') {
