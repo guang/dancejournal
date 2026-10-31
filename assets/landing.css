@@ -467,35 +467,43 @@ a { color: inherit; }
 }
 .dz-dsc .dz-dsc-ok { inset: 4px 4px auto auto; background: var(--ink); color: #fff; font-size: 12px; }
 
-/* Card 2 — Next move → mark a loop → it loops. Same 9s / 3-scene clock as card 3. */
+/* Card 2 — Start loop → End loop → the loop as two stills. Same 9s / 3-scene clock as card 3. */
 .dz-c2 { overflow: hidden; }
 .dz-c2-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene 9s infinite; }
 .dz-c2-s2 { animation-delay: 3s; }
 .dz-c2-s3 { animation-delay: 6s; }
+.dz-c2-s2 .dz-c2-tap { animation-delay: 3s; }
 .dz-c2-tap {
   position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%;
   background: rgba(17, 17, 17, .18); border: 2px solid rgba(255, 255, 255, .85);
   animation: dz-how-tap 9s infinite;
 }
-.dz-vid { position: relative; height: 62%; }
-.dz-vid img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.dz-vid-glow::after {
-  content: ''; position: absolute; inset: 0;
-  box-shadow: inset 0 0 0 3px var(--gold), inset 0 0 22px 6px rgba(227, 160, 24, .55);
+.dz-vid { position: relative; height: 52%; }
+.dz-vid img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 16%; display: block; }
+/* The app's mode bar, kept above the frame so it never covers the dancers: a glass Cancel pill
+   on the left, the one big gold verb centred, a one-line tip under it. */
+.dz-mk { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 38px 10px 9px; }
+.dz-mk .x {
+  font-size: 10.5px; color: #fff; font-weight: 700;
+  background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .3); border-radius: 99px; padding: 4px 9px;
 }
-.dz-mk { position: absolute; left: 0; right: 0; top: 0; padding: 10px 10px 8px; background: linear-gradient(rgba(0,0,0,.78), transparent); }
-.dz-mk .r { display: flex; justify-content: space-between; align-items: center; }
-.dz-mk .r.end { justify-content: flex-end; margin-top: 6px; }
-.dz-mk .x { font-size: 12px; color: #ddd; font-weight: 600; }
-.dz-mk .v { background: var(--gold); color: var(--ink); font-size: 13px; font-weight: 800; border-radius: 99px; padding: 6px 14px; }
-.dz-mk .g { background: rgba(255,255,255,.2); color: #fff; font-size: 10.5px; font-weight: 700; border-radius: 99px; padding: 5px 9px; }
-.dz-mk p { margin: 6px 0 0; font-size: 10px; color: #d6cfc6; }
-.dz-lane { position: relative; height: 20px; margin: 18px 12px 12px; background: #3a3430; border-radius: 5px; }
+.dz-verb { flex: 1; display: flex; justify-content: center; }
+.dz-verb .v {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--gold); color: var(--ink); font-size: 14px; font-weight: 800; border-radius: 99px; padding: 8px 16px;
+}
+.dz-ic { width: 16px; height: 16px; flex: none; }
+.dz-mk p { flex-basis: 100%; margin: 8px 0 0; text-align: center; font-size: 10.5px; font-weight: 600; color: #bdb6ad; }
+.dz-lane { position: relative; height: 26px; margin: 26px 12px 14px; background: #3a3430; border-radius: 6px; }
 .dz-lane i {
   position: absolute; top: 0; bottom: 0;
-  background: rgba(227, 160, 24, .35); border-left: 4px solid var(--gold); border-right: 4px solid var(--gold); border-radius: 4px;
+  background: rgba(227, 160, 24, .38); border-left: 5px solid var(--gold); border-right: 5px solid var(--gold); border-radius: 6px;
 }
-.dz-lane em { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #fff; }
+.dz-lane em { position: absolute; top: -5px; bottom: -5px; width: 2px; margin-left: -1px; background: #fff; border-radius: 1px; }
+/* Time tags above the lane: 0:06 where Start loop was tapped, 0:08 where End loop is. */
+.dz-lane-t { position: absolute; top: -20px; transform: translateX(-50%); font-size: 10.5px; font-weight: 800; color: #fff; white-space: nowrap; }
+.dz-lane-tend { left: 58%; opacity: 0; animation: dz-lane-tend 9s 3s infinite; }
+@keyframes dz-lane-tend { 0%, 27% { opacity: 0; } 32%, 100% { opacity: 1; } }
 /* While marking, the band has no end yet and grows under the playhead. Runs on scene 2's clock. */
 .dz-lane-grow { left: 30%; width: 0; border-right: 0 !important; animation: dz-lane-grow 9s 3s infinite; }
 .dz-lane-head { left: 30%; animation: dz-lane-head 9s 3s infinite; }
@@ -506,7 +514,18 @@ a { color: inherit; }
 .dz-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px; }
 .dz-chips span { font-size: 11.5px; font-weight: 700; border: 1.5px solid #8a6a2a; color: #f0c46a; border-radius: 99px; padding: 2px 9px; }
 .dz-chips span.on { background: var(--gold); border-color: var(--gold); color: var(--ink); }
-.dz-c2-note { margin: 12px 12px 0; font-size: 11px; color: #bdb6ad; }
+.dz-c2-note { margin: 14px 12px 0; font-size: 11px; color: #bdb6ad; }
+/* Scene 3: the loop as two stills, start → end, instead of a playing video. */
+.dz-c2-s3 { display: flex; flex-direction: column; justify-content: center; }
+.dz-pair { display: flex; align-items: center; padding: 0 10px; }
+.dz-pair figure { margin: 0; flex: 1; min-width: 0; }
+.dz-pair img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 16%; border-radius: 8px; display: block; border: 2px solid var(--gold); box-sizing: border-box; }
+.dz-pair figcaption { margin-top: 6px; text-align: center; font-size: 10.5px; font-weight: 800; color: #f5f3f1; }
+.dz-pair-arrow {
+  flex: none; width: 26px; height: 26px; margin: 0 -8px; border-radius: 50%; z-index: 1;
+  background: var(--gold); color: var(--ink); display: flex; align-items: center; justify-content: center; align-self: flex-start; margin-top: 56px;
+}
+.dz-pair-arrow .dz-ic { width: 15px; height: 15px; }
 
 /* Card 3 — ? check-in → today's bar + the month → month card. Three stacked scenes cross-fade on a
    9s loop (3s each); the scene delays are what offset them. */
@@ -518,7 +537,7 @@ a { color: inherit; }
 @keyframes dz-how-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
 .dz-c3-bg {
   position: absolute; inset: 0;
-  background: #000 url(how/mv-7.jpg) center / cover no-repeat;
+  background: #000 url(how/loop-b.jpg) center / cover no-repeat;
 }
 /* Paused until the card is on screen (JS toggles .dz-paused) so it isn't burning CPU.
    !important is load-bearing: the `animation` shorthand on the more specific scene-3
@@ -593,14 +612,8 @@ a { color: inherit; }
   animation: dz-plus1 9s 3s infinite;
 }
 @keyframes dz-plus1 { 0%, 9% { opacity: 0; transform: translateY(6px); } 13%, 26% { opacity: 1; transform: none; } 32%, 100% { opacity: 0; } }
-.dz-mon { margin-top: 10px; background: #fff; border-radius: 14px; padding: 11px 12px; font-size: 11px; color: #6f6a62; }
-.dz-mon > b { color: var(--ink); font-size: 13px; }
-.dz-mon .seg { display: flex; height: 9px; border-radius: 99px; overflow: hidden; margin: 7px 0 6px; background: #e6e0d8; }
-.dz-mon .seg i.g { background: var(--success); }
-.dz-mon .seg i.w { background: var(--warning); }
-.dz-mon .cnt { display: flex; justify-content: space-between; white-space: nowrap; font-size: 10.5px; }
-.dz-mon .cnt b { color: var(--ink); }
-.dz-mon .rv { margin-top: 6px; }
+.dz-c3-bars { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+.dz-act-hint { margin: 0; text-align: center; font-size: 11px; font-weight: 600; color: #6f6a62; }
 
 /* scene 3 · the month card: what the month added up to */
 .dz-mcard {
@@ -633,18 +646,17 @@ a { color: inherit; }
 .dz-how-card:has(#how-panel-class[hidden]) .dz-how-dots[data-for="how-panel-class"] { display: none; }
 @keyframes dz-how-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
 
-/* No motion: card 1 holds on step 1, card 2 on the loop being marked, and card 3 on the
+/* No motion: card 1 holds on step 1, card 2 on the finished loop (start and end stills), and card 3 on the
    month card (the payoff), statically. */
 @media (prefers-reduced-motion: reduce) {
   .dz-c1-scene, .dz-c1-beat, .dz-c1-tap, .dz-c1-hi, .dz-dsc-saved,
   .dz-c2-scene, .dz-c2-tap, .dz-lane-grow, .dz-lane-head, .dz-lane-loop,
   .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-bars .now i, .dz-bars .now span, .dz-plus1, .dz-how-dots i { animation: none; }
-  .dz-c1-s1, .dz-c2-s2, .dz-c3-s3 { opacity: 1; }
+  .dz-c1-s1, .dz-c2-s3, .dz-c3-s3 { opacity: 1; }
   .dz-c1-beat, .dz-c1-tap { opacity: 1; }
-  .dz-lane-grow { width: 28%; }
-  .dz-lane-head { left: 58%; }
+  .dz-lane-loop { left: 58%; }
   .dz-how-card:has(.dz-c1) .dz-how-dots i:nth-child(1),
-  .dz-how-card:has(.dz-c2) .dz-how-dots i:nth-child(2),
+  .dz-how-card:has(.dz-c2) .dz-how-dots i:nth-child(3),
   .dz-how-card:has(.dz-c3) .dz-how-dots i:nth-child(3) { background: var(--ink); }
 }
 
