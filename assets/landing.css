@@ -238,7 +238,10 @@ a { color: inherit; }
   display: block; height: 1.12em; line-height: 1.12em;
   font-weight: inherit; white-space: nowrap;
   padding: 0 .06em;
-  background: linear-gradient(transparent 58%, #F7D27A 58%, #F7D27A 88%, transparent 88%);
+  /* A thin band under the baseline, not a stripe through the letters; descenders (p, g) overprint it.
+     overflow clips the ~1px of descender that bleeds into the box below (a stray dash under line 1). */
+  overflow: hidden;
+  background: linear-gradient(transparent 82%, #F7D27A 82%, #F7D27A 96%, transparent 96%);
 }
 @keyframes dz-rot {
   0%, 16%  { transform: translateY(0); }
@@ -491,6 +494,7 @@ a { color: inherit; }
 /* The transport row: mute left, ‹ ▶ › centred, the speed pill right. */
 .dz-tp { flex: none; display: flex; align-items: center; margin: 10px 12px 0; color: #fff; }
 .dz-tp .l, .dz-tp .r { flex: 1; display: flex; align-items: center; }
+.dz-tp .l { padding-left: 20px; } /* mute sits in from the edge so the row reads balanced against the speed pill */
 .dz-tp .r { justify-content: flex-end; }
 .dz-tp .c { display: flex; align-items: center; gap: 12px; }
 .dz-tp .l .dz-ic { width: 16px; height: 16px; }
