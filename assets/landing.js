@@ -161,7 +161,7 @@
       var paused = [loop, dots];
       paused.forEach(function (el) { if (el) el.classList.add('dz-paused'); });
       new IntersectionObserver(function (entries) {
-        var on = entries[0].isIntersecting;
+        var on = entries[entries.length - 1].isIntersecting;
         paused.forEach(function (el) { if (el) el.classList.toggle('dz-paused', !on); });
       }).observe(loop);
     });
@@ -212,7 +212,28 @@
       }
       raf = requestAnimationFrame(tick);
     }
-    function play() { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+    function play(onFail) {
+      var p = video.play();
+      if (p && p.catch) p.catch(function () { if (onFail) onFail(); });
+    }
+    // The clip can't play (autoplay blocked, load failed): rest on the finished loop and its poster
+    // frame instead of sitting on "End loop" forever.
+    function giveUp() {
+      marking = false;
+      timers.forEach(clearTimeout); timers = [];
+      video.onended = null;
+      state('looping');
+    }
+    // End loop lands: lock the band and loop the clip, LOOPS passes, then start over.
+    function enterLoop() {
+      if (!marking) return;
+      marking = false;
+      state('looping');
+      video.loop = true;
+      video.currentTime = 0;
+      play();
+      at(LOOPS * (video.duration || SPAN) * 1000, cycle);
+    }
 
     function cycle() {
       state('ready');
@@ -221,28 +242,25 @@
       video.loop = false;
       video.currentTime = 0;
       at(1400, function () { tap(); });
-      at(1800, function () { tappedEnd = false; marking = true; state('marking'); play(); });
-      // The first pass is the marking pass; End loop lands as it ends and the clip goes straight
-      // into the loop, then it plays LOOPS passes before the demo starts over.
-      video.onended = function () {
-        marking = false;
-        state('looping');
-        video.loop = true;
-        video.currentTime = 0;
-        play();
-        at(LOOPS * video.duration * 1000, cycle);
-      };
+      at(1800, function () { tappedEnd = false; marking = true; state('marking'); play(giveUp); });
+      // The first pass is the marking pass; End loop lands as it ends. The timer is a backstop for
+      // a clip that stalls or a throttled tab, where `ended` never arrives.
+      video.onended = enterLoop;
+      video.onerror = giveUp;
+      at(1800 + SPAN * 1000 + 2500, enterLoop);
     }
     function stop() {
       running = false;
       timers.forEach(clearTimeout); timers = [];
       cancelAnimationFrame(raf); raf = 0;
       video.onended = null;
+      video.onerror = null;
       video.pause();
     }
     new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting && !running) { running = true; tick(); cycle(); }
-      else if (!entries[0].isIntersecting && running) stop();
+      var visible = entries[entries.length - 1].isIntersecting;
+      if (visible && !running) { running = true; tick(); cycle(); }
+      else if (!visible && running) stop();
     }).observe(demo);
   }
 
