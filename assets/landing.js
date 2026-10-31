@@ -135,8 +135,8 @@
     videos.forEach(function (v) { observer.observe(v); });
   }
 
-  // How it works, card 1: the Instagram | Class tab switch. Only the active panel
-  // is shown; the Instagram steps loop pauses on its own while hidden (initHowMotion).
+  // How it works, card 1: the Instagram | Discover | Class tab switch. Only the active
+  // panel is shown; a hidden panel's step loop pauses on its own (initHowMotion).
   function initHowTabs() {
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-how-tab]'));
     if (!tabs.length) return;
@@ -167,30 +167,17 @@
     });
   }
 
-  // How it works: motion that starts when a card scrolls into view.
-  //  - [data-how-reveal] (card 2): the three "Today" tiles rise in once.
-  //  - [data-how-loop]   (cards 1 and 3): the 9s step loop runs only while on screen.
-  //    Card 1 has one per tab panel, so the hidden panel's loop also pauses.
-  // Under prefers-reduced-motion neither is armed (the CSS shows a still step).
+  // How it works: each card's step loop ([data-how-loop]) runs only while it's on
+  // screen. Card 1 has one per tab panel, so the hidden panels' loops also pause.
+  // Under prefers-reduced-motion nothing is armed (the CSS shows a still step).
   function initHowMotion() {
-    var reveal = document.querySelector('[data-how-reveal]');
     var loops = document.querySelectorAll('[data-how-loop]');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || !('IntersectionObserver' in window)) return;
 
-    if (reveal) {
-      reveal.classList.add('dz-armed');
-      var revealObs = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        reveal.classList.add('dz-in');
-        revealObs.disconnect();
-      }, { threshold: 0.4 });
-      revealObs.observe(reveal);
-    }
-
     Array.prototype.forEach.call(loops, function (loop) {
       // The progress dots sit just outside the phone; they pause with it. Card 1 has
-      // one row per tab panel (data-for = the panel's id); card 3 has just the one.
+      // one row per tab panel (data-for = the panel's id); cards 2 and 3 have one each.
       var card = loop.closest('.dz-how-card');
       var dots = (loop.id && card.querySelector('.dz-how-dots[data-for="' + loop.id + '"]')) ||
                  card.querySelector('.dz-how-dots');
