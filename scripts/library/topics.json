@@ -1,0 +1,24 @@
+{
+  "_": "Web copy per topic, keyed by the Firestore program id. 'title' is the short name (cards, breadcrumbs); 'h1' is the search phrase; 'intro' is the 2-sentence web-only intro. reviewed:false = a draft nobody has signed off yet. A topic missing here falls back to its app title, cleaned up.",
+  "movelib_rotisseries": {
+    "slug": "rotisseries",
+    "title": "Rotisseries",
+    "h1": "Bachata rotisseries",
+    "intro": "The follower turns while traveling all the way around the leader. Start with the easiest versions below, then try it from shadow, from a cambré, or as a half rotisserie.",
+    "reviewed": false
+  },
+  "movelib_madrid-steps": {
+    "slug": "madrid-steps",
+    "title": "Madrid steps",
+    "h1": "Bachata Madrid steps",
+    "intro": "The Madrid step is a side-by-side footwork pattern that breaks out of the basic. Start with the plain step, then take it into shadow, into other moves, or add follower styling.",
+    "reviewed": false
+  },
+  "movelib_clock-turns": {
+    "slug": "clock-turns",
+    "title": "Clock turns",
+    "h1": "Bachata clock turns",
+    "intro": "The follower travels a full circle around the leader, who turns on the spot. Different ways in, doubles and fake-outs, and longer sequences.",
+    "reviewed": false
+  }
+}
