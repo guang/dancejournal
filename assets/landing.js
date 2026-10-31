@@ -190,7 +190,7 @@
     });
   }
 
-  // Card 2 is one player that plays out the whole move, ~12s on repeat: paused on the start frame →
+  // Card 2 is one player that plays out the whole move, ~8s on repeat: paused on the start frame →
   // Start loop is tapped and the clip plays while the band grows → End loop is tapped, the band locks
   // and the clip loops. The state is an st-* class on the player (CSS draws everything from it); the
   // playhead (--lp, 0 → 1) and the time readout are read off the video clock so they never drift.
@@ -205,7 +205,9 @@
     var pos = demo.querySelector('.dz-pos');
     var START = 2.1;   // where Start loop lands, in clip seconds (the lane's 30%)
     var SPAN = 2.0;    // the clip's length
-    var timers = [], raf = 0, lastTenth = -1, running = false;
+    var TAP_LEAD = 0.3; // seconds before the clip ends that the End loop tap lands
+    var LOOPS = 2;      // passes of the finished loop before the demo resets
+    var timers = [], raf = 0, lastTenth = -1, running = false, marking = false, tappedEnd = false;
 
     function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
     function state(name) {
@@ -217,6 +219,12 @@
       ring.classList.add('go');
     }
     function tick() {
+      // End loop's tap ring lands while the clip is still playing, just before its last frame,
+      // so the click and the video agree.
+      if (marking && !tappedEnd && video.duration && video.currentTime >= video.duration - TAP_LEAD) {
+        tappedEnd = true;
+        tap();
+      }
       var lp = video.duration ? video.currentTime / video.duration : 0;
       demo.style.setProperty('--lp', lp.toFixed(3));
       var tenth = Math.round((START + lp * SPAN) * 10);
@@ -231,16 +239,21 @@
 
     function cycle() {
       state('ready');
+      marking = false;
       video.pause();
       video.loop = false;
       video.currentTime = 0;
       at(1400, function () { tap(); });
-      at(1800, function () { state('marking'); play(); });
-      // The first pass is the marking pass: End loop lands on the last frame.
+      at(1800, function () { tappedEnd = false; marking = true; state('marking'); play(); });
+      // The first pass is the marking pass; End loop lands as it ends and the clip goes straight
+      // into the loop, then it plays LOOPS passes before the demo starts over.
       video.onended = function () {
-        at(500, function () { tap(); });
-        at(900, function () { state('looping'); video.loop = true; video.currentTime = 0; play(); });
-        at(900 + 7500, cycle);
+        marking = false;
+        state('looping');
+        video.loop = true;
+        video.currentTime = 0;
+        play();
+        at(LOOPS * video.duration * 1000, cycle);
       };
     }
     function stop() {
