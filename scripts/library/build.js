@@ -19,7 +19,7 @@ const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf
 const COPY = JSON.parse(fs.readFileSync(path.join(__dirname, 'topics.json'), 'utf8'));
 const DATA = JSON.parse(fs.readFileSync(path.join(__dirname, '.cache', 'library.json'), 'utf8'));
 const { SITE, SHARE, INDEX_LIBRARY, LENGTH_SHORT_MAX_S } = CFG;
-const V = 1; // cache-buster for library.css / library.js
+const V = 3; // cache-buster for library.css / library.js
 
 // Standard rows in the app's order (dj-library pipeline/subtopics.json). Display rule (docs/move-library-handoff.md §3):
 // Start here first, then the topic's own rows, then the other standard rows, then "More" for anything unfiled.
@@ -110,7 +110,7 @@ function head({ title, description, canonical, image, indexable, ld = [] }) {
   ${image ? `<meta property="og:image" content="${esc(image)}">` : ''}
   <meta name="twitter:card" content="${image ? 'summary_large_image' : 'summary'}">
   <meta name="theme-color" content="#FAF9F8">
-  <link rel="stylesheet" href="/assets/landing.css?v=95">
+  <link rel="stylesheet" href="/assets/landing.css?v=97">
   <link rel="stylesheet" href="/assets/library.css?v=${V}">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
@@ -136,19 +136,18 @@ const NAV = `<nav class="dz-nav">
     </a>
     <div class="dz-nav-right">
       <a href="/library/" class="dz-nav-library" aria-current="page">Library</a>
-      <a href="/changelog.html" class="dz-nav-whatsnew">What's New</a>
+      <a href="/changelog.html" class="dz-nav-whatsnew">What's new</a>
       <a href="#" target="_blank" rel="noopener" class="dz-nav-cta" data-install-link>
         <span class="dz-store-glyph" data-store-glyph aria-hidden="true"></span>
         <span>Get the app</span>
       </a>
     </div>
-  </nav>
-  <p class="lb-strip">A free practice app: loop a move, slow it down, film yourself next to it. <a href="/#how-it-works">How it works →</a></p>`;
+  </nav>`;
 
 const FOOTER = `<footer class="dz-footer">
     <div class="links">
       <a href="/library/">Library</a>
-      <a href="/changelog.html">What's New</a>
+      <a href="/changelog.html">What's new</a>
       <a href="/privacy.html">Privacy</a>
       <a href="/terms.html">Terms</a>
       <a href="/support.html">Support</a>
@@ -181,12 +180,12 @@ function sheet(id, title, rows) {
 }
 const pill = (forId, label, extra = '') => `<button type="button" class="lb-pill" data-sheet="${forId}" ${extra}><span data-pill-label>${esc(label)}</span>${CARET}</button>`;
 
-function ctaBlock({ kind, id, label, sub }) {
+function ctaBlock({ kind, id, label }) {
   return `<div class="lb-sticky">
     <a class="lb-cta" href="#" data-cta data-kind="${kind}" data-id="${esc(id)}">
       <span data-cta-label>${esc(label)}</span>
     </a>
-    <p class="lb-cta-sub" data-cta-sub>${esc(sub)}</p>
+    <p class="lb-cta-sub" data-cta-sub hidden></p>
   </div>`;
 }
 
@@ -214,7 +213,7 @@ function stylePage(style, list) {
   <main class="lb-main" data-style-page>
     <p class="lb-eyebrow">Style</p>
     <button type="button" class="lb-style" data-sheet="sheet-style">${esc(name)}${CARET}</button>
-    <h1 class="lb-sub-h1">${esc(name)} move library · ${plural(total, 'move', 'moves')} in ${plural(list.length, 'topic', 'topics')}</h1>
+    <h1 class="lb-sub-h1">${esc(name)} move library · ${plural(total, 'move', 'moves')}</h1>
     <div class="lb-pills js-only">${pill('sheet-level', 'All levels')}</div>
     <h2 class="lb-section">Moves by topic</h2>
     <div class="lb-topics">
@@ -260,9 +259,9 @@ function topicPage(t) {
       itemListElement: r.ids.map((id, i) => ({ '@type': 'ListItem', position: i + 1, name: clips[id].name, url: SITE + moveUrl(id) })) })),
   ];
   return `${head({ title: `${t.h1} · ${t.ids.length} moves · Dance Journal`, description: desc, canonical, image: t.cover, indexable: INDEX_LIBRARY, ld })}
-<body class="lb">
+<body class="lb lb-with-bar">
   ${NAV}
-  <main class="lb-main lb-has-sticky" data-topic-page>
+  <main class="lb-main lb-has-sticky" data-topic-page data-noun="${esc(t.title.toLowerCase())}">
     <p class="lb-crumb"><a href="/${t.style}/">${esc(name)} move library</a> › ${esc(t.title)}</p>
     <h1 class="lb-h1">${esc(t.h1)}</h1>
     <p class="lb-meta" data-topic-meta data-total="${t.ids.length}">${plural(t.ids.length, 'move', 'moves')}</p>
@@ -285,7 +284,7 @@ function topicPage(t) {
     { value: 'short', label: `Short · up to ${LENGTH_SHORT_MAX_S}s`, count: lenCounts.short },
     { value: 'long', label: `Long · over ${LENGTH_SHORT_MAX_S}s`, count: lenCounts.long },
   ])}
-  ${ctaBlock({ kind: 'collection', id: t.id, label: 'Practice these in Dance Journal', sub: 'Free. Save the moves you want to your library.' })}
+  ${ctaBlock({ kind: 'collection', id: t.id, label: 'Practice these in Dance Journal' })}
   ${FOOTER}`;
 }
 
@@ -310,12 +309,13 @@ async function movePage(id) {
   ] }];
   // Move pages stay noindex until a move has a reviewed one-line description (storyboard: "Every move gets a URL. Not every move gets indexed.").
   return `${head({ title: `${m.name} · ${name} ${t.title.toLowerCase()} · Dance Journal`, description: desc, canonical, image: m.poster, indexable: false, ld })}
-<body class="lb lb-move-body">
+<body class="lb lb-move-body lb-with-bar">
   ${NAV}
   <main class="lb-main lb-has-sticky lb-move" data-move-page data-clip-id="${esc(id)}">
     <div class="lb-move-head">
       <p class="lb-crumb"><a href="/${t.style}/">${esc(name)} move library</a> › <a href="${topicUrl(t)}">${esc(t.title)}</a> › <a href="${topicUrl(t)}#${esc(r.id)}">${esc(r.title)}</a></p>
       <h1 class="lb-h1 lb-move-h1">${esc(m.name)}${m.level ? ` <span class="lb-level">${LEVEL_NAME[m.level]}</span>` : ''}</h1>
+      ${m.instagramUrl ? `<a class="lb-credit" href="${esc(m.instagramUrl)}" target="_blank" rel="noopener" data-credit>Full tutorial · ${m.handle ? `@${esc(m.handle)}` : 'on Instagram'}${at ? ` · this move at ${at}` : ''} <span aria-hidden="true">↗</span></a>` : ''}
     </div>
     <div class="lb-player" data-player>
       <div class="lb-stage">
@@ -332,16 +332,12 @@ async function movePage(id) {
         <button type="button" class="lb-chip" data-rate="0.5" aria-pressed="false">0.5×</button>
         <button type="button" class="lb-chip" data-rate="0.25" aria-pressed="false">0.25×</button>
         <button type="button" class="lb-chip lb-tool" data-mirror aria-pressed="false">Mirror</button>
-        <button type="button" class="lb-chip lb-tool" data-loop>Start loop</button>
-        <a class="lb-next" href="${moveUrl(next)}">Next ›</a>
+        <span class="lb-break" aria-hidden="true"></span>
+        <button type="button" class="lb-chip lb-tool lb-loopbtn" data-loop>Start loop</button>
+        <a class="lb-chip lb-next" href="${moveUrl(next)}">Next move ›</a>
       </div>
     </div>
     <div class="lb-move-info">
-      ${m.instagramUrl ? `<a class="lb-source" href="${esc(m.instagramUrl)}" target="_blank" rel="noopener" data-credit>
-        <img src="${esc(m.poster)}" alt="" loading="lazy">
-        <span><b>Full tutorial</b><small>${m.handle ? `@${esc(m.handle)}` : 'On Instagram'}${at ? ` · this move at ${at}` : ''}</small></span>
-        <span class="lb-source-go" aria-hidden="true">↗</span>
-      </a>` : ''}
       <div class="lb-qr">
         <span class="lb-qr-code" aria-hidden="true">${qr}</span>
         <span><b>Practice this move on your phone</b><small>Scan to open it in Dance Journal. New to the app? Install it, then scan again.</small></span>
@@ -356,7 +352,7 @@ async function movePage(id) {
       <a class="lb-cta" href="#" data-cta data-kind="clip" data-id="${esc(id)}"><span data-cta-label>Practice this move</span></a>
       <button type="button" class="lb-share" data-share data-title="${esc(m.name)}" aria-label="Share this move">${SHARE_ICON}</button>
     </div>
-    <p class="lb-cta-sub" data-cta-sub>Saves it to your library in the free app</p>
+    <p class="lb-cta-sub" data-cta-sub hidden></p>
   </div>
   ${FOOTER}`;
 }

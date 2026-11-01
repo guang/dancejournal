@@ -188,9 +188,9 @@ a { color: inherit; }
 .dz-nav-right { display: flex; align-items: center; }
 .dz-nav-whatsnew {
   margin-right: 18px;
-  font-family: var(--font-hand);
-  font-size: 16px; font-weight: 600; line-height: 1;
-  color: var(--gold); text-decoration: none; white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: 14px; font-weight: 500; line-height: 1;
+  color: var(--secondary); text-decoration: none; white-space: nowrap;
 }
 .dz-nav-whatsnew:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .dz-nav-whatsnew:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }

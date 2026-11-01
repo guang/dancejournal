@@ -27,17 +27,10 @@
 .js .js-only { display: flex; }
 .lb-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* One-line "what is this" strip under the nav — 3 of 4 visitors never see the home page. */
-.lb-strip {
-  margin: 0; padding: 9px 20px;
-  background: var(--tint); border-bottom: 1px solid var(--tint-edge);
-  font-size: 13px; line-height: 1.4; color: var(--ink2); text-align: center;
-}
-.lb-strip a { color: var(--tint-ink); font-weight: 700; text-decoration: none; white-space: nowrap; }
-.lb-strip a:hover { text-decoration: underline; }
 
 .lb-main { max-width: 1080px; margin: 0 auto; padding: 20px 20px 40px; }
-.lb-has-sticky { padding-bottom: 120px; }
+.lb-has-sticky { padding-bottom: 24px; }
+.lb-with-bar .dz-footer { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 
 .lb-eyebrow { margin: 4px 0 2px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
 .lb-crumb { margin: 0 0 6px; font-size: 13px; color: var(--ink3); }
@@ -96,7 +89,7 @@
 .lb-row-count { margin-left: 4px; font-size: 14px; font-weight: 600; color: var(--ink3); }
 .lb-rail {
   display: flex; gap: 6px; overflow-x: auto; scroll-snap-type: x proximity;
-  margin: 0 -20px; padding: 0 20px 4px; scrollbar-width: none;
+  margin: 0 -20px; padding: 0 20px 4px; scroll-padding-inline: 20px; scrollbar-width: none;
 }
 .lb-rail::-webkit-scrollbar { display: none; }
 .lb-tile {
@@ -118,21 +111,22 @@
 /* Sticky primary action — the app's gold button. */
 .lb-sticky {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-  padding: 18px 20px calc(12px + env(safe-area-inset-bottom));
-  background: linear-gradient(rgba(250,249,248,0), var(--page) 32%);
+  padding: 14px 20px calc(10px + env(safe-area-inset-bottom));
+  background: linear-gradient(rgba(250,249,248,0), var(--page) 40%);
   text-align: center;
 }
 .lb-sticky-row { display: flex; gap: 10px; align-items: center; max-width: 560px; margin: 0 auto; }
 .lb-cta {
   display: flex; align-items: center; justify-content: center; width: 100%; max-width: 560px; margin: 0 auto;
-  min-height: 52px; border-radius: 14px; background: var(--gold); color: #fff !important;
+  min-height: 50px; border-radius: 14px; background: var(--gold); color: #fff !important;
   font: 700 17px var(--font-sans); text-decoration: none; box-shadow: 0 6px 18px rgba(227,160,24,.28);
 }
 .lb-cta:hover { background: var(--gold-dark); }
+.lb-cta-sub[hidden] { display: none; }
 .lb-cta-sub { margin: 6px 0 0; font-size: 12.5px; color: var(--ink3); }
 .lb-cta-sub a { color: var(--ink2); font-weight: 600; }
 .lb-share {
-  flex: 0 0 52px; height: 52px; border-radius: 14px; border: 1px solid var(--hair); background: var(--card);
+  flex: 0 0 50px; height: 50px; border-radius: 14px; border: 1px solid var(--hair); background: var(--card);
   color: var(--ink1); cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
 .lb-share svg { width: 22px; height: 22px; }
@@ -162,6 +156,8 @@
 
 /* Move page */
 .lb-move-head { margin-bottom: 12px; }
+.lb-credit { display: inline-flex; align-items: center; gap: 4px; min-height: 36px; margin-top: 4px; font-size: 14px; font-weight: 600; color: var(--ink2) !important; text-decoration: none; }
+.lb-credit:hover { text-decoration: underline; }
 .lb-move-h1 { font-size: 24px; }
 .lb-level { display: inline-block; vertical-align: middle; margin-left: 6px; padding: 2px 10px; border-radius: 999px; background: var(--ok-fill); color: var(--ok-ink); font-size: 13px; font-weight: 700; letter-spacing: 0; }
 .lb-player { max-width: 460px; }
@@ -169,7 +165,7 @@
 .lb-stage video { width: 100%; height: 100%; object-fit: contain; display: block; background: var(--chrome); transition: transform 160ms ease; }
 .lb-stage.mirrored video { transform: scaleX(-1); }
 .lb-sound {
-  position: absolute; right: 10px; top: 10px; padding: 6px 12px; border: 0; border-radius: 999px;
+  position: absolute; right: 10px; top: 10px; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px;
   background: rgba(255,255,255,.92); font: 700 13px var(--font-sans); color: var(--ink1); cursor: pointer;
 }
 .lb-transport { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
@@ -183,23 +179,17 @@
 .lb-time { font-size: 13px; font-weight: 600; color: var(--ink3); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .lb-tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 10px; }
 .lb-chip {
-  min-height: 36px; padding: 0 12px; border: 1px solid #DCD8D3; border-radius: 999px; background: var(--card);
+  display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
+  min-height: 44px; padding: 0 12px; border: 1px solid #DCD8D3; border-radius: 999px; background: var(--card);
   font: 600 14px var(--font-sans); color: var(--ink1); cursor: pointer;
 }
 .lb-chip.on, .lb-chip[aria-pressed="true"] { background: var(--ink1); border-color: var(--ink1); color: #fff; }
-.lb-next { margin-left: auto; font-size: 14px; font-weight: 700; text-decoration: none; padding: 8px 4px; }
-.lb-next:hover { text-decoration: underline; }
+.lb-break { flex-basis: 100%; height: 0; }
+.lb-loopbtn { min-width: 104px; }
+.lb-chip.lb-next { margin-left: auto; font-weight: 700; }
+.lb-chip.lb-next:hover { background: var(--subtle); }
 .lb-move-info { margin-top: 18px; }
 .lb-move-info .lb-row-title { margin-top: 22px; }
-.lb-source {
-  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
-  background: var(--card); border: 1px solid var(--hair); border-radius: 14px; text-decoration: none;
-}
-.lb-source img { width: 42px; height: 56px; object-fit: cover; border-radius: 8px; }
-.lb-source span { display: flex; flex-direction: column; flex: 1; }
-.lb-source b { font-size: 15px; }
-.lb-source small { font-size: 13px; color: var(--ink3); }
-.lb-source-go { flex: 0 0 auto !important; font-weight: 700; color: var(--ink2); }
 .lb-qr { display: none; }
 
 @media (min-width: 700px) {
@@ -232,3 +222,13 @@
 }
 
 .lb-fail { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; color: #fff; font-weight: 600; }
+
+/* One gold action per screen: on library pages the sticky bar is the verb, so the nav's
+   "Get the app" stays outlined after scrolling instead of turning gold like on the home page. */
+.lb .dz-nav.scrolled .dz-nav-cta { background: transparent; color: var(--ink1); }
+.lb .dz-nav.scrolled .dz-nav-cta:hover { background: var(--subtle); }
+
+/* Footer links: full 44px tap rows on a phone. */
+@media (max-width: 768px) {
+  .lb .dz-footer .links a { display: inline-flex; align-items: center; min-height: 44px; }
+}

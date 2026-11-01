@@ -77,7 +77,7 @@
       row.addEventListener('click', function () { set(row.getAttribute('data-value'), true); hideSheet(); });
     });
     var initial = new URLSearchParams(location.search).get(param) || '';
-    if (initial && !$('.lb-sheet-row[data-value="' + initial + '"]', sheet)) initial = '';
+    if (initial && !Object.prototype.hasOwnProperty.call(labels, initial)) initial = '';
     state.set = set;
     set(initial, false);
     return state;
@@ -132,13 +132,34 @@
       var meta = $('[data-topic-meta]', topicPage);
       var all = Number(meta.getAttribute('data-total'));
       meta.textContent = (total === all ? all : total + ' of ' + all) + (all === 1 ? ' move' : ' moves');
-      $('[data-empty]', topicPage).hidden = total > 0;
+      var empty = $('[data-empty]', topicPage);
+      empty.hidden = total > 0;
+      if (!total) {
+        // Suggest the level with the most moves here, e.g. "No beginner rotisseries yet. Try Intermediate (26)".
+        var best = null;
+        $all('#sheet-level .lb-sheet-row[data-value]').forEach(function (row) {
+          var v = row.getAttribute('data-value'), n = Number($('.lb-count', row).textContent) || 0;
+          if (v && v !== lvl.value && (!best || n > best.n)) best = { v: v, n: n };
+        });
+        var noun = topicPage.getAttribute('data-noun') || 'moves';
+        var msg = lvl.value && !len.value ? 'No ' + LEVEL_WORD[lvl.value] + ' ' + noun + ' yet. ' : 'No moves match these filters. ';
+        empty.innerHTML = '';
+        empty.appendChild(document.createTextNode(msg));
+        var btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'lb-linkbtn';
+        if (lvl.value && !len.value && best) {
+          btn.textContent = 'Try ' + LEVEL_LABELS[best.v] + ' (' + best.n + ')';
+          btn.onclick = function () { lvl.set(best.v, true); };
+        } else {
+          btn.textContent = 'Show all';
+          btn.onclick = function () { lvl.set('', true); len.set('', true); };
+        }
+        empty.appendChild(btn);
+      }
     };
     lvl = wireFilter('sheet-level', 'level', LEVEL_LABELS, applyTopic);
     len = wireFilter('sheet-length', 'length', { '': 'All lengths', short: 'Short', long: 'Long' }, applyTopic);
     applyTopic();
-    var resetT = $('[data-reset]', topicPage);
-    if (resetT) resetT.addEventListener('click', function () { lvl.set('', true); len.set('', true); });
   }
 
   // ── the store hand-off (clip.js's wireCta) ─────────────────────────────
@@ -153,9 +174,9 @@
     cta.href = storeUrl(ct);
     cta.target = '_self';
     if (wasVisited) {
-      $('[data-cta-label]', cta).textContent = 'Open in Dance Journal';
+      $('[data-cta-label]', cta).textContent = 'Open in Dance Journal app';
       var sub = cta.parentNode.parentNode.querySelector('[data-cta-sub]') || cta.parentNode.querySelector('[data-cta-sub]');
-      if (sub) sub.innerHTML = 'Not installed yet? <a href="' + storeUrl(ct) + '">Get the app</a>';
+      if (sub) { sub.innerHTML = 'Not installed yet? <a href="' + storeUrl(ct) + '">Get the app</a>'; sub.hidden = false; }
     }
     cta.addEventListener('click', function (e) {
       if (kind === 'clip') sendEvent(id, 'cta_tap');
@@ -294,7 +315,7 @@
       if (navigator.share) { navigator.share(data).catch(function () {}); return; }
       if (navigator.clipboard) navigator.clipboard.writeText(data.url).then(function () {
         var sub = $('.lb-sticky-move [data-cta-sub]');
-        if (sub) { var was = sub.innerHTML; sub.textContent = 'Link copied'; setTimeout(function () { sub.innerHTML = was; }, 1800); }
+        if (sub) { var was = sub.innerHTML, wasHidden = sub.hidden; sub.textContent = 'Link copied'; sub.hidden = false; setTimeout(function () { sub.innerHTML = was; sub.hidden = wasHidden; }, 1800); }
       }).catch(function () {});
     });
   }
