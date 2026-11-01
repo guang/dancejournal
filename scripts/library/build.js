@@ -19,7 +19,7 @@ const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf
 const COPY = JSON.parse(fs.readFileSync(path.join(__dirname, 'topics.json'), 'utf8'));
 const DATA = JSON.parse(fs.readFileSync(path.join(__dirname, '.cache', 'library.json'), 'utf8'));
 const { SITE, SHARE, INDEX_LIBRARY, LENGTH_SHORT_MAX_S } = CFG;
-const V = 3; // cache-buster for library.css / library.js
+const V = 4; // cache-buster for library.css / library.js
 
 // Standard rows in the app's order (dj-library pipeline/subtopics.json). Display rule (docs/move-library-handoff.md §3):
 // Start here first, then the topic's own rows, then the other standard rows, then "More" for anything unfiled.
@@ -165,15 +165,14 @@ const CHECK = '<svg viewBox="0 0 256 256" aria-hidden="true"><path fill="current
 const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>';
 const SHARE_ICON = '<svg viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z"/></svg>';
 
-// A ChoiceSheet: title, rows with counts in a right-hand column, the selected row in ink with a check.
+// A dropdown menu under its button: rows with counts in a right-hand column, the selected row in ink with a
+// check (the app's ChoiceSheet rows, minus the sheet — on the web a menu reads as normal).
 function sheet(id, title, rows) {
-  return `<div class="lb-sheet" id="${id}" hidden role="dialog" aria-modal="true" aria-label="${esc(title)}">
+  return `<div class="lb-sheet" id="${id}" hidden role="dialog" aria-label="${esc(title)}">
     <div class="lb-sheet-scrim" data-close></div>
     <div class="lb-sheet-panel">
-      <div class="lb-sheet-grip" aria-hidden="true"></div>
-      <h2 class="lb-sheet-title">${esc(title)}</h2>
-      ${rows.map((r) => r.href
-        ? `<a class="lb-sheet-row lb-sheet-link" href="${r.href}">${esc(r.label)}</a>`
+      ${rows.map((r) => r.note
+        ? `<p class="lb-sheet-note">${esc(r.note)}</p>`
         : `<button type="button" class="lb-sheet-row" data-value="${esc(r.value)}" aria-pressed="${r.on ? 'true' : 'false'}"><span>${esc(r.label)}</span><span class="lb-count" data-count-for="${esc(r.value)}">${r.count == null ? '' : r.count}</span><span class="lb-check">${CHECK}</span></button>`).join('\n      ')}
     </div>
   </div>`;
@@ -223,7 +222,7 @@ function stylePage(style, list) {
   </main>
   ${sheet('sheet-style', 'Style', [
     { value: style, label: name, count: total, on: true },
-    { href: '/#how-it-works', label: 'Other styles: the app works with any style →' },
+    { note: 'More styles coming soon' },
   ])}
   ${sheet('sheet-level', 'Level', [
     { value: '', label: 'All levels', count: total, on: true },

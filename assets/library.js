@@ -37,17 +37,26 @@
 
   // ── sheets (the app's ChoiceSheet) ──────────────────────────────────────
   var openSheet = null;
-  function showSheet(sheet) {
+  function showSheet(sheet, anchor) {
     if (!sheet) return;
     sheet.hidden = false;
     openSheet = sheet;
+    // Drop the menu under its button, kept inside the viewport.
+    var panel = $('.lb-sheet-panel', sheet), r = anchor.getBoundingClientRect();
+    var w = panel.offsetWidth, vw = document.documentElement.clientWidth;
+    panel.style.left = Math.max(12, Math.min(r.left, vw - w - 12)) + 'px';
+    var top = r.bottom + 6;
+    if (top + panel.offsetHeight > window.innerHeight - 12) top = Math.max(12, r.top - panel.offsetHeight - 6);
+    panel.style.top = top + 'px';
     var first = $('[aria-pressed="true"]', sheet) || $('.lb-sheet-row', sheet);
     if (first) first.focus();
   }
   function hideSheet() { if (openSheet) { openSheet.hidden = true; openSheet = null; } }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideSheet(); });
+  window.addEventListener('scroll', hideSheet, { passive: true });
+  window.addEventListener('resize', hideSheet);
   $all('[data-sheet]').forEach(function (btn) {
-    btn.addEventListener('click', function () { showSheet(document.getElementById(btn.getAttribute('data-sheet'))); });
+    btn.addEventListener('click', function () { showSheet(document.getElementById(btn.getAttribute('data-sheet')), btn); });
   });
   $all('.lb-sheet [data-close]').forEach(function (el) { el.addEventListener('click', hideSheet); });
 
