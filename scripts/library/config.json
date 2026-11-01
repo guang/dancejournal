@@ -1,0 +1,10 @@
+{
+  "_INDEX_LIBRARY": "false until the licensing check (storyboard Q5) is done. true = style + topic pages get index,follow and go in the sitemap. Move pages are indexed only once they have a reviewed one-line description.",
+  "INDEX_LIBRARY": false,
+  "SITE": "https://dancejournal.app",
+  "SHARE": "https://share.dancejournal.app",
+  "LENGTH_SHORT_MAX_S": 8,
+  "styles": {
+    "bachata": { "name": "Bachata" }
+  }
+}

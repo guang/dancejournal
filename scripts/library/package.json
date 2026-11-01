@@ -1,0 +1,14 @@
+{
+  "name": "dancejournal-library-build",
+  "private": true,
+  "description": "Generates the Move Library pages (/library/, /bachata/…) from the published Firestore state.",
+  "scripts": {
+    "export": "node export.js",
+    "build": "node build.js",
+    "all": "node export.js && node build.js"
+  },
+  "devDependencies": {
+    "firebase-admin": "^12.0.0",
+    "qrcode": "^1.5.4"
+  }
+}
