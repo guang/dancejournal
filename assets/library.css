@@ -217,6 +217,8 @@
   .lb-qr b { font-size: 16px; }
   .lb-qr small { font-size: 14px; color: var(--ink2); line-height: 1.4; }
   .lb-move-body .lb-sticky-move { display: none; }
+  /* No app on a laptop: "Already have the app?" only makes sense on a phone (move pages use the QR instead). */
+  .lb-open-app { display: none; }
   .lb-move-body .lb-has-sticky { padding-bottom: 48px; }
 }
 
