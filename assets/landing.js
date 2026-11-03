@@ -20,10 +20,14 @@
     return a;
   }
 
-  // Set up every [data-install-link] based on the platform class the inline <head>
-  // script applied before paint. On a known mobile platform the whole button links
-  // to that one store and shows its logo. On desktop / unknown platforms we can't
-  // tell which phone the visitor has, so we split into two separate store buttons.
+  var CARET_SVG = '<svg class="dz-get-caret" viewBox="0 0 256 256" aria-hidden="true"><path fill="currentColor" d="M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z"/></svg>';
+
+  // Set up every [data-install-link] (the nav's "Get the app") from the platform class
+  // the inline <head> script applied before paint. A known phone links straight to its
+  // store and shows its logo. Desktop / unknown platforms can't tell which phone the
+  // visitor has, so the button opens a small App Store / Google Play menu instead; it
+  // used to split into two store pills, which crowded the nav and wrapped on narrow
+  // windows once Library joined it.
   function initInstallLinks() {
     var html = document.documentElement;
     var mobileApple   = html.classList.contains('platform-ios');
@@ -39,21 +43,59 @@
         if (glyph) glyph.innerHTML = mobileApple ? APPLE_SVG : ANDROID_SVG;
         continue;
       }
-
-      // Unknown platform → two separate buttons, each reusing the original
-      // button's styling (dz-nav-cta / dz-final-cta).
-      var box = document.createElement('div');
-      box.className = 'dz-install-dual';
-      // Lead the two buttons with a short label.
-      var isNav = el.className.indexOf('dz-nav-cta') !== -1;
-      var lead = document.createElement('span');
-      lead.className = 'dz-install-lead';
-      lead.textContent = isNav ? 'Get it for' : 'Get it on';
-      box.appendChild(lead);
-      box.appendChild(makeStoreButton(el.className, APP_STORE_URL, APPLE_SVG, 'iOS'));
-      box.appendChild(makeStoreButton(el.className, PLAY_STORE_URL, ANDROID_SVG, 'Android'));
-      el.parentNode.replaceChild(box, el);
+      el.parentNode.replaceChild(buildStoreMenu(el.className, i), el);
     }
+  }
+
+  // A menu button (WAI-ARIA menu-button pattern): Enter/Space/click opens it and focuses
+  // the first store, arrows move between the two, Esc closes and returns focus, and a
+  // click outside or tabbing away closes it.
+  function buildStoreMenu(btnClass, n) {
+    var wrap = document.createElement('div');
+    wrap.className = 'dz-get';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = btnClass;
+    btn.id = 'dz-get-btn-' + n;
+    btn.setAttribute('aria-haspopup', 'menu');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'dz-get-menu-' + n);
+    btn.innerHTML = '<span>Get the app</span>' + CARET_SVG;
+    var menu = document.createElement('div');
+    menu.className = 'dz-get-menu';
+    menu.id = 'dz-get-menu-' + n;
+    menu.setAttribute('role', 'menu');
+    menu.setAttribute('aria-labelledby', btn.id);
+    menu.hidden = true;
+    menu.innerHTML =
+      '<a role="menuitem" href="' + APP_STORE_URL + '" target="_blank" rel="noopener"><span class="dz-store-glyph" aria-hidden="true">' + APPLE_SVG + '</span><span><b>App Store</b><small>iPhone and iPad</small></span></a>' +
+      '<a role="menuitem" href="' + PLAY_STORE_URL + '" target="_blank" rel="noopener"><span class="dz-store-glyph" aria-hidden="true">' + ANDROID_SVG + '</span><span><b>Google Play</b><small>Android</small></span></a>';
+    wrap.appendChild(btn);
+    wrap.appendChild(menu);
+
+    var items = menu.querySelectorAll('[role="menuitem"]');
+    function setOpen(open, focusFirst) {
+      menu.hidden = !open;
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open && focusFirst) items[0].focus();
+    }
+    btn.addEventListener('click', function () { setOpen(menu.hidden, true); });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setOpen(true, true); }
+    });
+    menu.addEventListener('keydown', function (e) {
+      var idx = Array.prototype.indexOf.call(items, document.activeElement);
+      if (e.key === 'Escape') { setOpen(false); btn.focus(); }
+      else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        items[(idx + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
+      } else if (e.key === 'Tab') { setOpen(false); }
+    });
+    menu.addEventListener('click', function () { setOpen(false); });
+    document.addEventListener('click', function (e) {
+      if (!menu.hidden && !wrap.contains(e.target)) setOpen(false);
+    });
+    return wrap;
   }
 
   // Build the explicit "Download for iPhone / Android" buttons into any
@@ -70,8 +112,10 @@
     for (var i = 0; i < groups.length; i++) {
       var box = groups[i];
       var btnClass = box.getAttribute('data-btn-class') || 'dz-download-btn';
-      var iphone  = makeStoreButton(btnClass, APP_STORE_URL,  APPLE_SVG,   'Download for iPhone');
-      var android = makeStoreButton(btnClass, PLAY_STORE_URL, ANDROID_SVG, 'Download for Android');
+      // data-label lets the hero say "Download free for" while the final CTA keeps "Download for".
+      var lead = box.getAttribute('data-label') || 'Download for';
+      var iphone  = makeStoreButton(btnClass, APP_STORE_URL,  APPLE_SVG,   lead + ' iPhone');
+      var android = makeStoreButton(btnClass, PLAY_STORE_URL, ANDROID_SVG, lead + ' Android');
 
       if (mobileApple) {
         box.appendChild(iphone);

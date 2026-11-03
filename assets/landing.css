@@ -183,27 +183,44 @@ a { color: inherit; }
 .dz-nav.scrolled .dz-nav-cta:hover { background: #C98A12; }
 .dz-nav-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
-/* Right-hand nav group: handwritten "What's New" link sits left of the CTA. On desktop
-   it's always visible; on mobile it's collapsed and revealed on scroll (rules below). */
+/* Page links sit next to the wordmark and the one action ("Get the app") sits alone on
+   the right — the auto margin pushes it over. Library and What's new share one style.
+   On a phone the links move right, beside the button, and What's new only appears once
+   scrolled (rules below). */
+.dz-nav-pages { display: flex; align-items: center; margin: 0 auto 0 44px; }
 .dz-nav-right { display: flex; align-items: center; }
+.dz-nav-library,
 .dz-nav-whatsnew {
-  margin-right: 18px;
-  font-family: var(--font-sans);
-  font-size: 14px; font-weight: 500; line-height: 1;
-  color: var(--secondary); text-decoration: none; white-space: nowrap;
-}
-.dz-nav-whatsnew:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.dz-nav-whatsnew:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
-
-/* "Library" — the first item in the nav, on every page (Move Library, storyboard 2026-11-01). Plain bold ink link
-   like the footer's; always visible, also on a phone (unlike "What's New", which only appears once scrolled). */
-.dz-nav-library {
-  margin-right: 18px;
   font-family: var(--font-sans); font-size: 15px; font-weight: 700; line-height: 1;
   color: var(--ink); text-decoration: none; white-space: nowrap;
 }
-.dz-nav-library:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-.dz-nav-library:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+.dz-nav-whatsnew { margin-left: 26px; }
+.dz-nav-library:hover,
+.dz-nav-whatsnew:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.dz-nav-library:focus-visible,
+.dz-nav-whatsnew:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+
+/* "Get the app" on desktop / unknown platforms: a button that opens App Store / Google Play
+   (built by initInstallLinks in landing.js). Phones get a direct store link instead. */
+.dz-get { position: relative; }
+button.dz-nav-cta { line-height: 1; }
+.dz-get-caret { width: 12px; height: 12px; transition: transform 160ms ease; }
+.dz-get [aria-expanded="true"] .dz-get-caret { transform: rotate(180deg); }
+.dz-get-menu {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 60;
+  min-width: 230px; padding: 6px;
+  background: #fff; border: 2px solid var(--ink); border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.dz-get-menu[hidden] { display: none; }
+.dz-get-menu a {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  border-radius: 10px; color: var(--ink); text-decoration: none;
+}
+.dz-get-menu a:hover, .dz-get-menu a:focus-visible { background: var(--gold-light); outline: none; }
+.dz-get-menu .dz-store-glyph svg { width: 18px; height: 18px; display: block; }
+.dz-get-menu b { display: block; font-size: 15px; }
+.dz-get-menu small { font-size: 12.5px; color: var(--secondary); }
 
 /* Hero */
 .dz-hero {
@@ -262,12 +279,13 @@ a { color: inherit; }
   100%     { transform: translateY(-5.6em); }
 }
 @media (prefers-reduced-motion: reduce) { .dz-rot-track { animation: none; } }
-.dz-hero-free {
-  margin: 14px 0 0;
-  font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--secondary); opacity: .8;
+/* One quiet line under the download buttons: a no-commitment way in. */
+.dz-hero-library {
+  margin: 16px auto 0; max-width: 520px;
+  font-size: 15px; font-weight: 500; line-height: 1.5; color: var(--secondary);
+  text-wrap: balance;
 }
-.dz-hero-library { margin: 10px 0 0; font-size: 15px; font-weight: 700; }
-.dz-hero-library a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--gold); }
+.dz-hero-library a { white-space: nowrap; color: var(--ink); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--gold); }
 .dz-hero-library a:hover { text-decoration-color: var(--ink); }
 .dz-hero-sub {
   font-family: var(--font-sans);
@@ -723,11 +741,6 @@ a { color: inherit; }
    final white→gold). */
 .dz-store-glyph { display: inline-flex; align-items: center; }
 .dz-store-glyph svg { display: block; width: auto; flex-shrink: 0; }
-/* Dual install (desktop / unknown platform): two separate store buttons. */
-.dz-install-dual { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.dz-install-lead { font-size: 14px; font-weight: 700; color: var(--ink); white-space: nowrap; }
-/* Final CTA sits on a dark section — lead text needs to read light. */
-.dz-final .dz-install-lead { font-size: 16px; color: #fff; }
 .dz-final-cta:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
 .dz-final-cta:active { transform: translateY(1px); }
 .dz-final-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
@@ -811,20 +824,17 @@ a { color: inherit; }
   .dz-nav.scrolled .dz-nav-wm .dj-word { transition-delay: 0ms; }
   .dz-nav-whatsnew {
     display: inline-block; overflow: hidden;
-    max-width: 0; opacity: 0; visibility: hidden; margin-right: 0;
-    transition: max-width 240ms ease, opacity 180ms ease, margin-right 240ms ease, visibility 240ms;
+    max-width: 0; opacity: 0; visibility: hidden; margin-left: 0;
+    transition: max-width 240ms ease, opacity 180ms ease, margin-left 240ms ease, visibility 240ms;
   }
   .dz-nav.scrolled .dz-nav-whatsnew {
-    max-width: 160px; opacity: 1; visibility: visible; margin-right: 14px;
+    max-width: 160px; opacity: 1; visibility: visible; margin-left: 14px;
     transition-delay: 200ms;
   }
-  .dz-nav-library { margin-right: 12px; font-size: 14px; }
+  .dz-nav-pages { margin: 0 12px 0 auto; }
+  .dz-nav-library, .dz-nav-whatsnew { font-size: 14px; }
   .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
   .dz-nav-cta svg { width: 13px; height: 13px; }
-  /* Ambiguous-platform fallback (two store pills + lead text) is too wide next
-     to the wordmark on a phone-width viewport — the label is redundant with
-     the pills' own "iOS"/"Android" text, so drop it first before anything wraps. */
-  .dz-nav .dz-install-lead { display: none; }
   .dz-hero { padding: 56px 20px 64px; }
   /* "from workshops." is the widest line and must stay on one row down to a 320px phone. */
   .dz-hero h1 { font-size: clamp(32px, 10.3vw, 40px); letter-spacing: -1px; }
@@ -898,4 +908,6 @@ a { color: inherit; }
 /* Smallest phones: "Library" + the CTA leave no room for the word, so the nav shows the icon only. */
 @media (max-width: 360px) {
   .dz-nav-wm .dj-word { display: none; }
+  /* …and no room for What's new beside them either, even once scrolled. */
+  .dz-nav.scrolled .dz-nav-whatsnew { display: none; }
 }

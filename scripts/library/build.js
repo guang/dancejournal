@@ -110,7 +110,7 @@ function head({ title, description, canonical, image, indexable, ld = [] }) {
   ${image ? `<meta property="og:image" content="${esc(image)}">` : ''}
   <meta name="twitter:card" content="${image ? 'summary_large_image' : 'summary'}">
   <meta name="theme-color" content="#FAF9F8">
-  <link rel="stylesheet" href="/assets/landing.css?v=97">
+  <link rel="stylesheet" href="/assets/landing.css?v=99">
   <link rel="stylesheet" href="/assets/library.css?v=${V}">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
@@ -134,9 +134,11 @@ const NAV = `<nav class="dz-nav">
       <span class="dj-mark dj-mark-img"><img src="/assets/icons/app-icon.png" alt="" width="40" height="40" loading="eager"></span>
       <span class="dj-word">Dance Journal</span>
     </a>
-    <div class="dz-nav-right">
+    <div class="dz-nav-pages">
       <a href="/library/" class="dz-nav-library" aria-current="page">Library</a>
       <a href="/changelog.html" class="dz-nav-whatsnew">What's new</a>
+    </div>
+    <div class="dz-nav-right">
       <a href="#" target="_blank" rel="noopener" class="dz-nav-cta" data-install-link>
         <span class="dz-store-glyph" data-store-glyph aria-hidden="true"></span>
         <span>Get the app</span>
@@ -154,7 +156,7 @@ const FOOTER = `<footer class="dz-footer">
     </div>
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
-  <script src="/assets/landing.js?v=33" defer></script>
+  <script src="/assets/landing.js?v=34" defer></script>
   <script src="/assets/library.js?v=${V}" defer></script>
 </body>
 </html>
