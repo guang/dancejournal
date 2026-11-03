@@ -319,20 +319,29 @@ a { color: inherit; }
   display: flex; flex-direction: column; align-items: center;
   text-align: center;
 }
-/* Card 1 carries the Instagram | Class tabs above its phone; cards 2 and 3 have
-   no tab row, so they reserve the same height (tab pill 40 + 12 gap) and all
-   three phones start on one line. Dropped when the cards stack. */
-.dz-how-card-plain { padding-top: 52px; }
+/* Card 1 carries the Instagram | Class | Discover tabs between its title and its
+   phone; cards 2 and 3 have no tab row, so they reserve the same height under
+   their title (tab pill 40 + 12 gap) and all three phones start on one line.
+   Dropped when the cards stack. */
+.dz-how-card-plain .dz-how-head { margin-bottom: 72px; }
+/* Step number + title sit ABOVE the demo, so the steps read 1-2-3 before the
+   animations (they used to trail each phone, which made them hard to follow on a
+   phone). Side by side, the title reserves two lines so all three phones still
+   start on one line; dropped when the cards stack. */
+.dz-how-head {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 20px;
+}
 .dz-how-card h3 {
   font-size: 22px; line-height: 1.25; font-weight: 800;
   letter-spacing: -.4px; margin: 12px 0 0;
   max-width: 300px; text-wrap: balance;
+  min-height: 2.5em;
 }
 
 /* Number badge — same gold disc as the old timeline steps. */
 .dz-how-num {
   width: 40px; height: 40px;
-  margin-top: 20px;
   border: 2px solid var(--ink);
   border-radius: 50%;
   background: var(--gold); color: #fff;
@@ -761,7 +770,9 @@ a { color: inherit; }
 /* How it works — stacked cards below 900px: one column. */
 @media (max-width: 900px) {
   .dz-how-grid { grid-template-columns: 1fr; gap: 64px; }
-  .dz-how-card-plain { padding-top: 0; }
+  .dz-how-card h3 { min-height: 0; }
+  .dz-how-head,
+  .dz-how-card-plain .dz-how-head { margin-bottom: 16px; }
 }
 /* Phones a touch larger (260×520) on small screens. */
 @media (max-width: 720px) {
