@@ -1,14 +1,12 @@
 // Move Library pages: choice sheets + filters (style/topic pages), the move player (move pages), and the
-// store hand-off. The player and hand-off are adapted from the share site's /m/ page
-// (public_share/clip.js in the app repo): same speed trick, same first-visit-store / return-visit-app rule,
-// same visited flag and event beacon, so a dancer who has used both behaves the same on either.
+// store hand-off. The player is adapted from the share site's /m/ page (public_share/clip.js in the app repo):
+// same speed trick and event beacon. The hand-off is a store link plus an "Already have the app?" link.
 (function () {
   'use strict';
 
   var IOS_STORE = 'https://apps.apple.com/app/id6751278168';
   var ANDROID_STORE = 'https://play.google.com/store/apps/details?id=app.dancejournal.dancenotes';
   var SHARE = 'https://share.dancejournal.app';
-  var VISITED_FLAG = 'dj_visited_share';  // shared with /m/ and /c/: any earlier store tap counts
   var ICON_PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>';
   var ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5h3v14H8zm5 0h3v14h-3z"/></svg>';
 
@@ -16,7 +14,6 @@
   function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
   function fmt(s) { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
   function clamp01(n) { return isFinite(n) ? Math.max(0, Math.min(1, n)) : 0; }
-  function visited() { try { return localStorage.getItem(VISITED_FLAG) === '1'; } catch (e) { return false; } }
 
   function storeUrl(ct) {
     var base = /android/i.test(navigator.userAgent || '') ? ANDROID_STORE : IOS_STORE;
@@ -171,32 +168,14 @@
     applyTopic();
   }
 
-  // ── the store hand-off (clip.js's wireCta) ─────────────────────────────
-  // First visit: a plain link to the store. iOS Safari can show an error dialog for an unregistered custom
-  // scheme before any fallback fires, and a first-time visitor most likely has no app. Return visit: try the
-  // app's scheme and fall back to the store if the page is still visible after 1.4 s.
+  // ── the store hand-off ─────────────────────────────────────────────────
+  // The gold button is a plain store link. People who already have the app use the "Already have the app?"
+  // link under it (a share-site universal link, written by build.js) — no guessing from a first-visit flag.
   $all('[data-cta]').forEach(function (cta) {
     var kind = cta.getAttribute('data-kind'), id = cta.getAttribute('data-id');
-    var ct = kind === 'clip' ? 'web_move' : 'web_topic';
-    var scheme = kind === 'clip' ? 'dancenotes://clip?id=' : 'dancenotes://collection?id=';
-    var wasVisited = visited();
-    cta.href = storeUrl(ct);
+    cta.href = storeUrl(kind === 'clip' ? 'web_move' : 'web_topic');
     cta.target = '_self';
-    if (wasVisited) {
-      $('[data-cta-label]', cta).textContent = 'Open in Dance Journal app';
-      var sub = cta.parentNode.parentNode.querySelector('[data-cta-sub]') || cta.parentNode.querySelector('[data-cta-sub]');
-      if (sub) { sub.innerHTML = 'Not installed yet? <a href="' + storeUrl(ct) + '">Get the app</a>'; sub.hidden = false; }
-    }
-    cta.addEventListener('click', function (e) {
-      if (kind === 'clip') sendEvent(id, 'cta_tap');
-      try { localStorage.setItem(VISITED_FLAG, '1'); } catch (err) { /* ignore */ }
-      if (!wasVisited) return;
-      e.preventDefault();
-      var fallback = setTimeout(function () { location.href = storeUrl(ct); }, 1400);
-      var onHide = function () { clearTimeout(fallback); document.removeEventListener('visibilitychange', onHide); };
-      document.addEventListener('visibilitychange', onHide);
-      location.href = scheme + encodeURIComponent(id);
-    });
+    if (kind === 'clip') cta.addEventListener('click', function () { sendEvent(id, 'cta_tap'); });
   });
 
   // ── move page: the player ───────────────────────────────────────────────

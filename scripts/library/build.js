@@ -19,7 +19,7 @@ const CFG = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf
 const COPY = JSON.parse(fs.readFileSync(path.join(__dirname, 'topics.json'), 'utf8'));
 const DATA = JSON.parse(fs.readFileSync(path.join(__dirname, '.cache', 'library.json'), 'utf8'));
 const { SITE, SHARE, INDEX_LIBRARY, LENGTH_SHORT_MAX_S } = CFG;
-const V = 4; // cache-buster for library.css / library.js
+const V = 5; // cache-buster for library.css / library.js
 
 // Standard rows in the app's order (dj-library pipeline/subtopics.json). Display rule (docs/move-library-handoff.md §3):
 // Start here first, then the topic's own rows, then the other standard rows, then "More" for anything unfiled.
@@ -110,7 +110,7 @@ function head({ title, description, canonical, image, indexable, ld = [] }) {
   ${image ? `<meta property="og:image" content="${esc(image)}">` : ''}
   <meta name="twitter:card" content="${image ? 'summary_large_image' : 'summary'}">
   <meta name="theme-color" content="#FAF9F8">
-  <link rel="stylesheet" href="/assets/landing.css?v=97">
+  <link rel="stylesheet" href="/assets/landing.css?v=99">
   <link rel="stylesheet" href="/assets/library.css?v=${V}">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
@@ -134,9 +134,11 @@ const NAV = `<nav class="dz-nav">
       <span class="dj-mark dj-mark-img"><img src="/assets/icons/app-icon.png" alt="" width="40" height="40" loading="eager"></span>
       <span class="dj-word">Dance Journal</span>
     </a>
-    <div class="dz-nav-right">
+    <div class="dz-nav-pages">
       <a href="/library/" class="dz-nav-library" aria-current="page">Library</a>
       <a href="/changelog.html" class="dz-nav-whatsnew">What's new</a>
+    </div>
+    <div class="dz-nav-right">
       <a href="#" target="_blank" rel="noopener" class="dz-nav-cta" data-install-link>
         <span class="dz-store-glyph" data-store-glyph aria-hidden="true"></span>
         <span>Get the app</span>
@@ -154,7 +156,7 @@ const FOOTER = `<footer class="dz-footer">
     </div>
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
-  <script src="/assets/landing.js?v=33" defer></script>
+  <script src="/assets/landing.js?v=34" defer></script>
   <script src="/assets/library.js?v=${V}" defer></script>
 </body>
 </html>
@@ -179,12 +181,20 @@ function sheet(id, title, rows) {
 }
 const pill = (forId, label, extra = '') => `<button type="button" class="lb-pill" data-sheet="${forId}" ${extra}><span data-pill-label>${esc(label)}</span>${CARET}</button>`;
 
+// "Already have the app?" — the share-site link is a universal / app link: with the app installed the phone opens
+// it straight at this move or topic; without it the share page loads, which offers the app. The gold button stays
+// a plain store link because most visitors don't have the app yet.
+const openInApp = (kind, id) => {
+  const url = kind === 'clip' ? `${SHARE}/m/${encodeURIComponent(id)}?src=web` : `${SHARE}/c/${encodeURIComponent(id)}?src=web`;
+  return `<p class="lb-cta-sub lb-open-app" data-cta-sub>Already have the app? <a href="${url}">Open this ${kind === 'clip' ? 'move' : 'topic'}</a></p>`;
+};
+
 function ctaBlock({ kind, id, label }) {
   return `<div class="lb-sticky">
     <a class="lb-cta" href="#" data-cta data-kind="${kind}" data-id="${esc(id)}">
       <span data-cta-label>${esc(label)}</span>
     </a>
-    <p class="lb-cta-sub" data-cta-sub hidden></p>
+    ${openInApp(kind, id)}
   </div>`;
 }
 
@@ -339,7 +349,7 @@ async function movePage(id) {
     <div class="lb-move-info">
       <div class="lb-qr">
         <span class="lb-qr-code" aria-hidden="true">${qr}</span>
-        <span><b>Practice this move on your phone</b><small>Scan to open it in Dance Journal. New to the app? Install it, then scan again.</small></span>
+        <span><b>Practice this move on your phone</b><small>Point your phone's camera here to open this move in Dance Journal.</small></span>
       </div>
       ${siblings.length ? `<h2 class="lb-row-title">More from this video <span class="lb-row-count">${siblings.length}</span></h2><div class="lb-grid3">${thumbs(siblings)}</div>` : ''}
       ${rowRest.length ? `<h2 class="lb-row-title">Next in ${esc(t.title)} · ${esc(r.title)}</h2><div class="lb-rail">${thumbs(rowRest)}</div>` : ''}
@@ -351,7 +361,7 @@ async function movePage(id) {
       <a class="lb-cta" href="#" data-cta data-kind="clip" data-id="${esc(id)}"><span data-cta-label>Practice this move</span></a>
       <button type="button" class="lb-share" data-share data-title="${esc(m.name)}" aria-label="Share this move">${SHARE_ICON}</button>
     </div>
-    <p class="lb-cta-sub" data-cta-sub hidden></p>
+    ${openInApp('clip', id)}
   </div>
   ${FOOTER}`;
 }
