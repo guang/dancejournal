@@ -772,22 +772,20 @@ button.dz-nav-cta { line-height: 1; }
 }
 /* Phones a touch larger (260×520) on small screens. */
 @media (max-width: 720px) {
-  .dz-how { padding: 56px 24px; }
-  .dz-how-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 32px; }
+  .dz-how-h2 { font-size: 28px; letter-spacing: -.6px; }
   .dz-how-phone,
   .dz-how-diagram { width: 260px; height: 520px; }
   .dz-how-card h3 { font-size: 21px; }
 
-  .dz-deeper { padding: 56px 24px; }
-  .dz-deeper-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 32px; }
+  .dz-deeper-h2 { font-size: 28px; letter-spacing: -.6px; }
   .dz-deeper-tile { flex-basis: 100%; }
   .dz-deeper-tile .dj-phone { width: min(220px, 100%); height: auto; min-height: 0; aspect-ratio: 1 / 2; }
 }
 
 @media (max-width: 768px) {
   .dz-nav { padding: 12px 24px; }
-  /* On mobile we show the wordmark at the top of the page so the brand reads, then
-     collapse it to icon-only via .dz-nav.scrolled (rule lives outside this block). */
+  /* On mobile we show the wordmark at the top of the page so the brand reads; once
+     scrolled (.dz-nav.scrolled) its text collapses and Library + What's new slide in. */
   .dz-nav-wm .dj-word { font-size: 16px; }
   .dz-nav-wm .dj-mark { width: 34px; height: 34px; border-radius: 9px; }
   /* Library and What's new are hidden at the top (tight space) and slide into the gap the
@@ -795,12 +793,12 @@ button.dz-nav-cta { line-height: 1; }
      visibility (not just opacity) is toggled so the collapsed link can't be tabbed
      to or announced by a screen reader while it has zero visible width.
 
-     The unscrolled nav (word + the links collapsed + CTA) has only a couple px
-     of slack before wrapping. If the word's collapse and "What's New"'s reveal ran
+     The nav has little slack before wrapping. If the word's collapse and the
+     links' reveal ran
      concurrently, their independently-eased widths wouldn't sum to a constant —
      mid-transition the combined width can transiently exceed that slack and force
      a one-frame wrap to two rows. transition-delay sequences them instead: the
-     word finishes collapsing/re-expanding before the other one starts moving, so
+     word finishes collapsing/re-expanding before the links start moving, so
      the two widths never grow at the same time and the sum never overshoots
      either resting state. */
   .dz-nav-wm .dj-word { transition-delay: 200ms; }
@@ -828,6 +826,9 @@ button.dz-nav-cta { line-height: 1; }
   .dz-hero-cta { gap: 10px; margin-top: 24px; }
   .dz-download-btn { font-size: 14px; padding: 11px 18px; }
 
+  /* One phone rhythm: 24px sides, 56px above and below each section, 32px under a heading. */
+  .dz-how, .dz-deeper { padding: 56px 24px; }
+  .dz-how-h2, .dz-deeper-h2 { margin-bottom: 32px; }
   .dz-how-grid { gap: 48px; }
   .dz-final { padding: 56px 24px; }
   .dz-final h2 { font-size: 32px; letter-spacing: -.6px; }
