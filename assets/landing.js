@@ -5,7 +5,7 @@
   var PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=app.dancejournal.dancenotes';
 
   // Monochrome brand glyphs — inherit currentColor so they read correctly on the
-  // button's shifting backgrounds (nav transparent→gold, final white→gold).
+  // button's shifting backgrounds (nav transparent→gold, final ink on gold).
   var APPLE_SVG = '<svg viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50.1-84.9-18.7-26.8-47.1-41.7-84.6-44.6-35.6-2.8-74.5 20.8-88.8 20.8-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>';
   var ANDROID_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.2439 13.8533 7.8508 12 7.8508s-3.5902.3931-5.1367 1.1064L4.841 5.4053a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3435-4.1021-2.6892-7.5743-6.1185-9.4396"/></svg>';
 
@@ -197,21 +197,15 @@
     if (reduce || !('IntersectionObserver' in window)) return;
 
     Array.prototype.forEach.call(loops, function (loop) {
-      // The progress dots sit just outside the phone; they pause with it. Card 1 has
-      // one row per tab panel (data-for = the panel's id); cards 2 and 3 have one each.
-      var card = loop.closest('.dz-how-card');
-      var dots = (loop.id && card.querySelector('.dz-how-dots[data-for="' + loop.id + '"]')) ||
-                 card.querySelector('.dz-how-dots');
-      var paused = [loop, dots];
-      paused.forEach(function (el) { if (el) el.classList.add('dz-paused'); });
+      loop.classList.add('dz-paused');
       new IntersectionObserver(function (entries) {
         var on = entries[entries.length - 1].isIntersecting;
-        paused.forEach(function (el) { if (el) el.classList.toggle('dz-paused', !on); });
+        loop.classList.toggle('dz-paused', !on);
       }).observe(loop);
     });
   }
 
-  // Card 2 is one player that plays out the whole move, ~8s on repeat: paused on the start frame →
+  // Card 2 is one player that plays out the whole move, ~7s on repeat: paused on the start frame →
   // Start loop is tapped and the clip plays while the band grows → End loop is tapped, the band locks
   // and the clip loops. The state is an st-* class on the player (CSS draws everything from it); the
   // playhead (--lp, 0 → 1) and the time readout are read off the video clock so they never drift.
@@ -285,13 +279,13 @@
       video.pause();
       video.loop = false;
       video.currentTime = 0;
-      at(1400, function () { tap(); });
-      at(1800, function () { tappedEnd = false; marking = true; state('marking'); play(giveUp); });
+      at(700, function () { tap(); });
+      at(1000, function () { tappedEnd = false; marking = true; state('marking'); play(giveUp); });
       // The first pass is the marking pass; End loop lands as it ends. The timer is a backstop for
       // a clip that stalls or a throttled tab, where `ended` never arrives.
       video.onended = enterLoop;
       video.onerror = giveUp;
-      at(1800 + SPAN * 1000 + 2500, enterLoop);
+      at(1000 + SPAN * 1000 + 2500, enterLoop);
     }
     function stop() {
       running = false;

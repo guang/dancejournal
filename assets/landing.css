@@ -185,8 +185,8 @@ a { color: inherit; }
 
 /* Page links sit next to the wordmark and the one action ("Get the app") sits alone on
    the right — the auto margin pushes it over. Library and What's new share one style.
-   On a phone the links move right, beside the button, and What's new only appears once
-   scrolled (rules below). */
+   On a phone the links move right, beside the button, and only appear once scrolled,
+   taking the wordmark's place (rules below). */
 .dz-nav-pages { display: flex; align-items: center; margin: 0 auto 0 44px; }
 .dz-nav-right { display: flex; align-items: center; }
 .dz-nav-library,
@@ -243,10 +243,12 @@ button.dz-nav-cta { line-height: 1; }
   text-align: center;
   max-width: 1040px; margin: 0 auto;
 }
+/* The two lines share a left edge and the block is centred: centred lines would leave a
+   short rolling word's unused slot as a gap that makes line 2 look off-centre. */
 .dz-hero h1 {
   font-size: 72px; line-height: 1.04; font-weight: 800;
-  letter-spacing: -1.8px; margin: 0;
-  text-wrap: balance;
+  letter-spacing: -1.8px; margin: 0 auto;
+  width: fit-content; text-align: left;
 }
 /* Line 2 of the H1 ("from [word]") is always its own line. The slot is as wide as the
    longest word (the track's widest child); each word sits at its left edge with a
@@ -285,6 +287,8 @@ button.dz-nav-cta { line-height: 1; }
   font-size: 15px; font-weight: 500; line-height: 1.5; color: var(--secondary);
   text-wrap: balance;
 }
+/* Each half stays whole, so a narrow phone breaks the line after the question. */
+.dz-hero-library span { white-space: nowrap; }
 .dz-hero-library a { white-space: nowrap; color: var(--ink); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--gold); }
 .dz-hero-library a:hover { text-decoration-color: var(--ink); }
 .dz-hero-sub {
@@ -317,7 +321,10 @@ button.dz-nav-cta { line-height: 1; }
 .dz-download-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 
 /* ============== How it works — 3 cards ============== */
+/* One clock for the card 1 and card 3 loops: three steps, each a --how-step long (a step can
+   hold two beats, so a beat is half a step). Delays and durations below are multiples of it. */
 .dz-how {
+  --how-step: 2.5s;
   padding: 96px 64px 112px;
   border-bottom: 2px solid var(--ink);
   background: var(--gold-light);
@@ -395,14 +402,12 @@ button.dz-nav-cta { line-height: 1; }
 .dz-how-panel[hidden] { display: none; }
 
 /* Card 1's two panels (Instagram, Class) — three steps cross-fade like card 3's
-   (dz-how-scene), but 4s each, because a step can hold two beats (.dz-c1-beat fades
-   in halfway). A tap ring marks what to tap; step 3's gold box marks the move that
-   just landed. */
-.dz-c1 { --how-step: 4s; }
+   (dz-how-scene), but a step can hold two beats (.dz-c1-beat fades in halfway). A tap
+   ring marks what to tap; step 3's gold box marks the move that just landed. */
 .dz-c1-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene calc(var(--how-step) * 3) infinite; }
 .dz-c1-s2 { animation-delay: var(--how-step); }
 .dz-c1-s3 { animation-delay: calc(var(--how-step) * 2); }
-.dz-c1-beat { position: absolute; inset: 0; opacity: 0; animation: dz-c1-beat 12s infinite; }
+.dz-c1-beat { position: absolute; inset: 0; opacity: 0; animation: dz-c1-beat calc(var(--how-step) * 3) infinite; }
 @keyframes dz-c1-beat { 0%, 15% { opacity: 0; } 17%, 100% { opacity: 1; } }
 .dz-c1-tap {
   position: absolute;
@@ -410,17 +415,17 @@ button.dz-nav-cta { line-height: 1; }
   border-radius: 50%;
   background: rgba(17, 17, 17, .18); border: 2px solid rgba(17, 17, 17, .55);
   box-shadow: 0 0 0 2px rgba(255, 255, 255, .7);
-  animation: dz-how-tap 12s infinite;
+  animation: dz-how-tap calc(var(--how-step) * 3) infinite;
 }
-.dz-c1-s1 .dz-c1-beat .dz-c1-tap { animation-delay: 2s; }
-.dz-c1-s2 .dz-c1-tap { animation-delay: 4s; }
-.dz-c1-s2 .dz-c1-beat { animation-delay: 4s; }
-.dz-c1-s2 .dz-c1-beat .dz-c1-tap { animation-delay: 6s; }
+.dz-c1-s1 .dz-c1-beat .dz-c1-tap { animation-delay: calc(var(--how-step) * .5); }
+.dz-c1-s2 .dz-c1-tap { animation-delay: var(--how-step); }
+.dz-c1-s2 .dz-c1-beat { animation-delay: var(--how-step); }
+.dz-c1-s2 .dz-c1-beat .dz-c1-tap { animation-delay: calc(var(--how-step) * 1.5); }
 .dz-c1-hi {
   position: absolute;
   border: 3px solid var(--gold); border-radius: 12px;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .8);
-  animation: dz-c1-hi 12s 8s infinite;
+  animation: dz-c1-hi calc(var(--how-step) * 3) calc(var(--how-step) * 2) infinite;
 }
 @keyframes dz-c1-hi { 0%, 6% { opacity: 0; transform: scale(1.12); } 10%, 100% { opacity: 1; transform: none; } }
 
@@ -475,7 +480,7 @@ button.dz-nav-cta { line-height: 1; }
 .dz-dsc-topic small { font-size: 11px; font-weight: 600; }
 .dz-dsc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
 .dz-dsc-two img { width: 100%; height: 96px; object-fit: cover; border-radius: 10px; }
-.dz-dsc-saved { animation: dz-dsc-saved 12s 4s infinite; opacity: 0; }
+.dz-dsc-saved { animation: dz-dsc-saved calc(var(--how-step) * 3) var(--how-step) infinite; opacity: 0; }
 @keyframes dz-dsc-saved { 0%, 15% { opacity: 0; } 17%, 100% { opacity: 1; } }
 .dz-dsc-row { margin-bottom: 8px; }
 .dz-dsc-row > b { display: block; font-size: 12px; font-weight: 800; margin-bottom: 4px; }
@@ -546,19 +551,14 @@ button.dz-nav-cta { line-height: 1; }
 .st-ready .dz-pp .ic-play { display: block; }
 .st-ready .dz-pp .ic-pause { display: none; }
 .dz-sp { display: inline-flex; align-items: center; gap: 2px; border: 1.5px solid rgba(255, 255, 255, .85); border-radius: 99px; padding: 4px 8px; font-size: 11.5px; font-weight: 600; }
-/* Progress dots: ready / marking / looping, driven by the state, not the CSS clock. */
-.dz-how-card:has(.dz-c2) .dz-how-dots i { animation: none; }
-.dz-how-card:has(.st-ready) .dz-how-dots i:nth-child(1),
-.dz-how-card:has(.st-marking) .dz-how-dots i:nth-child(2),
-.dz-how-card:has(.st-looping) .dz-how-dots i:nth-child(3) { background: var(--ink); }
 
 /* Card 3 — ? check-in → today's bar → the month's count. Three stacked scenes cross-fade on a
-   12s loop (4s each, so each one can be read); the scene delays are what offset them. */
+   loop of three --how-step steps (so each one can be read); the scene delays offset them. */
 .dz-c3 { overflow: hidden; }
-.dz-c3-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene 12s infinite; }
+.dz-c3-scene { position: absolute; inset: 0; opacity: 0; animation: dz-how-scene calc(var(--how-step) * 3) infinite; }
 .dz-c3-s1 { animation-delay: 0s; }
-.dz-c3-s2 { animation-delay: 4s; }
-.dz-c3-s3 { animation-delay: 8s; }
+.dz-c3-s2 { animation-delay: var(--how-step); }
+.dz-c3-s3 { animation-delay: calc(var(--how-step) * 2); }
 @keyframes dz-how-scene { 0% { opacity: 0; } 4% { opacity: 1; } 30% { opacity: 1; } 34% { opacity: 0; } 100% { opacity: 0; } }
 .dz-c3-bg {
   position: absolute; inset: 0;
@@ -568,8 +568,7 @@ button.dz-nav-cta { line-height: 1; }
    !important is load-bearing: the `animation` shorthand on the more specific scene-3
    rules (.dz-bars .now i, .dz-plus1, …) resets play-state to running, so without it
    those keep ticking while the scenes pause and play out of sync. */
-[data-how-loop].dz-paused *,
-.dz-how-dots.dz-paused * { animation-play-state: paused !important; }
+[data-how-loop].dz-paused * { animation-play-state: paused !important; }
 
 /* scene 1 · check-in from the clip's ? button */
 .dz-c3-qbtn {
@@ -593,7 +592,7 @@ button.dz-nav-cta { line-height: 1; }
 .dz-c3-gl { display: block; width: 19px; height: 19px; border-radius: 50%; margin: 0 auto 6px; }
 .dz-c3-gl-w { background: conic-gradient(var(--warning) 0 50%, #fff 0); border: 2px solid var(--warning); box-sizing: border-box; }
 .dz-c3-gl-g { background: var(--success); }
-.dz-c3-sel { animation: dz-c3-sel 12s infinite; }
+.dz-c3-sel { animation: dz-c3-sel calc(var(--how-step) * 3) infinite; }
 @keyframes dz-c3-sel {
   0%, 14% { border-color: #e5e1da; background: #fff; }
   17%, 33% { border-color: var(--success); background: #ecfdf5; }
@@ -603,7 +602,7 @@ button.dz-nav-cta { line-height: 1; }
   position: absolute; right: 8px; bottom: 6px;
   width: 32px; height: 32px; border-radius: 50%;
   background: rgba(17, 17, 17, .18); border: 2px solid rgba(17, 17, 17, .55);
-  animation: dz-how-tap 12s infinite;
+  animation: dz-how-tap calc(var(--how-step) * 3) infinite;
 }
 @keyframes dz-how-tap {
   0%, 8% { transform: scale(.5); opacity: 0; }
@@ -621,10 +620,10 @@ button.dz-nav-cta { line-height: 1; }
 .dz-bars i { display: block; width: 100%; background: #f2c45f; border-radius: 4px 4px 2px 2px; }
 .dz-bars i.nil { height: 5px; background: #e6e0d8; }
 .dz-bars small { position: relative; font-size: 10px; font-weight: 800; color: #6f6a62; }
-.dz-bars .now i { background: var(--gold); height: 27px; animation: dz-bar-grow 12s 4s infinite; }
+.dz-bars .now i { background: var(--gold); height: 27px; animation: dz-bar-grow calc(var(--how-step) * 3) var(--how-step) infinite; }
 .dz-bars .now small { color: var(--ink); }
-.dz-bars .now .nx { position: absolute; left: 0; top: 0; opacity: 0; animation: dz-c3-nx 12s 4s infinite; }
-.dz-bars .now .pv { animation: dz-c3-pv 12s 4s infinite; }
+.dz-bars .now .nx { position: absolute; left: 0; top: 0; opacity: 0; animation: dz-c3-nx calc(var(--how-step) * 3) var(--how-step) infinite; }
+.dz-bars .now .pv { animation: dz-c3-pv calc(var(--how-step) * 3) var(--how-step) infinite; }
 @keyframes dz-bar-grow { 0%, 9% { height: 27px; } 13%, 100% { height: 36px; } }
 @keyframes dz-c3-pv { 0%, 9% { opacity: 1; } 12%, 36% { opacity: 0; } 40%, 100% { opacity: 1; } }
 @keyframes dz-c3-nx { 0%, 9% { opacity: 0; transform: translateY(4px); } 12%, 36% { opacity: 1; transform: none; } 40%, 100% { opacity: 0; } }
@@ -634,7 +633,7 @@ button.dz-nav-cta { line-height: 1; }
 .dz-plus1 {
   position: absolute; right: 10px; top: 30px; opacity: 0;
   background: var(--success); color: #fff; font-size: 11px; font-weight: 800; border-radius: 99px; padding: 1px 7px;
-  animation: dz-plus1 12s 4s infinite;
+  animation: dz-plus1 calc(var(--how-step) * 3) var(--how-step) infinite;
 }
 @keyframes dz-plus1 { 0%, 9% { opacity: 0; transform: translateY(6px); } 13%, 26% { opacity: 1; transform: none; } 32%, 100% { opacity: 0; } }
 .dz-c3-bars { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
@@ -644,7 +643,7 @@ button.dz-nav-cta { line-height: 1; }
 .dz-got { width: 100%; padding: 0 14px; box-sizing: border-box; }
 .dz-got .m { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
 .dz-got .r { background: #1f1c19; border: 1px solid #332e29; border-radius: 14px; padding: 12px; }
-.dz-got .r2 { margin-top: 10px; animation: dz-got-r2 12s 8s infinite; }
+.dz-got .r2 { margin-top: 10px; animation: dz-got-r2 calc(var(--how-step) * 3) calc(var(--how-step) * 2) infinite; }
 @keyframes dz-got-r2 { 0%, 5% { opacity: 0; transform: translateY(6px); } 10%, 100% { opacity: 1; transform: none; } }
 .dz-got .h { display: flex; align-items: center; gap: 8px; }
 .dz-got .h .dz-c3-gl { width: 20px; height: 20px; margin: 0; flex: none; }
@@ -655,38 +654,20 @@ button.dz-nav-cta { line-height: 1; }
 .dz-got .cov { display: flex; gap: 6px; margin-top: 10px; }
 .dz-got .cov img { flex: 1; min-width: 0; aspect-ratio: 3 / 4; max-height: 74px; object-fit: cover; object-position: 50% 20%; border-radius: 6px; display: block; }
 
-/* progress dots under the phone — one per scene (cards 1 and 3) */
-/* Zero-height row so it doesn't push the badge below card 2's. */
-.dz-how-dots { display: flex; justify-content: center; gap: 5px; height: 0; margin: 8px 0 -8px; }
-.dz-how-card { --how-step: 3s; }
-.dz-how-card:has(.dz-c1), .dz-how-card:has(.dz-c3) { --how-step: 4s; }
-.dz-how-dots i { width: 6px; height: 6px; border-radius: 50%; background: #cfc9c0; animation: dz-how-dot calc(var(--how-step) * 3) infinite; }
-.dz-how-dots i:nth-child(2) { animation-delay: var(--how-step); }
-.dz-how-dots i:nth-child(3) { animation-delay: calc(var(--how-step) * 2); }
-/* Card 1 has a dot row per tab panel; only the shown panel's is laid out. */
-.dz-how-card:has(#how-panel-instagram[hidden]) .dz-how-dots[data-for="how-panel-instagram"],
-.dz-how-card:has(#how-panel-discover[hidden]) .dz-how-dots[data-for="how-panel-discover"],
-.dz-how-card:has(#how-panel-class[hidden]) .dz-how-dots[data-for="how-panel-class"] { display: none; }
-@keyframes dz-how-dot { 0%, 33% { background: var(--ink); } 34%, 100% { background: #cfc9c0; } }
-
 /* No motion: card 1 holds on step 1, card 2 on the finished loop (poster frame, band locked), and card 3 on the
    month card (the payoff), statically. */
 @media (prefers-reduced-motion: reduce) {
   .dz-c1-scene, .dz-c1-beat, .dz-c1-tap, .dz-c1-hi, .dz-dsc-saved,
   .dz-got .r2,
-  .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-bars .now i, .dz-bars .now span, .dz-plus1, .dz-how-dots i { animation: none; }
+  .dz-c3-scene, .dz-c3-sel, .dz-c3-tap, .dz-bars .now i, .dz-bars .now span, .dz-plus1 { animation: none; }
   .dz-c1-s1, .dz-c3-s3 { opacity: 1; }
   .dz-c1-beat, .dz-c1-tap { opacity: 1; }
-  .dz-how-card:has(.dz-c1) .dz-how-dots i:nth-child(1),
-  .dz-how-card:has(.dz-c3) .dz-how-dots i:nth-child(3) { background: var(--ink); }
 }
 
 /* ============== Tools band ("Get more out of your practice") — dark band under How it works ============== */
 .dz-deeper {
   padding: 96px 64px 104px;
   background: var(--ink); color: #fff;
-  /* Sits directly above the (also ink) final CTA — a faint rule keeps the two bands distinct. */
-  border-bottom: 2px solid #2a2a2a;
 }
 .dz-deeper-inner { max-width: 1120px; margin: 0 auto; }
 .dz-deeper-h2 {
@@ -710,26 +691,28 @@ button.dz-nav-cta { line-height: 1; }
 .dz-final {
   padding: 120px 64px;
   text-align: center;
-  background: var(--ink); color: #fff;
+  background: var(--gold); color: var(--ink);
+  border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
 }
-.dz-final h2 { font-size: 48px; line-height: 1.05; font-weight: 800; letter-spacing: -1px; margin: 0 0 36px; color: #fff; }
+.dz-final h2 { font-size: 48px; line-height: 1.05; font-weight: 800; letter-spacing: -1px; margin: 0 0 36px; color: var(--ink); }
 .dz-final-sub {
-  font-size: 16px; font-weight: 500; opacity: .72;
+  font-size: 16px; font-weight: 500; opacity: .8;
   margin: 32px auto 0; max-width: 480px;
 }
 .dz-final-cta {
   display: inline-flex; align-items: center; gap: 10px;
   padding: 14px 26px;
-  background: #fff; color: var(--ink);
-  border: 2px solid #fff; border-radius: var(--btn-radius);
+  background: var(--ink); color: #fff;
+  border: 2px solid var(--ink); border-radius: var(--btn-radius);
+  box-shadow: 3px 3px 0 #fff;
   font-family: var(--font-sans);
   font-size: 16px; font-weight: 700;
   text-decoration: none; cursor: pointer;
-  transition: transform 120ms ease, background 180ms ease, border-color 180ms ease;
+  transition: transform 120ms ease, box-shadow 120ms ease;
 }
 .dz-final-cta .dz-store-glyph svg { height: 19px; }
-/* Holds the one-or-two platform-aware download buttons, centered in the dark CTA. */
+/* Holds the one-or-two platform-aware download buttons, centered in the gold CTA band. */
 .dz-final-ctas {
   display: inline-flex; flex-wrap: wrap;
   align-items: center; justify-content: center; gap: 14px;
@@ -738,12 +721,12 @@ button.dz-nav-cta { line-height: 1; }
 /* Store glyph slot (platform-aware install buttons). Sized by height with auto
    width so the Apple mark keeps its taller-than-wide aspect; inherits currentColor
    to sit cleanly on the button's shifting backgrounds (nav transparent→gold,
-   final white→gold). */
+   final ink on gold). */
 .dz-store-glyph { display: inline-flex; align-items: center; }
 .dz-store-glyph svg { display: block; width: auto; flex-shrink: 0; }
-.dz-final-cta:hover  { transform: translateY(-1px); background: var(--gold-light); border-color: var(--gold-light); }
-.dz-final-cta:active { transform: translateY(1px); }
-.dz-final-cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.dz-final-cta:hover  { transform: translateY(-1px); box-shadow: 4px 4px 0 #fff; }
+.dz-final-cta:active { transform: translateY(1px); box-shadow: 1px 1px 0 #fff; }
+.dz-final-cta:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
 /* Footer */
 .dz-footer {
@@ -789,60 +772,65 @@ button.dz-nav-cta { line-height: 1; }
 }
 /* Phones a touch larger (260×520) on small screens. */
 @media (max-width: 720px) {
-  .dz-how { padding: 56px 20px 72px; }
-  .dz-how-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; }
+  .dz-how-h2 { font-size: 28px; letter-spacing: -.6px; }
   .dz-how-phone,
   .dz-how-diagram { width: 260px; height: 520px; }
   .dz-how-card h3 { font-size: 21px; }
 
-  .dz-deeper { padding: 64px 20px 72px; }
-  .dz-deeper-h2 { font-size: 28px; letter-spacing: -.6px; margin-bottom: 40px; }
+  .dz-deeper-h2 { font-size: 28px; letter-spacing: -.6px; }
   .dz-deeper-tile { flex-basis: 100%; }
   .dz-deeper-tile .dj-phone { width: min(220px, 100%); height: auto; min-height: 0; aspect-ratio: 1 / 2; }
 }
 
 @media (max-width: 768px) {
-  .dz-nav { padding: 12px 20px; }
-  /* On mobile we show the wordmark at the top of the page so the brand reads, then
-     collapse it to icon-only via .dz-nav.scrolled (rule lives outside this block). */
+  .dz-nav { padding: 12px 24px; }
+  /* On mobile we show the wordmark at the top of the page so the brand reads; once
+     scrolled (.dz-nav.scrolled) its text collapses and Library + What's new slide in. */
   .dz-nav-wm .dj-word { font-size: 16px; }
   .dz-nav-wm .dj-mark { width: 34px; height: 34px; border-radius: 9px; }
-  /* "What's New" is hidden at the top (tight space) and slides into the gap the
+  /* Library and What's new are hidden at the top (tight space) and slide into the gap the
      wordmark vacates once scrolled — the two crossfade in the same horizontal slot.
      visibility (not just opacity) is toggled so the collapsed link can't be tabbed
      to or announced by a screen reader while it has zero visible width.
 
-     The unscrolled nav (word + "What's New" collapsed + CTA) has only a couple px
-     of slack before wrapping. If the word's collapse and "What's New"'s reveal ran
+     The nav has little slack before wrapping. If the word's collapse and the
+     links' reveal ran
      concurrently, their independently-eased widths wouldn't sum to a constant —
      mid-transition the combined width can transiently exceed that slack and force
      a one-frame wrap to two rows. transition-delay sequences them instead: the
-     word finishes collapsing/re-expanding before the other one starts moving, so
+     word finishes collapsing/re-expanding before the links start moving, so
      the two widths never grow at the same time and the sum never overshoots
      either resting state. */
   .dz-nav-wm .dj-word { transition-delay: 200ms; }
   .dz-nav.scrolled .dz-nav-wm .dj-word { transition-delay: 0ms; }
+  .dz-nav-library,
   .dz-nav-whatsnew {
     display: inline-block; overflow: hidden;
     max-width: 0; opacity: 0; visibility: hidden; margin-left: 0;
     transition: max-width 240ms ease, opacity 180ms ease, margin-left 240ms ease, visibility 240ms;
   }
+  .dz-nav.scrolled .dz-nav-library,
   .dz-nav.scrolled .dz-nav-whatsnew {
     max-width: 160px; opacity: 1; visibility: visible; margin-left: 14px;
     transition-delay: 200ms;
   }
+  .dz-nav.scrolled .dz-nav-library { margin-left: 0; }
   .dz-nav-pages { margin: 0 12px 0 auto; }
   .dz-nav-library, .dz-nav-whatsnew { font-size: 14px; }
   .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
   .dz-nav-cta svg { width: 13px; height: 13px; }
-  .dz-hero { padding: 56px 20px 64px; }
+  .dz-hero { padding: 48px 24px 48px; }
   /* "from workshops." is the widest line and must stay on one row down to a 320px phone. */
-  .dz-hero h1 { font-size: clamp(32px, 10.3vw, 40px); letter-spacing: -1px; }
-  .dz-hero-sub { font-size: 17px; margin-top: 18px; }
-  .dz-hero-cta { gap: 10px; margin-top: 22px; }
+  .dz-hero h1 { font-size: clamp(30px, 9.4vw, 38px); letter-spacing: -1px; }
+  .dz-hero-sub { font-size: 17px; margin-top: 16px; }
+  .dz-hero-cta { gap: 10px; margin-top: 24px; }
   .dz-download-btn { font-size: 14px; padding: 11px 18px; }
 
-  .dz-final { padding: 80px 20px; }
+  /* One phone rhythm: 24px sides, 56px above and below each section, 32px under a heading. */
+  .dz-how, .dz-deeper { padding: 56px 24px; }
+  .dz-how-h2, .dz-deeper-h2 { margin-bottom: 32px; }
+  .dz-how-grid { gap: 48px; }
+  .dz-final { padding: 56px 24px; }
   .dz-final h2 { font-size: 32px; letter-spacing: -.6px; }
   .dz-final-sub { font-size: 15px; margin-top: 24px; }
   .dz-final-ctas { gap: 10px; }
@@ -905,9 +893,11 @@ button.dz-nav-cta { line-height: 1; }
   .dz-doc h3 { font-size: 18px; }
 }
 
-/* Smallest phones: "Library" + the CTA leave no room for the word, so the nav shows the icon only. */
-@media (max-width: 360px) {
-  .dz-nav-wm .dj-word { display: none; }
-  /* …and no room for What's new beside them either, even once scrolled. */
+/* Small phones: once scrolled, Library + What's new + the CTA don't fit, so What's new stays hidden. */
+@media (max-width: 374px) {
   .dz-nav.scrolled .dz-nav-whatsnew { display: none; }
+}
+/* Smallest phones: below 340px the word + the CTA leave no room, so the nav shows the icon only. */
+@media (max-width: 339px) {
+  .dz-nav-wm .dj-word { display: none; }
 }

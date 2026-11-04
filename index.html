@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Dance Journal - Master that move from Instagram</title>
+  <title>Dance Journal - Master moves from Instagram</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="favicon.ico" sizes="48x48">
   <link rel="icon" href="assets/icons/app-icon.png" type="image/png" sizes="256x256">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
-  <meta name="description" content="Master that move from Instagram, workshops, privates, classes or festivals. Save it, loop the part you can't get, and see yourself get better. Free on iPhone and Android.">
-  <meta property="og:title" content="Dance Journal - Master that move from Instagram">
-  <meta property="og:description" content="Master that move from Instagram, workshops, privates, classes or festivals. Save it, loop the part you can't get, and see yourself get better. Free on iPhone and Android.">
+  <meta name="description" content="Master moves from Instagram, workshops, privates, classes or festivals. Save it, loop the part you can't get, and see your progress. Free on iPhone and Android.">
+  <meta property="og:title" content="Dance Journal - Master moves from Instagram">
+  <meta property="og:description" content="Master moves from Instagram, workshops, privates, classes or festivals. Save it, loop the part you can't get, and see your progress. Free on iPhone and Android.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dancejournal.app/">
   <meta property="og:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Dance Journal - Master that move from Instagram">
-  <meta name="twitter:description" content="Master that move from Instagram, workshops, privates, classes or festivals. Save it, loop the part you can't get, and see yourself get better. Free on iPhone and Android.">
+  <meta name="twitter:title" content="Dance Journal - Master moves from Instagram">
+  <meta name="twitter:description" content="Master moves from Instagram, workshops, privates, classes or festivals. Save it, loop the part you can't get, and see your progress. Free on iPhone and Android.">
   <meta name="twitter:image" content="https://dancejournal.app/assets/social/og-card.png">
   <meta name="theme-color" content="#FAFAFA">
-  <link rel="stylesheet" href="assets/landing.css?v=99">
+  <link rel="stylesheet" href="assets/landing.css?v=105">
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "11651d9885e34755b7715f68c4ef9fc0"}'></script>
   <!-- End Cloudflare Web Analytics -->
@@ -82,16 +82,16 @@
            once). Line 2 is always its own line: the slot is as wide as the longest word and
            each word sits at its left edge, so nothing else on the headline ever moves.
            The aria-label is the whole sentence; under reduced motion it stays on Instagram. -->
-      <h1 aria-label="Master that move from Instagram, workshops, privates, classes or festivals.">
-        <span aria-hidden="true">Master that move
+      <h1 aria-label="Master moves from Instagram, workshops, privates, classes or festivals.">
+        <span aria-hidden="true">Master moves
           <span class="dz-hero-l2">from <span class="dz-rot"><span class="dz-rot-track"><b>Instagram.</b><b>workshops.</b><b>privates.</b><b>classes.</b><b>festivals.</b><b>Instagram.</b></span></span></span>
         </span>
       </h1>
-      <p class="dz-hero-sub">Save it. Loop it. See yourself get better.</p>
+      <p class="dz-hero-sub">Save it. Loop it. See your progress.</p>
       <!-- Platform-aware download buttons (built by landing.js): one store on a known
            phone, both on desktop / ambiguous platforms. -->
       <div class="dz-hero-cta" data-download-cta data-btn-class="dz-download-btn" data-label="Download free for"></div>
-      <p class="dz-hero-library">Want a look first? <a href="library/">Browse the Move Library</a>, no download needed.</p>
+      <p class="dz-hero-library"><span>Want a look first?</span> <a href="library/">Browse the Move Library</a>.</p>
     </div>
   </section>
 
@@ -118,7 +118,7 @@
           <div class="dj-phone dz-how-phone">
             <div class="dj-phone-notch"></div>
             <div class="dj-phone-screen dz-how-screen">
-              <!-- Instagram: Share → Create → on your practice list (12s loop, 4s per step).
+              <!-- Instagram: Share → Create → on your practice list (7.5s loop, 2.5s per step).
                    Step 1 has two beats: the reel's Share button, then Dance Journal in the share sheet.
                    Stills, not a screen recording: they paint at once on a slow connection. -->
               <div class="dz-how-panel dz-c1" role="tabpanel" id="how-panel-instagram"
@@ -141,7 +141,7 @@
                 </div>
               </div>
               <!-- Class: + → Photo gallery, pick → Create, first on the practice list. Same
-                   12s clock as Instagram; steps 1 and 2 each hold two beats. Lazy images: the
+                   7.5s clock as Instagram; steps 1 and 2 each hold two beats. Lazy images: the
                    panel starts hidden, so they're fetched only when the Class tab is opened. -->
               <div class="dz-how-panel dz-c1" role="tabpanel" id="how-panel-class"
                    aria-labelledby="how-tab-class" tabindex="0" data-how-loop hidden>
@@ -167,7 +167,7 @@
                 </div>
               </div>
               <!-- Discover: pick a topic → + a move on its subtopic rows → it's your Next move.
-                   Drawn in CSS around real Move Library posters, on the same 12s clock. -->
+                   Drawn in CSS around real Move Library posters, on the same 7.5s clock. -->
               <div class="dz-how-panel dz-c1 dz-dsc" role="tabpanel" id="how-panel-discover"
                    aria-labelledby="how-tab-discover" tabindex="0" data-how-loop hidden>
                 <div class="dz-c1-scene dz-c1-s1 dz-ui" role="img" aria-label="Step 1: in Discover, pick a topic such as Clock turns">
@@ -205,13 +205,9 @@
               </div>
             </div>
           </div>
-          <!-- One dot row per tab panel, shown and hidden with it, so both restart together. -->
-          <div class="dz-how-dots" data-for="how-panel-instagram" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="dz-how-dots" data-for="how-panel-class" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="dz-how-dots" data-for="how-panel-discover" aria-hidden="true"><i></i><i></i><i></i></div>
         </div>
 
-        <!-- 2 · Loop it: one player that plays out the whole move (initLoopDemo in landing.js, ~12s):
+        <!-- 2 · Loop it: one player that plays out the whole move (initLoopDemo in landing.js, ~7s):
              paused on the start frame → tap Start loop, the clip plays and the band grows under the
              playhead → tap End loop, the band locks and the clip loops. The state is the st-* class on the
              player; without JS (or with reduced motion) it rests on st-looping with the poster frame.
@@ -236,10 +232,9 @@
             <div class="dz-times" aria-hidden="true"><span class="dz-pos">0:02.1</span><span class="dz-pill"><svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-repeat"/></svg>Loop 1</span><span>0:07</span></div>
             <div class="dz-tp" aria-hidden="true"><span class="l"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-vol"/></svg></span><span class="c"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-left"/></svg><b class="dz-pp"><span class="ic-play"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-play"/></svg></span><span class="ic-pause"><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-pause"/></svg></span></b><svg class="dz-ic" aria-hidden="true"><use href="#dz-i-right"/></svg></span><span class="r"><span class="dz-sp">1x<svg class="dz-ic dz-ic-s" aria-hidden="true"><use href="#dz-i-down"/></svg></span></span></div>
           </div>
-          <div class="dz-how-dots" aria-hidden="true"><i></i><i></i><i></i></div>
         </div>
 
-        <!-- 3 · See it add up: ? check-in → today's bar grows + the month fills → month card (9s loop) -->
+        <!-- 3 · See it add up: ? check-in → today's bar grows + the month fills → month card (7.5s loop) -->
         <div class="dz-how-card dz-how-card-plain">
           <div class="dz-how-head">
             <div class="dz-how-num" aria-hidden="true">3</div>
@@ -288,7 +283,6 @@
               </div>
             </div>
           </div>
-          <div class="dz-how-dots" aria-hidden="true"><i></i><i></i><i></i></div>
         </div>
 
       </div>
@@ -348,7 +342,7 @@
   <!-- ============== Final CTA ============== -->
   <section class="dz-final" id="download">
     <h2>Practice with intention.</h2>
-    <!-- Same platform-aware download buttons as the hero, styled for the dark CTA. -->
+    <!-- Same platform-aware download buttons as the hero, styled for the gold band. -->
     <div class="dz-final-ctas" data-download-cta data-btn-class="dz-final-cta"></div>
     <p class="dz-final-sub">Available on iPhone and Android.</p>
   </section>
@@ -365,6 +359,6 @@
     <div class="copyright">© 2026 Dance Journal</div>
   </footer>
 
-  <script src="assets/landing.js?v=34" defer></script>
+  <script src="assets/landing.js?v=36" defer></script>
 </body>
 </html>
