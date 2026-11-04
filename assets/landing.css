@@ -185,8 +185,8 @@ a { color: inherit; }
 
 /* Page links sit next to the wordmark and the one action ("Get the app") sits alone on
    the right — the auto margin pushes it over. Library and What's new share one style.
-   On a phone Library is hidden (the hero links to the Move Library) and the links move
-   right, beside the button; What's new only appears once scrolled (rules below). */
+   On a phone the links move right, beside the button, and only appear once scrolled,
+   taking the wordmark's place (rules below). */
 .dz-nav-pages { display: flex; align-items: center; margin: 0 auto 0 44px; }
 .dz-nav-right { display: flex; align-items: center; }
 .dz-nav-library,
@@ -243,10 +243,12 @@ button.dz-nav-cta { line-height: 1; }
   text-align: center;
   max-width: 1040px; margin: 0 auto;
 }
+/* The two lines share a left edge and the block is centred: centred lines would leave a
+   short rolling word's unused slot as a gap that makes line 2 look off-centre. */
 .dz-hero h1 {
   font-size: 72px; line-height: 1.04; font-weight: 800;
-  letter-spacing: -1.8px; margin: 0;
-  text-wrap: balance;
+  letter-spacing: -1.8px; margin: 0 auto;
+  width: fit-content; text-align: left;
 }
 /* Line 2 of the H1 ("from [word]") is always its own line. The slot is as wide as the
    longest word (the track's widest child); each word sits at its left edge with a
@@ -788,12 +790,12 @@ button.dz-nav-cta { line-height: 1; }
      collapse it to icon-only via .dz-nav.scrolled (rule lives outside this block). */
   .dz-nav-wm .dj-word { font-size: 16px; }
   .dz-nav-wm .dj-mark { width: 34px; height: 34px; border-radius: 9px; }
-  /* "What's New" is hidden at the top (tight space) and slides into the gap the
+  /* Library and What's new are hidden at the top (tight space) and slide into the gap the
      wordmark vacates once scrolled — the two crossfade in the same horizontal slot.
      visibility (not just opacity) is toggled so the collapsed link can't be tabbed
      to or announced by a screen reader while it has zero visible width.
 
-     The unscrolled nav (word + "What's New" collapsed + CTA) has only a couple px
+     The unscrolled nav (word + the links collapsed + CTA) has only a couple px
      of slack before wrapping. If the word's collapse and "What's New"'s reveal ran
      concurrently, their independently-eased widths wouldn't sum to a constant —
      mid-transition the combined width can transiently exceed that slack and force
@@ -803,18 +805,20 @@ button.dz-nav-cta { line-height: 1; }
      either resting state. */
   .dz-nav-wm .dj-word { transition-delay: 200ms; }
   .dz-nav.scrolled .dz-nav-wm .dj-word { transition-delay: 0ms; }
+  .dz-nav-library,
   .dz-nav-whatsnew {
     display: inline-block; overflow: hidden;
     max-width: 0; opacity: 0; visibility: hidden; margin-left: 0;
     transition: max-width 240ms ease, opacity 180ms ease, margin-left 240ms ease, visibility 240ms;
   }
+  .dz-nav.scrolled .dz-nav-library,
   .dz-nav.scrolled .dz-nav-whatsnew {
     max-width: 160px; opacity: 1; visibility: visible; margin-left: 14px;
     transition-delay: 200ms;
   }
+  .dz-nav.scrolled .dz-nav-library { margin-left: 0; }
   .dz-nav-pages { margin: 0 12px 0 auto; }
-  .dz-nav-library { display: none; }
-  .dz-nav-whatsnew { font-size: 14px; }
+  .dz-nav-library, .dz-nav-whatsnew { font-size: 14px; }
   .dz-nav-cta { padding: 7px 12px; font-size: 13px; gap: 6px; }
   .dz-nav-cta svg { width: 13px; height: 13px; }
   .dz-hero { padding: 48px 24px 48px; }
@@ -888,9 +892,11 @@ button.dz-nav-cta { line-height: 1; }
   .dz-doc h3 { font-size: 18px; }
 }
 
+/* Small phones: once scrolled, Library + What's new + the CTA don't fit, so What's new stays hidden. */
+@media (max-width: 374px) {
+  .dz-nav.scrolled .dz-nav-whatsnew { display: none; }
+}
 /* Smallest phones: below 340px the word + the CTA leave no room, so the nav shows the icon only. */
 @media (max-width: 339px) {
   .dz-nav-wm .dj-word { display: none; }
-  /* …and no room for What's new beside the CTA either, even once scrolled. */
-  .dz-nav.scrolled .dz-nav-whatsnew { display: none; }
 }

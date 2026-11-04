@@ -205,7 +205,7 @@
     });
   }
 
-  // Card 2 is one player that plays out the whole move, ~5s on repeat: paused on the start frame →
+  // Card 2 is one player that plays out the whole move, ~7s on repeat: paused on the start frame →
   // Start loop is tapped and the clip plays while the band grows → End loop is tapped, the band locks
   // and the clip loops. The state is an st-* class on the player (CSS draws everything from it); the
   // playhead (--lp, 0 → 1) and the time readout are read off the video clock so they never drift.
@@ -221,7 +221,7 @@
     var START = 2.1;   // where Start loop lands, in clip seconds (the lane's 30%)
     var SPAN = 2.0;    // the clip's length
     var TAP_LEAD = 0.3; // seconds before the clip ends that the End loop tap lands
-    var LOOPS = 1;      // passes of the finished loop before the demo resets
+    var LOOPS = 2;      // passes of the finished loop before the demo resets
     var timers = [], raf = 0, lastTenth = -1, running = false, marking = false, tappedEnd = false;
 
     function at(ms, fn) { timers.push(setTimeout(fn, ms)); }
